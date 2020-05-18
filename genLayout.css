@@ -16,3 +16,7 @@ h1, p {
     display: grid;
     grid: [header] 100px [body] 1fr / [gutterL] 1fr [content] 8fr [gutterR] 1fr;
 }
+
+.center { 
+    grid-column: content;
+}

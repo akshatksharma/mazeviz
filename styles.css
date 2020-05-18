@@ -1,0 +1,21 @@
+.title {
+    grid-row: header;
+
+    text-align: center;
+    line-height: 56px;
+
+    background-color: crimson;
+}
+
+
+.nodeContainer {
+    grid-row: body;
+    border: 1px solid crimson;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 100px);
+    grid-template-rows: repeat(auto-fit, 100px);
+}
+
+.node {
+}
