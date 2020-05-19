@@ -13,17 +13,29 @@
   margin: 0 auto;
 
   display: grid;
-  grid-template-columns: repeat(50, 25px);
-  grid-auto-rows: 25px;
+  grid-template-columns: repeat(50, 30px);
+  grid-auto-rows: 30px;
 }
 
 .node {
   border: 1px solid crimson;
   border-right: 0px;
   border-bottom: 0px;
-  width: 25px;
+  width: 30px;
 }
 
 .row--end {
   border-right: 1px solid crimson;
+}
+
+.col--end {
+  border-bottom: 1px solid crimson;
+}
+
+.start {
+  background-color: goldenrod;
+}
+
+.end {
+  background-color: crimson;
 }

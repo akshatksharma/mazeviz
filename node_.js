@@ -5,13 +5,17 @@ export default class node_ {
     this.id = id;
     this.dist = Infinity;
     this.visited = false;
+    this.start = false;
+    this.end = false;
   }
 
   isStart(start_row, start_col) {
+    this.start = true;
     return this.col == start_col && this.row == start_row;
   }
 
-  isStart(end_row, end_col) {
+  isEnd(end_row, end_col) {
+    this.end = true;
     return this.col == end_col && this.row == end_row;
   }
 
@@ -26,5 +30,11 @@ export default class node_ {
     this.updateNode();
   }
 
-  updateNode() {}
+  updateNode() {
+    let domNode = document.getElementById(this.id);
+    domNode.dataset.visited = this.visited;
+  }
 }
+
+// NEED TO :
+// acc for random cases where start and end may be the same
