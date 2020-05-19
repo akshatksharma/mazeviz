@@ -9,13 +9,19 @@
 
 
 .nodeContainer {
+
     grid-row: body;
-    border: 1px solid crimson;
+    /* border: 1px solid crimson; */
 
     display: grid;
-    grid-template-columns: repeat(auto-fit, 100px);
-    grid-template-rows: repeat(auto-fit, 100px);
+    grid-template-columns: repeat(auto-fit, 30px);
+    grid-template-rows: repeat(auto-fit, 30px);
 }
 
 .node {
+    border: 1px solid crimson;
+    border-right: 0px;
+    border-bottom: 0px;
+    width: 30px;
+
 }
