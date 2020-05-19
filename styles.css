@@ -1,27 +1,29 @@
 .title {
-    grid-row: header;
+  grid-row: header;
 
-    text-align: center;
-    line-height: 56px;
+  text-align: center;
+  line-height: 56px;
 
-    background-color: crimson;
+  background-color: crimson;
 }
 
-
 .nodeContainer {
+  grid-row: body;
+  /* border: 1px solid crimson; */
+  margin: 0 auto;
 
-    grid-row: body;
-    /* border: 1px solid crimson; */
-
-    display: grid;
-    grid-template-columns: repeat(auto-fit, 30px);
-    grid-template-rows: repeat(auto-fit, 30px);
+  display: grid;
+  grid-template-columns: repeat(50, 25px);
+  grid-auto-rows: 25px;
 }
 
 .node {
-    border: 1px solid crimson;
-    border-right: 0px;
-    border-bottom: 0px;
-    width: 30px;
+  border: 1px solid crimson;
+  border-right: 0px;
+  border-bottom: 0px;
+  width: 25px;
+}
 
+.row--end {
+  border-right: 1px solid crimson;
 }
