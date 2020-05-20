@@ -10,7 +10,6 @@ export default class testitem {
       this.num = newNum;
       this.heap.decrease;
     }
-
     // add other cases too
   }
 

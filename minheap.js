@@ -1,6 +1,27 @@
-import testItem from "./testItem.js";
+// import testItem from "./testItem.js";
 
-export default class minheap {
+class testItem {
+  constructor(num, heap, loc) {
+    this.num = num;
+    this.heap = heap;
+    this.loc = loc;
+  }
+
+  set updateNum(newNum) {
+    if (newNum < this.num) {
+      this.num = newNum;
+      this.heap.decrease;
+    }
+
+    // add other cases too
+  }
+
+  toString() {
+    return "" + this.num + " at " + this.loc;
+  }
+}
+
+class minheap {
   constructor() {
     this.array = [];
     this.currSize = 0;
@@ -39,21 +60,21 @@ export default class minheap {
 
       // update the locations in the nodes themselves
       this.array[loc].loc = loc;
-      this.array[loc / 2].loc = loc / 2;
+      this.array[parentLoc].loc = parentLoc;
 
       // continue at the loc's parent
-      this.decrease(loc / 2);
+      this.decrease(parentLoc);
     }
   }
 }
 
-// let e = new minheap();
+let e = new minheap();
 
-// e.insert(23);
-// e.insert(10);
-// e.insert(5);
-// e.insert(54);
-// e.insert(22);
-// e.insert(1);
+e.insert(23);
+e.insert(10);
+e.insert(5);
+e.insert(54);
+e.insert(22);
+e.insert(1);
 
-// console.log(e)
+console.log(e);
