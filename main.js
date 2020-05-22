@@ -8,3 +8,4 @@ aGrid.createNodes();
 aGrid.createGrid();
 
 console.log(aGrid);
+console.log(aGrid.heap.array[1].setVisited());

@@ -1,8 +1,11 @@
-export default class node_ {
-  constructor(row, col, id) {
-    this.col = col;
+export default class node {
+  constructor(row, col, id, heap, loc) {
     this.row = row;
+    this.col = col;
     this.id = id;
+    this.heap = heap;
+    this.loc = loc;
+
     this.dist = Infinity;
     this.visited = false;
     this.start = false;
@@ -19,12 +22,14 @@ export default class node_ {
     return this.col == end_col && this.row == end_row;
   }
 
-  get getVisited() {
+  getVisited() {
     return this.visited;
   }
 
-  set setVisited(value) {
-    this.visited = value;
+  setVisited(value) {
+    this.visited = true;
+    this.dist = value;
+    this.heap.decrease(this.loc);
 
     // update DOM of node that was visited
     this.updateNode();

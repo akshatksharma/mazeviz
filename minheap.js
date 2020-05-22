@@ -1,4 +1,4 @@
-import testItem from "./testItem.js";
+import node from "./node_.js";
 
 export default class minheap {
   constructor() {
@@ -6,22 +6,20 @@ export default class minheap {
     this.currSize = 0;
   }
 
-  insert(value) {
-    let item = new testItem(value, this, ++this.currSize);
+  insert(item) {
+    this.currSize++;
     this.array[this.currSize] = item;
-
     this.decrease(this.currSize);
   }
 
   decrease(loc) {
     // if at root, return
     if (loc == 1) return;
-
     // if parent value already less than child, no need to swap values--invariant maintainted
     // otherwise, need to swap
     let parentLoc = Math.floor(loc / 2);
-    let child = this.array[loc].num;
-    let parent = this.array[parentLoc].num;
+    let child = this.array[loc].dist;
+    let parent = this.array[parentLoc].dist;
 
     if (parent <= child) return;
     else {
@@ -34,7 +32,7 @@ export default class minheap {
   extractMin() {
     const minLoc = 1;
     const lastLoc = this.currSize;
-    const min = this.array[minLoc].num;
+    const min = this.array[minLoc].dist;
 
     this.array[minLoc] = this.array[lastLoc];
 
@@ -52,9 +50,9 @@ export default class minheap {
     const Lloc = 2 * loc;
     const Rloc = 2 * loc + 1;
 
-    const parent = this.array[loc].num || null;
-    const Lchild = this.array[Lloc].num || null;
-    const Rchild = this.array[Rloc].num || null;
+    const parent = this.array[loc].dist || null;
+    const Lchild = this.array[Lloc].dist || null;
+    const Rchild = this.array[Rloc].dist || null;
 
     // if L child DNE, then R child DNE too, so must be at a leaf (so end of tree reached and heap prob maintained)
     if (Lchild == null) return;
