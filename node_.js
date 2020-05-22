@@ -8,18 +8,14 @@ export default class node {
 
     this.dist = Infinity;
     this.visited = false;
-    this.start = false;
-    this.end = false;
   }
 
-  isStart(start_row, start_col) {
-    this.start = true;
-    return this.col == start_col && this.row == start_row;
+  isStart(startLoc) {
+    return this.loc == startLoc;
   }
 
-  isEnd(end_row, end_col) {
-    this.end = true;
-    return this.col == end_col && this.row == end_row;
+  isEnd(endLoc) {
+    return this.loc == endLoc;
   }
 
   getVisited() {

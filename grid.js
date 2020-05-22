@@ -9,18 +9,18 @@ export default class grid {
     this.numRows = numRows;
     this.numCols = numCols;
 
-    this.startRow = 15;
-    this.startCol = 15;
+    this.startLoc = 1;
+    this.endLoc = 50;
 
-    this.endRow = 15;
-    this.endCol = 40;
+    this.startNode;
+    this.endNode;
   }
 
   createNodes() {
     let id = 1;
     let loc = 1;
-    for (let row = 0; row < this.numRows; row++) {
-      for (let col = 0; col < this.numCols; col++) {
+    for (let row = 1; row <= this.numRows; row++) {
+      for (let col = 1; col <= this.numCols; col++) {
         let node_ = new node(row, col, id, this.heap, loc);
         this.heap.insert(node_);
         id++;
@@ -45,18 +45,15 @@ export default class grid {
       domNode.dataset.row = node.row;
 
       // styling stuff
-      if (node.isStart(this.startRow, this.startCol)) {
+      if (node.isStart(this.startLoc)) {
         domNode.classList.add("start");
       }
-
-      if (node.isStart(this.endRow, this.endCol)) {
+      if (node.isEnd(this.endLoc)) {
         domNode.classList.add("end");
       }
-
       if (node.id % this.numRows == 0) {
         domNode.classList.add("row--end");
       }
-
       if (node.row == this.numRows - 1) {
         domNode.classList.add("col--end");
       }
