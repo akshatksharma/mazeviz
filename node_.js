@@ -1,28 +1,63 @@
 export default class node {
-  constructor(row, col, id, heap, loc) {
+  constructor(row, col, grid, heap, loc) {
     this.row = row;
     this.col = col;
-    this.id = id;
+    this.grid = grid;
     this.heap = heap;
     this.loc = loc;
 
     this.dist = Infinity;
+    this.weight;
     this.visited = false;
+    this.prevNode = null;
   }
 
-  isStart(startLoc) {
-    return this.loc == startLoc;
+  isStart() {
+    return this.loc == this.grid.startLoc;
   }
 
-  isEnd(endLoc) {
-    return this.loc == endLoc;
+  isEnd() {
+    return this.loc == this.grid.endLoc;
   }
 
-  getVisited() {
-    return this.visited;
+  getNextNodes() {
+    let neighbors = [];
+    // console.table([this.row, this.col, this.grid.nodeGrid[this.row]]);
+    // console.log(this.grid.nodeGrid);
+    // console.log(this.grid.nodeGrid[]);
+    // console.log(`rows: ${this.grid.numRows}`);
+
+    let nodeGrid = this.grid.nodeGrid;
+
+    if (this.row > 1) {
+      console.log("top neighbor");
+      const upNeighbor = nodeGrid[this.row - 1][this.col];
+      neighbors.push(upNeighbor);
+    }
+    if (this.row < this.grid.numRows) {
+      console.log("bottom neighbor");
+      // console.log(this.grid.nodeGrid[this.row + 1][this.col]);
+      const downNeighbor = nodeGrid[this.row + 1][this.col];
+      neighbors.push(downNeighbor);
+    }
+    if (this.col > 1) {
+      console.log("left neighbor");
+      const leftNeighbor = nodeGrid[this.row][this.col - 1];
+      neighbors.push(leftNeighbor);
+    }
+    if (this.col < this.grid.numCols) {
+      console.log("right neighbor");
+      const rightNeighbor = nodeGrid[this.row][this.col + 1];
+      neighbors.push(rightNeighbor);
+    }
+
+    neighbors = neighbors.filter((neighbor) => !neighbor.visited);
+
+    // console.table([this, neighbors]);
+    return neighbors;
   }
 
-  setVisited(value) {
+  updateValue(value) {
     this.visited = true;
     this.dist = value;
     this.heap.decrease(this.loc);
@@ -32,7 +67,7 @@ export default class node {
   }
 
   updateNode() {
-    let domNode = document.getElementById(this.id);
+    let domNode = document.getElementById(`node: ${this.row}, ${this.col}`);
     domNode.dataset.visited = this.visited;
   }
 }

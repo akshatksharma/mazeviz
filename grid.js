@@ -5,27 +5,30 @@ export default class grid {
   constructor(numRows, numCols, container) {
     this.container = container;
     this.heap = new minheap();
+    this.nodeGrid;
     this.domGrid;
     this.numRows = numRows;
     this.numCols = numCols;
 
-    this.startLoc = 1;
-    this.endLoc = 50;
+    this.startLoc = 5;
+    this.endLoc = 10;
 
     this.startNode;
     this.endNode;
   }
 
   createNodes() {
-    let id = 1;
+    this.nodeGrid = [];
     let loc = 1;
-    for (let row = 1; row <= this.numRows; row++) {
-      for (let col = 1; col <= this.numCols; col++) {
-        let node_ = new node(row, col, id, this.heap, loc);
+    for (let r = 1; r <= this.numRows; r++) {
+      let row = [];
+      for (let c = 1; c <= this.numCols; c++) {
+        let node_ = new node(r, c, this, this.heap, loc);
+        row[c] = node_;
         this.heap.insert(node_);
-        id++;
         loc++;
       }
+      this.nodeGrid[r] = row;
     }
   }
 
@@ -38,23 +41,22 @@ export default class grid {
       let domNode = document.createElement("div");
 
       domNode.className = "node";
-      domNode.id = node.id;
-      domNode.dataset.distance = node.distance;
+      domNode.id = `node: ${node.row}, ${node.col}`;
       domNode.dataset.visited = node.visited;
-      domNode.dataset.col = node.col;
-      domNode.dataset.row = node.row;
 
       // styling stuff
       if (node.isStart(this.startLoc)) {
+        this.startNode = node;
         domNode.classList.add("start");
       }
       if (node.isEnd(this.endLoc)) {
+        this.endNode = node;
         domNode.classList.add("end");
       }
-      if (node.id % this.numRows == 0) {
+      if (node.col % this.numRows == 0) {
         domNode.classList.add("row--end");
       }
-      if (node.row == this.numRows - 1) {
+      if (node.row == this.numRows) {
         domNode.classList.add("col--end");
       }
 

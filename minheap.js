@@ -35,7 +35,6 @@ export default class minheap {
     const min = this.array[minLoc].dist;
 
     this.array[minLoc] = this.array[lastLoc];
-
     this.array[minLoc].loc = 1;
 
     this.array.pop();
@@ -43,22 +42,43 @@ export default class minheap {
 
     this.heapify(minLoc);
 
-    return min;
+    return this.array[minLoc];
   }
 
   heapify(loc) {
     const Lloc = 2 * loc;
     const Rloc = 2 * loc + 1;
 
-    const parent = this.array[loc].dist || null;
-    const Lchild = this.array[Lloc].dist || null;
-    const Rchild = this.array[Rloc].dist || null;
+    // let logobj = {};
+    // logobj.parent = this.array[loc].loc || undefined;
+    // logobj.lchild = this.array[Lloc].loc || undefined;
+    // logobj.rchild = this.array[Rloc].loc || undefined;
+
+    // console.table(logobj);
+    // console.log(this.array);
+    let parent;
+    let Lchild;
+    let Rchild;
+
+    try {
+      parent = this.array[loc].dist;
+
+      Lchild = this.array[Lloc].dist;
+
+      Rchild = this.array[Rloc].dist;
+    } catch (error) {
+      parent = -1;
+
+      Lchild = -1;
+
+      Rchild = -1;
+    }
 
     // if L child DNE, then R child DNE too, so must be at a leaf (so end of tree reached and heap prob maintained)
-    if (Lchild == null) return;
+    if (Lchild == -1) return;
 
     // if R child exist, then both children exist
-    if (Rchild != null) {
+    if (Rchild != -1) {
       if (parent < Lchild && parent < Rchild) {
         return;
       } else if (Lchild <= Rchild) {
@@ -85,7 +105,7 @@ export default class minheap {
   }
 
   peek(loc) {
-    if (this.array[loc] == null) return null;
+    if (this.array[loc] == undefined) return undefined;
     return this.array[loc];
   }
 
