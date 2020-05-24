@@ -7,8 +7,18 @@
   background-color: crimson;
 }
 
-.nodeContainer {
+.container {
   grid-row: body;
+  display: flex;
+  flex-direction: column;
+}
+
+.run {
+  width: 10%;
+  align-self: center;
+}
+
+.nodeContainer {
   /* border: 1px solid crimson; */
   margin: 0 auto;
 
@@ -38,4 +48,12 @@
 
 .end {
   background-color: crimson;
+}
+
+[data-visited="true"] {
+  background-color: gray;
+}
+
+[data-path="true"] {
+  background-color: black;
 }

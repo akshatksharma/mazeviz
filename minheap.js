@@ -32,7 +32,9 @@ export default class minheap {
   extractMin() {
     const minLoc = 1;
     const lastLoc = this.currSize;
-    const min = this.array[minLoc].dist;
+
+    
+    const min = this.array[minLoc];
 
     this.array[minLoc] = this.array[lastLoc];
     this.array[minLoc].loc = 1;
@@ -42,7 +44,7 @@ export default class minheap {
 
     this.heapify(minLoc);
 
-    return this.array[minLoc];
+    return min;
   }
 
   heapify(loc) {
