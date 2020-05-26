@@ -6,12 +6,11 @@ function run() {
 
   aGrid.createNodes();
   aGrid.createGrid();
-
   let yes = document.getElementsByClassName("run")[0];
-  console.log(yes);
   yes.addEventListener("click", () => {
     aGrid.shortestPath();
   });
 }
 
 run();
+console.log("stack cleared");

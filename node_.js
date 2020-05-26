@@ -68,10 +68,9 @@ export default class node {
     // update DOM of node that was visited
   }
 
-  updateNode() {
+  updateDOM() {
     let domNode = document.getElementById(`node: ${this.row}, ${this.col}`);
     domNode.dataset.visited = this.visited;
-    // domNode.style.backgroundColor = "blue";
   }
 }
 

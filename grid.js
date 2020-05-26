@@ -12,11 +12,14 @@ export default class grid {
     this.numCols = numCols;
 
     // row, col
-    this.startLoc = [1, 50];
-    this.endLoc = [50, 1];
+    this.startLoc = [1, 25];
+    this.endLoc = [4, 25];
 
     this.startNode;
     this.endNode;
+
+    this.orderedPath;
+    this.exploredNodes;
   }
 
   createNodes() {
@@ -35,7 +38,6 @@ export default class grid {
       this.nodeGrid[r] = row;
     }
   }
-
   createGrid() {
     // create grid of nodes w/ forEach or map
     const frag = document.createDocumentFragment();
@@ -65,19 +67,18 @@ export default class grid {
       }
 
       frag.appendChild(domNode);
-      return domNode;
     });
 
     this.domGrid = domGrid;
-
-    // console.log(this.domGrid);
     container.appendChild(frag);
   }
 
-  async shortestPath() {
+  shortestPath() {
     console.log("hello");
-    let explorePath = await dijkstra(this, this.heap);
-    let endNode = await explorePath.pop();
+    let exploredNodes = dijkstra(this, this.heap);
+    this.exploredNodes = exploredNodes;
+
+    let endNode = exploredNodes.pop();
     let orderedPath = [endNode];
 
     let currNode = endNode;
@@ -87,12 +88,26 @@ export default class grid {
       console.log(currNode);
       currNode = currNode.prevNode;
     }
+    this.orderedPath = orderedPath;
+    this.animate();
+  }
 
-    console.log(orderedPath);
+  animate() {
+    // exploration
+    // console.log(this.exploredNodes);
+    // for (let i = 0; i < this.exploredNodes.length; i++) {
+    //   setTimeout(() => {
+    //     const { row, col } = this.exploredNodes[i];
 
-    for (let i = 0; i < orderedPath.length; i++) {
-      setInterval(() => {
-        let { row, col } = orderedPath[i];
+    //     let domNode = document.getElementById(`node: ${row}, ${col}`);
+    //     domNode.dataset.visited = "true";
+    //   }, 5 * i);
+    // }
+
+    // path
+    for (let i = 0; i < this.orderedPath.length; i++) {
+      setTimeout(() => {
+        let { row, col } = this.orderedPath[i];
         let DOMelem = document.getElementById(`node: ${row}, ${col}`);
         DOMelem.dataset.path = "true";
       }, 100 * i);
