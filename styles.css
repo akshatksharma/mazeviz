@@ -49,6 +49,9 @@
 .end {
   background-color: #f7c648;
 }
+[data-wall="true"] {
+  background-color: black;
+}
 
 [data-visited="true"] {
   background-color: #fae9de;

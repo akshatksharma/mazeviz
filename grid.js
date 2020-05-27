@@ -9,7 +9,7 @@ export default class grid {
     this.numCols = numCols;
 
     // row, col
-    this.startLoc = [15, 15];
+    this.startLoc = [15, 19];
     this.endLoc = [15, 35];
 
     this.startNode;
@@ -26,11 +26,20 @@ export default class grid {
     for (let r = 1; r <= this.numRows; r++) {
       let row = [];
       for (let c = 1; c <= this.numCols; c++) {
-        let node_ = new node(r, c, this, id, this.heap, loc);
-        row[c] = node_;
-        this.heap.insert(node_);
-        loc++;
-        id++;
+        if (c === 18 && r > 5 && r < 24) {
+          let node_ = new node(r, c, 100, this, id, this.heap, loc);
+          node_.wall = true;
+          row[c] = node_;
+          this.heap.insert(node_);
+          loc++;
+          id++;
+        } else {
+          let node_ = new node(r, c, 1, this, id, this.heap, loc);
+          row[c] = node_;
+          this.heap.insert(node_);
+          loc++;
+          id++;
+        }
       }
       this.nodeGrid[r] = row;
     }

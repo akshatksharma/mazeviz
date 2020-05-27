@@ -12,6 +12,10 @@ function createDOMGrid(grid, container) {
     domNode.id = `node: ${node.row}, ${node.col}`;
     domNode.dataset.visited = node.visited;
 
+    if (node.wall) {
+      domNode.dataset.wall = true;
+    }
+
     // styling stuff
     if (node.isStart(grid.startLoc)) {
       grid.startNode = node;

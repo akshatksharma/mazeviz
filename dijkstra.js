@@ -26,7 +26,8 @@ addEventListener("message", (e) => {
     let neighbors = nodeFunctions.getNextNodes(currNode);
     for (let i = 0; i < neighbors.length; i++) {
       const neighbor = neighbors[i];
-      const newDist = currNode.dist + 1;
+      if (neighbor.wall) continue;
+      const newDist = currNode.dist + neighbor.weight;
       if (newDist < neighbor.dist) {
         // console.log("hell");
         nodeFunctions.updateValue(heap, neighbor, newDist);

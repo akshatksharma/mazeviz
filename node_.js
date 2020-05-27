@@ -1,5 +1,5 @@
 export default class node {
-  constructor(row, col, grid, id, heap, loc) {
+  constructor(row, col, weight, grid, id, heap, loc) {
     this.row = row;
     this.col = col;
     this.grid = grid;
@@ -8,7 +8,8 @@ export default class node {
     this.loc = loc;
 
     this.dist = Infinity;
-    this.weight;
+    this.weight = weight;
+    this.wall;
     this.visited = false;
     this.prevNode = null;
   }
