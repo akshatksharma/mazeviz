@@ -4,7 +4,7 @@
   text-align: center;
   line-height: 56px;
 
-  background-color: crimson;
+  background-color: #c9bbed;
 }
 
 .container {
@@ -28,32 +28,32 @@
 }
 
 .node {
-  border: 1px solid crimson;
+  border: 1px solid #e6e4f0;
   border-right: 0px;
   border-bottom: 0px;
   width: 30px;
 }
 
 .row--end {
-  border-right: 1px solid crimson;
+  border-right: 1px solid #e6e4f0;
 }
 
 .col--end {
-  border-bottom: 1px solid crimson;
+  border-bottom: 1px solid #e6e4f0;
 }
 
 .start {
-  background-color: goldenrod;
+  background-color: #eb8dde;
 }
 
 .end {
-  background-color: crimson;
+  background-color: #f7c648;
 }
 
 [data-visited="true"] {
-  background-color: gray;
+  background-color: #fae9de;
 }
 
 [data-path="true"] {
-  background-color: black;
+  background-color: #c9bbed;
 }

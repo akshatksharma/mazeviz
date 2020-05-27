@@ -1,19 +1,16 @@
 import minheap from "./minheap.js";
 import node from "./node_.js";
-import dijkstra from "./dijkstra.js";
 
 export default class grid {
-  constructor(numRows, numCols, container) {
-    this.container = container;
+  constructor(numRows, numCols) {
     this.heap = new minheap();
     this.nodeGrid;
-    this.domGrid;
     this.numRows = numRows;
     this.numCols = numCols;
 
     // row, col
-    this.startLoc = [1, 25];
-    this.endLoc = [4, 25];
+    this.startLoc = [15, 15];
+    this.endLoc = [15, 35];
 
     this.startNode;
     this.endNode;
@@ -38,79 +35,52 @@ export default class grid {
       this.nodeGrid[r] = row;
     }
   }
-  createGrid() {
-    // create grid of nodes w/ forEach or map
-    const frag = document.createDocumentFragment();
-    let container = this.container;
-
-    let domGrid = this.heap.array.map((node) => {
-      let domNode = document.createElement("div");
-
-      domNode.className = "node";
-      domNode.id = `node: ${node.row}, ${node.col}`;
-      domNode.dataset.visited = node.visited;
-
-      // styling stuff
-      if (node.isStart(this.startLoc)) {
-        this.startNode = node;
-        domNode.classList.add("start");
-      }
-      if (node.isEnd(this.endLoc)) {
-        this.endNode = node;
-        domNode.classList.add("end");
-      }
-      if (node.col % this.numRows == 0) {
-        domNode.classList.add("row--end");
-      }
-      if (node.row == this.numRows) {
-        domNode.classList.add("col--end");
-      }
-
-      frag.appendChild(domNode);
-    });
-
-    this.domGrid = domGrid;
-    container.appendChild(frag);
-  }
 
   shortestPath() {
-    console.log("hello");
-    let exploredNodes = dijkstra(this, this.heap);
-    this.exploredNodes = exploredNodes;
+    let worker = new Worker("dijkstra.js", { type: "module" });
 
-    let endNode = exploredNodes.pop();
-    let orderedPath = [endNode];
+    console.log("location to start dijkstra at: ");
+    console.log(this.startNode.id);
+    console.log("heap being passed into webworker");
+    console.log(this.heap);
 
-    let currNode = endNode;
-    while (currNode.prevNode != null) {
-      // console.log("hello");
-      orderedPath.splice(0, 0, currNode.prevNode);
-      console.log(currNode);
-      currNode = currNode.prevNode;
-    }
-    this.orderedPath = orderedPath;
-    this.animate();
-  }
+    worker.postMessage([this.startNode.id, this.heap]);
+    console.log("message sent to worker");
 
-  animate() {
-    // exploration
-    // console.log(this.exploredNodes);
-    // for (let i = 0; i < this.exploredNodes.length; i++) {
-    //   setTimeout(() => {
-    //     const { row, col } = this.exploredNodes[i];
+    worker.onmessage = function (e) {
+      // console.log(e);
+      let [, finished] = e.data;
+      if (finished) {
+        let [exploredNodes] = e.data;
+        let endNode = exploredNodes.pop();
+        let orderedPath = [endNode];
 
-    //     let domNode = document.getElementById(`node: ${row}, ${col}`);
-    //     domNode.dataset.visited = "true";
-    //   }, 5 * i);
-    // }
-
-    // path
-    for (let i = 0; i < this.orderedPath.length; i++) {
-      setTimeout(() => {
-        let { row, col } = this.orderedPath[i];
-        let DOMelem = document.getElementById(`node: ${row}, ${col}`);
-        DOMelem.dataset.path = "true";
-      }, 100 * i);
-    }
+        let currNode = endNode;
+        while (currNode.prevNode != null) {
+          orderedPath.splice(0, 0, currNode.prevNode);
+          // console.log(currNode);
+          currNode = currNode.prevNode;
+        }
+        this.orderedPath = orderedPath;
+        console.log(orderedPath);
+        for (let i = 0; i < this.orderedPath.length; i++) {
+          setTimeout(() => {
+            let { row, col } = this.orderedPath[i];
+            let DOMelem = document.getElementById(`node: ${row}, ${col}`);
+            DOMelem.dataset.path = "true";
+          }, 50 * i);
+        }
+        document.getElementsByClassName("run")[0].innerHTML = "done";
+      } else {
+        let [exploredNodes] = e.data;
+        console.log(exploredNodes);
+        exploredNodes.forEach((node) => {
+          let domNode = document.getElementById(
+            `node: ${node.row}, ${node.col}`
+          );
+          domNode.dataset.visited = true;
+        });
+      }
+    };
   }
 }

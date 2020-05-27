@@ -1,75 +1,39 @@
-import grid from "./grid.js";
-import minheap from "./minheap.js";
-import node from "./node_.js";
+import * as heapFunctions from "./heapfunctions.js";
+import * as nodeFunctions from "./nodefunctions.js";
 
-export default function dijkstra(grid, heap) {
+addEventListener("message", (e) => {
+  console.log(e);
+  let startId = e.data[0];
+  let heap = e.data[1];
+  console.log("message recieved");
   // decrease start to 0
   let path = [];
-  let startNode = heap.array[grid.startNode.id];
-  startNode.updateValue(0);
+  let startNode = heap.array[startId];
 
-  //   console.log(min);
-  //   console.log(heap.array);
+  console.log(startNode);
 
-  while (!heap.isEmpty()) {
-    let currNode = heap.extractMin();
+  console.log("heap in the webworker");
+  console.log(heap);
+  nodeFunctions.updateValue(heap, startNode, 0);
+
+  while (!heapFunctions.isEmpty(heap)) {
+    let currNode = heapFunctions.extractMin(heap);
     path.push(currNode);
-    if (currNode.isEnd()) {
-      return path;
+    if (nodeFunctions.isEnd(currNode)) {
+      postMessage([path, true]);
+      return;
     }
-    let neighbors = currNode.getNextNodes();
-    // maybe put a callback thing here
+    let neighbors = nodeFunctions.getNextNodes(currNode);
     for (let i = 0; i < neighbors.length; i++) {
       const neighbor = neighbors[i];
       const newDist = currNode.dist + 1;
       if (newDist < neighbor.dist) {
         // console.log("hell");
-        neighbor.updateValue(newDist);
-        neighbor.updateDOM();
-
+        nodeFunctions.updateValue(heap, neighbor, newDist);
         neighbor.prevNode = currNode;
         path.push(neighbor);
+        postMessage([path, false]);
       }
     }
   }
-}
-
-// export default function dijkstra(node, path_) {
-//   let currNode = node;
-//   let path = path_;
-
-//   console.log(currNode);
-//   setTimeout(() => {
-//     console.log("callback currnode" + currNode);
-//     path.push(currNode);
-//     let neighbors = currNode.getNextNodes();
-//     console.log(neighbors);
-//     for (let i = 0; i < neighbors.length; i++) {
-//       const neighbor = neighbors[i];
-//       const newDist = currNode.dist + 1;
-//       if (newDist < neighbor.dist) {
-//         neighbor.updateValue(newDist);
-//         neighbor.updateDOM();
-//         neighbor.prevNode = currNode;
-//         path.push(neighbor);
-//       }
-//     }
-//   }, 0);
-
-//   return;
-// }
-
-function getPath(exploredNodes) {
-  let endNode = exploredNodes.pop();
-  let orderedPath = [endNode];
-
-  let currNode = endNode;
-  while (currNode.prevNode != null) {
-    // console.log("hello");
-    orderedPath.splice(0, 0, currNode.prevNode);
-    console.log(currNode);
-    currNode = currNode.prevNode;
-  }
-
-  console.log(orderedPath);
-}
+});
