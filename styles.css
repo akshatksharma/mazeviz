@@ -55,6 +55,7 @@
 }
 [data-wall="true"] {
   background-color: black;
+  border: 1px black;
 }
 
 [data-visited="true"] {
@@ -63,6 +64,7 @@
 
 [data-path="true"] {
   background-color: #c9bbed;
+  border: 1px solid #c9bbed;
 }
 
 .start[data-visited="true"] {

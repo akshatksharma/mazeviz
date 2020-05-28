@@ -48,7 +48,9 @@ function createDOMGrid(grid, container) {
       container.dataset.mouseDown = true;
       const startOrEnd =
         this.classList.contains("start") || this.classList.contains("end");
-      if (startOrEnd) return;
+      if (startOrEnd) {
+        return;
+      }
 
       this.dataset.wall = this.dataset.wall === "false" ? "true" : "false";
       wallList = toggleArray(wallList, this.dataset.id);
@@ -71,11 +73,13 @@ function createDOMGrid(grid, container) {
       container = document.getElementsByClassName("nodeContainer")[0];
       container.dataset.mouseDown = false;
       wallList = Array.from(new Set(wallList));
+      console.log(wallList);
 
       let runButton = document.getElementsByClassName("run")[0];
       var newrunButton = runButton.cloneNode(true);
       runButton.parentNode.replaceChild(newrunButton, runButton);
       container.innerHTML = "";
+
       main();
     }
 
@@ -94,11 +98,14 @@ function clearBoard() {
   container.innerHTML = "";
   container.dataset.mouseDown = false;
   let aGrid = new grid(25, 50);
-  wallList = [];
 
   aGrid.createNodes();
   createDOMGrid(aGrid, container);
 }
+
+function reset() {}
+
+function pause() {}
 
 function main() {
   let container = document.getElementsByClassName("nodeContainer")[0];
@@ -106,23 +113,27 @@ function main() {
   let aGrid = new grid(25, 50);
 
   aGrid.createNodes();
-  console.log(wallList);
+
   if (wallList.length > 0) {
     aGrid.setWalls(wallList);
   }
+
   createDOMGrid(aGrid, container);
 
   let runButton = document.getElementsByClassName("run")[0];
   runButton.addEventListener("click", () => {
     runButton.innerHTML = "running...";
-    console.log(aGrid);
     aGrid.shortestPath();
   });
 
   let clearButton = document.getElementsByClassName("clear")[0];
   clearButton.addEventListener("click", () => {
-    clearBoard();
-    console.log(aGrid);
+    console.log(wallList);
+    aGrid.unsetWalls(wallList);
+    setTimeout(() => {
+      wallList = [];
+      clearBoard();
+    }, 0);
   });
 }
 

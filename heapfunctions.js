@@ -42,13 +42,6 @@ export function heapify(heap, loc) {
   const Lloc = 2 * loc;
   const Rloc = 2 * loc + 1;
 
-  // let logobj = {};
-  // logobj.parent = heap.array[loc].loc || undefined;
-  // logobj.lchild = heap.array[Lloc].loc || undefined;
-  // logobj.rchild = heap.array[Rloc].loc || undefined;
-
-  // console.table(logobj);
-  // console.log(heap.array);
   let parent;
   let Lchild;
   let Rchild;
