@@ -9,7 +9,7 @@ export default class node {
 
     this.dist = Infinity;
     this.weight = weight;
-    this.wall;
+    this.wall = false;
     this.visited = false;
     this.prevNode = null;
   }
@@ -30,3 +30,4 @@ export default class node {
 
 // NEED TO :
 // acc for random cases where start and end may be the same
+// provide no neighbors when all surrounding nodes are infinity

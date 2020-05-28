@@ -2,18 +2,12 @@ import * as heapFunctions from "./heapfunctions.js";
 import * as nodeFunctions from "./nodefunctions.js";
 
 addEventListener("message", (e) => {
-  console.log(e);
   let startId = e.data[0];
   let heap = e.data[1];
-  console.log("message recieved");
   // decrease start to 0
   let path = [];
   let startNode = heap.array[startId];
 
-  console.log(startNode);
-
-  console.log("heap in the webworker");
-  console.log(heap);
   nodeFunctions.updateValue(heap, startNode, 0);
 
   while (!heapFunctions.isEmpty(heap)) {
@@ -25,11 +19,14 @@ addEventListener("message", (e) => {
     }
     let neighbors = nodeFunctions.getNextNodes(currNode);
     for (let i = 0; i < neighbors.length; i++) {
+      if (currNode.dist == Infinity) {
+        postMessage([path, false, "failed"]);
+        return;
+      }
       const neighbor = neighbors[i];
       if (neighbor.wall) continue;
       const newDist = currNode.dist + neighbor.weight;
       if (newDist < neighbor.dist) {
-        // console.log("hell");
         nodeFunctions.updateValue(heap, neighbor, newDist);
         neighbor.prevNode = currNode;
         path.push(neighbor);

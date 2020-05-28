@@ -9,7 +9,7 @@ export default class grid {
     this.numCols = numCols;
 
     // row, col
-    this.startLoc = [15, 19];
+    this.startLoc = [19, 15];
     this.endLoc = [15, 35];
 
     this.startNode;
@@ -26,39 +26,45 @@ export default class grid {
     for (let r = 1; r <= this.numRows; r++) {
       let row = [];
       for (let c = 1; c <= this.numCols; c++) {
-        if (c === 18 && r > 5 && r < 24) {
-          let node_ = new node(r, c, 100, this, id, this.heap, loc);
-          node_.wall = true;
-          row[c] = node_;
-          this.heap.insert(node_);
-          loc++;
-          id++;
-        } else {
-          let node_ = new node(r, c, 1, this, id, this.heap, loc);
-          row[c] = node_;
-          this.heap.insert(node_);
-          loc++;
-          id++;
-        }
+        let node_ = new node(r, c, 1, this, id, this.heap, loc);
+        row[c] = node_;
+        this.heap.insert(node_);
+        loc++;
+        id++;
       }
       this.nodeGrid[r] = row;
     }
   }
 
+  setWalls(...args) {
+    let ids = args[0];
+    ids.forEach((id) => {
+      id = parseInt(id);
+      this.heap.array[id].wall = true;
+      console.log(this.heap.array);
+    });
+  }
+
   shortestPath() {
+    let clearButton = document.getElementsByClassName("clear")[0];
+    clearButton.addEventListener("click", () => {
+      worker.terminate();
+      let runButton = document.getElementsByClassName("run")[0];
+      runButton.innerHTML = "run";
+    });
+
     let worker = new Worker("dijkstra.js", { type: "module" });
 
-    console.log("location to start dijkstra at: ");
-    console.log(this.startNode.id);
-    console.log("heap being passed into webworker");
-    console.log(this.heap);
-
     worker.postMessage([this.startNode.id, this.heap]);
-    console.log("message sent to worker");
 
-    worker.onmessage = function (e) {
-      // console.log(e);
-      let [, finished] = e.data;
+    worker.onmessage = (e) => {
+      const [, , status] = e.data;
+      const [, finished] = e.data;
+      if (status == "failed") {
+        let runButton = document.getElementsByClassName("run")[0];
+        runButton.innerHTML = "done";
+        return;
+      }
       if (finished) {
         let [exploredNodes] = e.data;
         let endNode = exploredNodes.pop();
@@ -67,22 +73,12 @@ export default class grid {
         let currNode = endNode;
         while (currNode.prevNode != null) {
           orderedPath.splice(0, 0, currNode.prevNode);
-          // console.log(currNode);
           currNode = currNode.prevNode;
         }
         this.orderedPath = orderedPath;
-        console.log(orderedPath);
-        for (let i = 0; i < this.orderedPath.length; i++) {
-          setTimeout(() => {
-            let { row, col } = this.orderedPath[i];
-            let DOMelem = document.getElementById(`node: ${row}, ${col}`);
-            DOMelem.dataset.path = "true";
-          }, 50 * i);
-        }
-        document.getElementsByClassName("run")[0].innerHTML = "done";
+        this.animate();
       } else {
         let [exploredNodes] = e.data;
-        console.log(exploredNodes);
         exploredNodes.forEach((node) => {
           let domNode = document.getElementById(
             `node: ${node.row}, ${node.col}`
@@ -91,5 +87,20 @@ export default class grid {
         });
       }
     };
+  }
+
+  animate() {
+    for (let i = 0; i < this.orderedPath.length; i++) {
+      setTimeout(() => {
+        let { row, col } = this.orderedPath[i];
+        let DOMelem = document.getElementById(`node: ${row}, ${col}`);
+        DOMelem.dataset.path = "true";
+
+        if (i == this.orderedPath.length - 1) {
+          let runButton = document.getElementsByClassName("run")[0];
+          runButton.innerHTML = "done";
+        }
+      }, 50 * i);
+    }
   }
 }

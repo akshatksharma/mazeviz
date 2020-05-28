@@ -1,5 +1,3 @@
-import node from "./node_.js";
-
 export function insert(heap, item) {
   heap.currSize++;
   heap.array[heap.currSize] = item;

@@ -12,10 +12,14 @@
   display: flex;
   flex-direction: column;
 }
-
-.run {
-  width: 10%;
+.buttons {
   align-self: center;
+  width: 25%;
+  margin-bottom: 20px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
 .nodeContainer {
@@ -59,4 +63,12 @@
 
 [data-path="true"] {
   background-color: #c9bbed;
+}
+
+.start[data-visited="true"] {
+  background-color: #eb8dde;
+}
+
+.end[data-visited="true"] {
+  background-color: #f7c648;
 }
