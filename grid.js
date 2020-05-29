@@ -2,15 +2,15 @@ import minheap from "./minheap.js";
 import node from "./node_.js";
 
 export default class grid {
-  constructor(numRows, numCols) {
+  constructor(numRows, numCols, startLoc, endLoc) {
     this.heap = new minheap();
     this.nodeGrid;
     this.numRows = numRows;
     this.numCols = numCols;
 
     // row, col
-    this.startLoc = [19, 15];
-    this.endLoc = [15, 35];
+    this.startLoc = startLoc;
+    this.endLoc = endLoc;
 
     this.startNode;
     this.endNode;

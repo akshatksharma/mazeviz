@@ -64,7 +64,7 @@
 
 [data-path="true"] {
   background-color: #c9bbed;
-  border: 1px solid #c9bbed;
+  /* border: 1px solid #c9bbed; */
 }
 
 .start[data-visited="true"] {
@@ -72,5 +72,13 @@
 }
 
 .end[data-visited="true"] {
+  background-color: #f7c648;
+}
+
+[data-possible-start="true"] {
+  background-color: #eb8dde;
+}
+
+[data-possible-end="true"] {
   background-color: #f7c648;
 }

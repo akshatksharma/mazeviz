@@ -1,9 +1,11 @@
 import grid from "./grid.js";
 
 let wallList = [];
+let startLoc = [15, 15];
+let endLoc = [15, 35];
 
 function createDOMGrid(grid, container) {
-  console.log(grid);
+  // console.log(grid);
 
   const frag = document.createDocumentFragment();
 
@@ -13,12 +15,19 @@ function createDOMGrid(grid, container) {
     domNode.className = "node";
     domNode.id = `node: ${node.row}, ${node.col}`;
     domNode.dataset.id = node.id;
+    domNode.dataset.row = node.row;
+    domNode.dataset.col = node.col;
     domNode.dataset.visited = node.visited;
     domNode.dataset.wall = false;
 
     // styling stuff
     if (node.wall && (!node.isStart() || !node.isEnd())) {
       domNode.dataset.wall = true;
+    }
+
+    if (!node.isStart() || !node.isEnd()) {
+      domNode.dataset.possibleStart = false;
+      domNode.dataset.possibleEnd = false;
     }
 
     if (node.isStart(grid.startLoc)) {
@@ -36,56 +45,102 @@ function createDOMGrid(grid, container) {
       domNode.classList.add("col--end");
     }
 
-    // mouse down -- set initial mouse state to clicked, add current node to wall list
-    // mouse hover -- if clicked is == true, then add current node to list
-    // mouse up -- refresh graph with new nodes
-
     const toggleArray = (array, item) =>
       array.includes(item) ? array.filter((i) => i != item) : [...array, item];
 
     function mousedown() {
-      container = document.getElementsByClassName("nodeContainer")[0];
       container.dataset.mouseDown = true;
-      const startOrEnd =
-        this.classList.contains("start") || this.classList.contains("end");
-      if (startOrEnd) {
+      const onStart = this.classList.contains("start");
+      const onEnd = this.classList.contains("end");
+
+      if (onStart) {
+        container.dataset.startMove = true;
+        return;
+      }
+      if (onEnd) {
+        container.dataset.endMove = true;
         return;
       }
 
       this.dataset.wall = this.dataset.wall === "false" ? "true" : "false";
       wallList = toggleArray(wallList, this.dataset.id);
     }
-    function mouseenter() {
-      let container = document.getElementsByClassName("nodeContainer")[0];
-      let mouseDown = container.dataset.mouseDown;
-      const startOrEnd =
-        this.classList.contains("start") || this.classList.contains("end");
-      if (startOrEnd) return;
 
-      if (mouseDown == "true") {
+    function mouseenter() {
+      const mouseDown = container.dataset.mouseDown;
+      const clickStart = container.dataset.startMove;
+      const clickEnd = container.dataset.endMove;
+      const onStartOrEnd =
+        this.classList.contains("start") || this.classList.contains("end");
+
+      if (onStartOrEnd) return;
+
+      const draggingWall =
+        mouseDown == "true" && clickStart == "false" && clickEnd == "false";
+      const draggingStart = mouseDown == "true" && clickStart == "true";
+      const draggingEnd = mouseDown == "true" && clickEnd == "true";
+
+      if (draggingWall) {
         this.dataset.wall = this.dataset.wall === "false" ? "true" : "false";
         wallList = toggleArray(wallList, this.dataset.id);
+      } else if (draggingStart) {
+        this.dataset.possibleStart = true;
+      } else if (draggingEnd) {
+        this.dataset.possibleEnd = true;
       } else {
         return;
       }
     }
-    function mouseup() {
-      container = document.getElementsByClassName("nodeContainer")[0];
-      container.dataset.mouseDown = false;
-      wallList = Array.from(new Set(wallList));
-      console.log(wallList);
 
-      let runButton = document.getElementsByClassName("run")[0];
-      var newrunButton = runButton.cloneNode(true);
+    function mouseleave() {
+      const mouseDown = container.dataset.mouseDown;
+      const clickStart = container.dataset.startMove;
+      const clickEnd = container.dataset.endMove;
+
+      if (clickStart && mouseDown == "true" && clickEnd != "true") {
+        console.log("ehllo");
+        this.classList.remove("start");
+      }
+      if (clickEnd && mouseDown == "true" && clickStart != "true") {
+        this.classList.remove("end");
+      }
+      const dragStartEnd =
+        mouseDown == "true" && (clickStart == "true" || clickEnd == "true");
+      if (dragStartEnd) {
+        this.dataset.possibleStart = false;
+        this.dataset.possibleEnd = false;
+      }
+    }
+
+    function mouseup() {
+      const mouseDown = container.dataset.mouseDown;
+      const clickStart = container.dataset.startMove;
+      const clickEnd = container.dataset.endMove;
+      const dragStartEnd =
+        mouseDown == "true" && (clickStart == "true" || clickEnd == "true");
+
+      if (dragStartEnd) {
+        const row = parseInt(this.dataset.row);
+        const col = parseInt(this.dataset.col);
+        if (clickStart == "true") startLoc = [row, col];
+        if (clickEnd == "true") endLoc = [row, col];
+      }
+
+      wallList = Array.from(new Set(wallList));
+
+      // duplicate run button to remove event listener
+      const runButton = document.getElementsByClassName("run")[0];
+      const newrunButton = runButton.cloneNode(true);
       runButton.parentNode.replaceChild(newrunButton, runButton);
       container.innerHTML = "";
-
+      container.dataset.mouseDown = false;
       main();
     }
 
     domNode.addEventListener("mousedown", mousedown);
     domNode.addEventListener("mouseenter", mouseenter);
     domNode.addEventListener("mouseup", mouseup);
+    domNode.addEventListener("mouseleave", mouseleave);
 
     frag.appendChild(domNode);
   });
@@ -96,21 +151,34 @@ function createDOMGrid(grid, container) {
 function clearBoard() {
   let container = document.getElementsByClassName("nodeContainer")[0];
   container.innerHTML = "";
+  container.dataset.startMove = false;
+  container.dataset.endMove = false;
   container.dataset.mouseDown = false;
-  let aGrid = new grid(25, 50);
+  let aGrid = new grid(25, 50, startLoc, endLoc);
+  console.log(aGrid);
 
   aGrid.createNodes();
   createDOMGrid(aGrid, container);
 }
 
-function reset() {}
+function reset() {
+  let container = document.getElementsByClassName("nodeContainer")[0];
+  const runButton = document.getElementsByClassName("run")[0];
+  const newrunButton = runButton.cloneNode(true);
+  runButton.parentNode.replaceChild(newrunButton, runButton);
+  container.innerHTML = "";
+  container.dataset.mouseDown = false;
+  main();
+}
 
 function pause() {}
 
 function main() {
   let container = document.getElementsByClassName("nodeContainer")[0];
+  container.dataset.startMove = false;
+  container.dataset.endMove = false;
   container.dataset.mouseDown = false;
-  let aGrid = new grid(25, 50);
+  let aGrid = new grid(25, 50, startLoc, endLoc);
 
   aGrid.createNodes();
 
@@ -121,6 +189,7 @@ function main() {
   createDOMGrid(aGrid, container);
 
   let runButton = document.getElementsByClassName("run")[0];
+  runButton.innerHTML = "run";
   runButton.addEventListener("click", () => {
     runButton.innerHTML = "running...";
     aGrid.shortestPath();
@@ -128,13 +197,15 @@ function main() {
 
   let clearButton = document.getElementsByClassName("clear")[0];
   clearButton.addEventListener("click", () => {
-    console.log(wallList);
     aGrid.unsetWalls(wallList);
     setTimeout(() => {
       wallList = [];
       clearBoard();
     }, 0);
   });
+
+  let resetButton = document.getElementsByClassName("reset")[0];
+  resetButton.addEventListener("click", reset);
 }
 
 main();
