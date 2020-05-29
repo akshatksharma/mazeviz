@@ -65,7 +65,7 @@ export default class grid {
       runButton.innerHTML = "run";
     });
 
-    let worker = new Worker("dijkstra.js", { type: "module" });
+    let worker = new Worker("dijkstra.js");
 
     worker.postMessage([this.startNode.id, this.heap]);
 

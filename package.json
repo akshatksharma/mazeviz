@@ -1,0 +1,15 @@
+{
+  "name": "mazeviz",
+  "version": "1.0.0",
+  "main": "main.js",
+  "repository": "https://github.com/akshatksharma/mazeviz.git",
+  "author": "akshatksharma <akshatksharma@wustl.edu>",
+  "license": "MIT",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html --public-url ./"
+  },
+  "devDependencies": {
+    "cssnano": "^4.1.10"
+  }
+}
