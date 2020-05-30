@@ -69,8 +69,8 @@
   background-color: black;
   border: 1px black;
   animation-name: wall;
-  animation-duration: 0.3s;
-  animation-timing-function: ease-out;
+  animation-duration: 0.2s;
+  animation-timing-function: ease-in;
   animation-delay: 0s;
   animation-iteration-count: 1;
   animation-direction: alternate;
@@ -110,11 +110,11 @@
 @keyframes visited {
   0% {
     transform: scale(0.3);
-    /* background-color: #000041; */
+    background-color: #000041;
   }
   50% {
     transform: scale(1.2);
-    /* background-color: #fae9de; */
+    background-color: #fae9de;
   }
   100% {
     transform: scale(1);
