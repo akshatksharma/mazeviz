@@ -5,13 +5,12 @@ let startLoc = [15, 15];
 let endLoc = [15, 35];
 
 function createDOMGrid(grid, container) {
-  // console.log(grid);
-
   const frag = document.createDocumentFragment();
 
   grid.heap.array.forEach((node) => {
     let domNode = document.createElement("div");
 
+    // setting initial parameters
     domNode.className = "node";
     domNode.id = `node: ${node.row}, ${node.col}`;
     domNode.dataset.id = node.id;
@@ -20,12 +19,12 @@ function createDOMGrid(grid, container) {
     domNode.dataset.visited = node.visited;
     domNode.dataset.wall = false;
 
-    // styling stuff
+    // styling based on paramaters
     if (node.wall && (!node.isStart() || !node.isEnd())) {
       domNode.dataset.wall = true;
     }
 
-    if (!node.isStart() || !node.isEnd()) {
+    if (!(node.isStart() && node.isEnd())) {
       domNode.dataset.possibleStart = false;
       domNode.dataset.possibleEnd = false;
     }

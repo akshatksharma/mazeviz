@@ -4,7 +4,9 @@
   text-align: center;
   line-height: 56px;
 
-  background-color: #c9bbed;
+  /* background-color: #c9bbed; */
+  /* background-color: #8d909b; */
+  background-color: #312f2f;
 }
 
 .container {
@@ -32,47 +34,130 @@
 }
 
 .node {
-  border: 1px solid #e6e4f0;
+  /* border: 1px solid #e6e4f0; */
+  /* border: 1px solid #d6eeff; */
+  border: 1px solid #cdd3d5;
   border-right: 0px;
   border-bottom: 0px;
   width: 30px;
 }
 
 .row--end {
-  border-right: 1px solid #e6e4f0;
+  /* border-right: 1px solid #e6e4f0; */
+  border-right: 1px solid #d6eeff;
 }
 
 .col--end {
-  border-bottom: 1px solid #e6e4f0;
+  /* border-bottom: 1px solid #e6e4f0; */
+  border-bottom: 1px solid #d6eeff;
 }
 
 .start {
   background-color: #eb8dde;
+  background-color: #ceeaf7;
+  background-color: #feb95f;
+  /* border: 1px solid #aaadc4; */
 }
 
 .end {
   background-color: #f7c648;
+  background-color: #484d6d;
 }
+
 [data-wall="true"] {
+  will-change: transform;
   background-color: black;
   border: 1px black;
+  animation-name: wall;
+  animation-duration: 0.3s;
+  animation-timing-function: ease-out;
+  animation-delay: 0s;
+  animation-iteration-count: 1;
+  animation-direction: alternate;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+@keyframes wall {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 [data-visited="true"] {
-  background-color: #fae9de;
+  /* background-color: #fae9de; */
+  background-color: #babfd1;
+  /* background-color: #d5573b; */
+  /* background-color: #506c64; */
+  will-change: transform;
+  animation-name: visited;
+  animation-duration: 1.5s;
+  animation-timing-function: ease-out;
+  animation-delay: 0s;
+  animation-iteration-count: 1;
+  animation-direction: alternate;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+@keyframes visited {
+  0% {
+    transform: scale(0.3);
+    /* background-color: #000041; */
+  }
+  50% {
+    transform: scale(1.2);
+    /* background-color: #fae9de; */
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 [data-path="true"] {
   background-color: #c9bbed;
-  /* border: 1px solid #c9bbed; */
+  background-color: #ff5e5b;
+  will-change: transform;
+
+  animation-name: path;
+  animation-duration: 1s;
+  animation-timing-function: ease-out;
+  animation-delay: 0s;
+  animation-iteration-count: 1;
+  animation-direction: alternate;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+@keyframes path {
+  0% {
+    transform: scale(0.75);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .start[data-visited="true"] {
   background-color: #eb8dde;
+  background-color: #fcab10;
+  background-color: #ceeaf7;
+  background-color: #feb95f;
 }
 
 .end[data-visited="true"] {
   background-color: #f7c648;
+  background-color: #484d6d;
 }
 
 [data-possible-start="true"] {
