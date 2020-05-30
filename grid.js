@@ -65,6 +65,7 @@ export default class grid {
       runButton.innerHTML = "run";
     });
 
+    let colorTiles = document.getElementsByClassName("checkbox")[0].checked;
     let worker = new Worker("dijkstra.js");
 
     worker.postMessage([this.startNode.id, this.heap]);
@@ -95,6 +96,12 @@ export default class grid {
           let domNode = document.getElementById(
             `node: ${node.row}, ${node.col}`
           );
+
+          if (colorTiles) {
+            domNode.classList.add("colorOn");
+          } else {
+            domNode.classList.add("colorOff");
+          }
           domNode.dataset.visited = true;
         });
       }
