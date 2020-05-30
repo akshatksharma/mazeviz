@@ -83,9 +83,15 @@ function createDOMGrid(grid, container) {
         this.dataset.wall = this.dataset.wall === "false" ? "true" : "false";
         wallList = toggleArray(wallList, this.dataset.id);
       } else if (draggingStart) {
-        this.dataset.possibleStart = true;
+        let node = document.createElement("div");
+        node.classList.add("possibleStart");
+        // node.dataset.possibleStart = true;
+        this.appendChild(node);
       } else if (draggingEnd) {
-        this.dataset.possibleEnd = true;
+        let node = document.createElement("div");
+        node.classList.add("possibleEnd");
+        // node.dataset.possibleEnd = true;
+        this.appendChild(node);
       } else {
         return;
       }
@@ -97,17 +103,21 @@ function createDOMGrid(grid, container) {
       const clickEnd = container.dataset.endMove;
 
       if (clickStart && mouseDown == "true" && clickEnd != "true") {
-        console.log("ehllo");
         this.classList.remove("start");
       }
       if (clickEnd && mouseDown == "true" && clickStart != "true") {
         this.classList.remove("end");
       }
-      const dragStartEnd =
-        mouseDown == "true" && (clickStart == "true" || clickEnd == "true");
-      if (dragStartEnd) {
-        this.dataset.possibleStart = false;
-        this.dataset.possibleEnd = false;
+      const draggingStart = mouseDown == "true" && clickStart == "true";
+      const draggingEnd = mouseDown == "true" && clickEnd == "true";
+      if (draggingStart) {
+        let node = document.getElementsByClassName("possibleStart")[0];
+        console.log(node);
+        this.removeChild(node);
+      }
+      if (draggingEnd) {
+        let node = document.getElementsByClassName("possibleEnd")[0];
+        this.removeChild(node);
       }
     }
 

@@ -149,21 +149,31 @@
 }
 
 .start[data-visited="true"] {
-  background-color: #eb8dde;
+  /* background-color: #eb8dde;
   background-color: #fcab10;
   background-color: #ceeaf7;
+  background-color: #feb95f; */
   background-color: #feb95f;
 }
 
 .end[data-visited="true"] {
-  background-color: #f7c648;
+  /* background-color: #f7c648; */
   background-color: #484d6d;
 }
 
-[data-possible-start="true"] {
-  background-color: #eb8dde;
+.possibleStart {
+  /* background-color: #eb8dde; */
+  background-color: #feb95f;
+  width: 30px;
+  height: 30px;
+  transform: scale(0.6);
+  z-index: 2;
 }
 
-[data-possible-end="true"] {
-  background-color: #f7c648;
+.possibleEnd {
+  /* background-color: #f7c648; */
+  background-color: #484d6d;
+  width: 30px;
+  height: 30px;
+  transform: scale(0.6);
 }
