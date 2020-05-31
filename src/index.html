@@ -5,17 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Maze Visualizer</title>
     <link rel="stylesheet" href="genLayout.css" />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.pcss" />
   </head>
+  <style>
+    .btn {
+      @apply bg-blue-500 font-bold py-2 px-4;
+    }
+    .btn--blue {
+      @apply bg-blue-500 text-white;
+    }
+    .btn--blue:hover {
+      @apply bg-blue-700;
+    }
+  </style>
   <body>
     <div class="page">
-      <h1 class="title center">Shortest Path Visualizer</h1>
+      <!-- <h1 class="title center text-5xl">Shortest Path Visualizer</h1> -->
       <div class="container center">
         <div class="buttons">
-          <button class="run">run</button>
+          <button class="run btn btn--blue rounded-l">run</button>
           <!-- <button class="pause">pause</button> -->
-          <button class="reset">reset</button>
-          <button class="clear">clear walls</button>
+          <button class="reset btn btn--blue">reset</button>
+          <button class="clear btn btn--blue rounded-r">clear walls</button>
           <input type="checkbox" id="toggle" class="checkbox" />
           <label for="toggle" class="switch"></label>
         </div>
