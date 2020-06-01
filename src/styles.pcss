@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+body:not(.user-is-tabbing) button:focus,
+body:not(.user-is-tabbing) input:focus,
+body:not(.user-is-tabbing) select:focus,
+body:not(.user-is-tabbing) textarea:focus {
+  outline: none;
+}
+
 .toggle__dot {
   top: 0.5rem;
   left: -0.25rem;
