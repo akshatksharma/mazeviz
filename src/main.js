@@ -1,8 +1,8 @@
 import grid from "./grid.js";
 
 let wallList = [];
-let startLoc = [15, 15];
-let endLoc = [15, 35];
+let startLoc = [14, 10];
+let endLoc = [14, 30];
 
 function createDOMGrid(grid, container) {
   const frag = document.createDocumentFragment();

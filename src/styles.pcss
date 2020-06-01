@@ -3,19 +3,20 @@
 @tailwind utilities;
 
 .toggle__dot {
-  /* top: -0.25rem; */
+  top: 0.5rem;
   left: -0.25rem;
   transition: all 0.3s ease-in-out;
 }
 
 input:checked ~ .toggle__dot {
   transform: translateX(130%);
-  @apply bg-blue-500;
+  background-color: #ff5e5b;
+  /* @apply bg-red-400; */
 }
 
 .nodeContainer {
   /* border: 1px solid crimson; */
-
+  @apply bg-gray-200;
   display: grid;
   grid-template-columns: repeat(40, 30px);
 }
@@ -23,6 +24,7 @@ input:checked ~ .toggle__dot {
 .node {
   /* border: 1px solid #e6e4f0; */
   /* border: 1px solid #d6eeff; */
+  @apply bg-gray-200;
   border: 1px solid #cdd3d5;
   border-right: 0px;
   border-bottom: 0px;
@@ -53,7 +55,7 @@ input:checked ~ .toggle__dot {
 
 [data-wall="true"] {
   will-change: transform;
-  background-color: black;
+  @apply bg-gray-900;
   border: 1px black;
   animation-name: wall;
   animation-duration: 0.25s;
@@ -138,7 +140,6 @@ input:checked ~ .toggle__dot {
   }
 }
 [data-path="true"] {
-  background-color: #c9bbed;
   background-color: #ff5e5b !important;
   will-change: transform;
 
