@@ -8,9 +8,30 @@ body:not(.user-is-tabbing) select:focus,
 body:not(.user-is-tabbing) textarea:focus {
   outline: none;
 }
+.btn {
+  @apply font-display tracking-widest text-gray-400 font-medium text-xl py-2 px-6;
+}
+.btn--dark {
+  background-color: #3e415a;
+}
+.btn--darkest {
+  background-color: #1f223d;
+}
+.btn--gray:hover {
+  background-color: #1f223d;
+  /* @apply bg-gray-900; */
+}
+
+.dark {
+  background-color: #1f223d;
+}
+
+.glow {
+  text-shadow: 0 0 10px #d8d7d0;
+}
 
 .toggle__dot {
-  top: 0.5rem;
+  top: 0.7rem;
   left: -0.25rem;
   transition: all 0.3s ease-in-out;
 }
@@ -21,49 +42,58 @@ input:checked ~ .toggle__dot {
   /* @apply bg-red-400; */
 }
 
+.bottom-bar {
+  background-color: #3e415a;
+}
+
 .nodeContainer {
   /* border: 1px solid crimson; */
-  @apply bg-gray-200;
+  background-color: #eaedf3;
   display: grid;
-  grid-template-columns: repeat(40, 30px);
+  grid-template-columns: repeat(50, 25px);
 }
 
 .node {
   /* border: 1px solid #e6e4f0; */
   /* border: 1px solid #d6eeff; */
-  @apply bg-gray-200;
-  border: 1px solid #cdd3d5;
+  background-color: #eaedf3;
+  /* border: 1px solid #cdd3d5 */
+  border: 1px solid #f6f8fb;
   border-right: 0px;
   border-bottom: 0px;
-  height: 30px;
+  height: 25px;
 }
 
 .row--end {
   /* border-right: 1px solid #e6e4f0; */
-  border-right: 1px solid #cdd3d5;
+  /* border-right: 1px solid #cdd3d5; */
+  border-right: 1px solid #f6f8fb;
 }
 
 .col--end {
   /* border-bottom: 1px solid #e6e4f0; */
-  border-bottom: 1px solid #cdd3d5;
+  /* border-bottom: 1px solid #cdd3d5; */
+  border-bottom: 1px solid #f6f8fb;
 }
 
 .start {
   background-color: #eb8dde;
   background-color: #ceeaf7;
-  background-color: #feb95f !important;
+  /* background-color: #feb95f !important; */
+  background-color: #ffc0a0 !important;
   /* border: 1px solid #aaadc4; */
 }
 
 .end {
   background-color: #f7c648;
-  background-color: #484d6d !important;
+  /* background-color: #484d6d !important; */
+  background-color: #ee6e72 !important;
 }
 
 .wall {
   will-change: transform;
-  @apply bg-gray-900;
-  border: 1px black;
+  background-color: #545772;
+  border: 1px solid #545772;
   animation-name: wall;
   animation-duration: 0.25s;
   animation-timing-function: ease-in;
@@ -88,10 +118,8 @@ input:checked ~ .toggle__dot {
 }
 
 .colorOff.visited {
-  /* background-color: #fae9de; */
-  background-color: #babfd1;
-  /* background-color: #d5573b; */
-  /* background-color: #506c64; */
+  /* background-color: #babfd1; */
+  background-color: #fffded;
   will-change: transform;
   animation-name: visited;
   animation-duration: 1.5s;
@@ -118,10 +146,8 @@ input:checked ~ .toggle__dot {
 }
 
 .colorOn.visited {
-  /* background-color: #fae9de; */
-  background-color: #babfd1;
-  /* background-color: #d5573b; */
-  /* background-color: #506c64; */
+  /* background-color: #babfd1; */
+  background-color: #fffded;
   will-change: transform;
   animation-name: visitedColor;
   animation-duration: 1.5s;
@@ -136,18 +162,21 @@ input:checked ~ .toggle__dot {
 @keyframes visitedColor {
   0% {
     transform: scale(0.3);
-    background-color: #000041;
+    /* background-color: #000041; */
+    background-color: #86847b;
   }
   50% {
     transform: scale(1.2);
-    background-color: #fae9de;
+    /* background-color: #fae9de; */
+    background-color: #ffc0a0;
   }
   100% {
     transform: scale(1);
   }
 }
 .path {
-  background-color: #ff5e5b !important;
+  background-color: #ee6e72 !important;
+  /* border: 1px solid #ee6e72; */
   will-change: transform;
 
   animation-name: path !important;
@@ -163,7 +192,8 @@ input:checked ~ .toggle__dot {
 @keyframes path {
   0% {
     transform: scale(0.75);
-    background-color: #feb95f;
+    /* background-color: #feb95f; */
+    background-color: #ffc0a0;
   }
   50% {
     transform: scale(1.2);
@@ -171,6 +201,7 @@ input:checked ~ .toggle__dot {
   100% {
     transform: scale(1);
     background-color: #ff5e5b;
+    background-color: #ee6e72;
   }
 }
 
@@ -179,17 +210,19 @@ input:checked ~ .toggle__dot {
   background-color: #fcab10;
   background-color: #ceeaf7;
   background-color: #feb95f; */
-  background-color: #feb95f !important;
+  /* background-color: #feb95f !important; */
+  background-color: #ffc0a0 !important;
 }
 
 .end.visited {
   /* background-color: #f7c648; */
-  background-color: #484d6d !important;
+  /* background-color: #484d6d !important; */
+  background-color: #ee6e72 !important;
 }
 
 .possibleStart {
   /* background-color: #eb8dde; */
-  background-color: #feb95f;
+  background-color: #ffc0a0;
   width: 30px;
   height: 30px;
   transform: scale(0.6);
@@ -198,7 +231,7 @@ input:checked ~ .toggle__dot {
 
 .possibleEnd {
   /* background-color: #f7c648; */
-  background-color: #484d6d;
+  background-color: #ee6e72;
   width: 30px;
   height: 30px;
   transform: scale(0.6);

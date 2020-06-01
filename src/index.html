@@ -4,49 +4,52 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Maze Visualizer</title>
-    <!-- <link rel="stylesheet" href="genLayout.pcss" /> -->
     <link rel="stylesheet" href="styles.pcss" />
+    <link rel="stylesheet" href="https://use.typekit.net/jyw0vop.css" />
   </head>
-  <style>
-    .btn {
-      @apply py-2 px-6;
-    }
-    .btn--blue {
-      @apply bg-gray-800 tracking-wide text-gray-400 font-medium;
-    }
-    .btn--blue:hover {
-      @apply bg-gray-900;
-    }
-  </style>
-  <body  class="bg-gray-700"">
-    <div class="container mx-auto flex flex-col items-center bg-gray-700 mb-4">
-      <h1 class="title tracking-wide lowercase text-5xl text-gray-200 font-bold my-4 mb-5">
-        Shortest Path Visualizer
-      </h1>
-      <div class="w-full grid sm:grid-cols-4 grid-flow-col bg-gray-800 py-4 px-10 mb-8 rounded-full">
-        <div
-          class="buttons col-start-2 col-end-4 inline-flex justify-center items-center "
-        >
-          <button class="run btn btn--blue rounded-l">run</button>
-          <!-- <button class="pause">pause</button> -->
-          <button class="reset btn btn--blue">reset</button>
-          <button class="clear btn btn--blue rounded-r">clear</button>
+  <body class="dark">
+    <div class="container dark mx-auto flex flex-col items-center mb-4">
+      <div class="titles-position w-full flex justify-end">
+        <div class="titles w-1/2 flex flex-col">
+          <h1
+            class="font-display text-5xl text-gray-200 font-hairline tracking-widest glow text-right mt-4"
+          >
+            Shortest Path Visualizer
+          </h1>
+          <h2
+            class="font-display text-xl text-gray-200 font-medium tracking-widest lowercase text-right mb-10"
+          >
+            click and drag to draw a maze
+          </h2>
         </div>
-        <div class="col-start-4 flex justify-end ">
+      </div>
+      <div class="nodeContainer center"></div>
+      <div
+        class="bottom-bar w-full grid sm:grid-cols-4 grid-flow-col bg-gray-800 py-2 px-10 my-6 rounded-full"
+      >
+        <div
+          class="buttons col-start-2 col-end-4 inline-flex justify-center items-center"
+        >
+          <button class="run btn btn--dark rounded-l">run</button>
+          <!-- <button class="pause">pause</button> -->
+          <button class="reset btn btn--dark">reset</button>
+          <button class="clear btn btn--dark rounded-r">clear</button>
+        </div>
+        <div class="toggle-container col-start-4 flex justify-end">
           <label for="toggle" class="flex relative items-center cursor-pointer">
             <input type="checkbox" id="toggle" checked class="toggle hidden" />
-            <div class="w-12 h-6 bg-gray-300 rounded-full shadow-inner"></div>
+            <div class="w-12 h-6 btn--darkest rounded-full shadow-inner"></div>
             <div
               class="toggle__dot absolute w-6 h-6 bg-white rounded-full shadow inset-y-0 left-0"
             ></div>
-            <div class="ml-3 text-gray-400 tracking-wide font-medium">
+            <div
+              class="font-display text-xl text-gray-400 tracking-widest font-medium ml-3"
+            >
               colors
             </div>
           </label>
         </div>
       </div>
-
-      <div class="nodeContainer center"></div>
     </div>
 
     <script src="main.js" type="module"></script>

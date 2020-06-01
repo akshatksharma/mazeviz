@@ -11,8 +11,8 @@ function handleFirstTab(e) {
 window.addEventListener("keydown", handleFirstTab);
 
 let wallList = [];
-let startLoc = [14, 10];
-let endLoc = [14, 30];
+let startLoc = [14, 15];
+let endLoc = [14, 36];
 
 function createDOMGrid(grid, container) {
   const frag = document.createDocumentFragment();
@@ -178,7 +178,7 @@ function clearBoard() {
   container.dataset.startMove = false;
   container.dataset.endMove = false;
   container.dataset.mouseDown = false;
-  let aGrid = new grid(25, 40, startLoc, endLoc);
+  let aGrid = new grid(25, 50, startLoc, endLoc);
   console.log(aGrid);
 
   aGrid.createNodes();
@@ -202,7 +202,7 @@ function main() {
   container.dataset.startMove = false;
   container.dataset.endMove = false;
   container.dataset.mouseDown = false;
-  let aGrid = new grid(25, 40, startLoc, endLoc);
+  let aGrid = new grid(25, 50, startLoc, endLoc);
 
   aGrid.createNodes();
 

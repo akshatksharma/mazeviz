@@ -58,10 +58,15 @@ export default class grid {
   }
 
   shortestPath() {
+    let runButton = document.getElementsByClassName("run")[0];
     let clearButton = document.getElementsByClassName("clear")[0];
     clearButton.addEventListener("click", () => {
       worker.terminate();
-      let runButton = document.getElementsByClassName("run")[0];
+      runButton.innerHTML = "run";
+    });
+    let resetButton = document.getElementsByClassName("reset")[0];
+    resetButton.addEventListener("click", () => {
+      worker.terminate();
       runButton.innerHTML = "run";
     });
 
