@@ -5,3 +5,5 @@ testItem.js
 .cache/
 dist/
 node_modules/
+uninstall-node.sh
+
