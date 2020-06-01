@@ -22,6 +22,7 @@ function createDOMGrid(grid, container) {
     // styling based on paramaters
     if (node.wall && (!node.isStart() || !node.isEnd())) {
       domNode.dataset.wall = true;
+      domNode.classList.add("wall");
     }
 
     if (!(node.isStart() && node.isEnd())) {
@@ -62,6 +63,8 @@ function createDOMGrid(grid, container) {
       }
 
       this.dataset.wall = this.dataset.wall === "false" ? "true" : "false";
+      if (this.dataset.wall === "true") this.classList.add("wall");
+      if (this.dataset.wall === "false") domNode.classList.remove("wall");
       wallList = toggleArray(wallList, this.dataset.id);
     }
 
@@ -81,6 +84,8 @@ function createDOMGrid(grid, container) {
 
       if (draggingWall) {
         this.dataset.wall = this.dataset.wall === "false" ? "true" : "false";
+        if (this.dataset.wall === "true") this.classList.add("wall");
+        if (this.dataset.wall === "false") domNode.classList.remove("wall");
         wallList = toggleArray(wallList, this.dataset.id);
       } else if (draggingStart) {
         let node = document.createElement("div");

@@ -102,7 +102,8 @@ export default class grid {
           } else {
             domNode.classList.add("colorOff");
           }
-          domNode.dataset.visited = true;
+          // domNode.dataset.visited = true;
+          domNode.classList.add("visited");
         });
       }
     };
@@ -113,7 +114,7 @@ export default class grid {
       setTimeout(() => {
         let { row, col } = this.orderedPath[i];
         let DOMelem = document.getElementById(`node: ${row}, ${col}`);
-        DOMelem.dataset.path = "true";
+        DOMelem.classList.add("path");
 
         if (i == this.orderedPath.length - 1) {
           let runButton = document.getElementsByClassName("run")[0];
