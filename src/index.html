@@ -4,12 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Maze Visualizer</title>
-    <link rel="stylesheet" href="genLayout.css" />
+    <!-- <link rel="stylesheet" href="genLayout.pcss" /> -->
     <link rel="stylesheet" href="styles.pcss" />
   </head>
   <style>
     .btn {
-      @apply bg-blue-500 font-bold py-2 px-4;
+      @apply py-2 px-6;
     }
     .btn--blue {
       @apply bg-blue-500 text-white;
@@ -19,19 +19,36 @@
     }
   </style>
   <body>
-    <div class="page">
-      <!-- <h1 class="title center text-5xl">Shortest Path Visualizer</h1> -->
-      <div class="container center">
-        <div class="buttons">
-          <button class="run btn btn--blue rounded-l">run</button>
-          <!-- <button class="pause">pause</button> -->
-          <button class="reset btn btn--blue">reset</button>
-          <button class="clear btn btn--blue rounded-r">clear walls</button>
-          <input type="checkbox" id="toggle" class="checkbox" />
-          <label for="toggle" class="switch"></label>
+    <div class="container mx-auto mb-10 flex flex-col items-center">
+      <h1 class="title center text-5xl font-bold my-4 mb-5">
+        Shortest Path Visualizer
+      </h1>
+      <div class="w-full flex justify-end">
+        <div
+          class="w-2/3 buttons inline-flex justify-between items-center mb-8"
+        >
+          <div>
+            <button class="run btn btn--blue rounded-l">run</button>
+            <!-- <button class="pause">pause</button> -->
+            <button class="reset btn btn--blue">reset</button>
+            <button class="clear btn btn--blue rounded-r">clear walls</button>
+          </div>
+          <div class="relative">
+            <label for="toggle" class="flex items-center cursor-pointer">
+              <input type="checkbox" id="toggle" class="toggle hidden" />
+              <div class="w-12 h-6 bg-gray-400 rounded-full shadow-inner"></div>
+              <div
+                class="toggle__dot absolute w-6 h-6 bg-white rounded-full shadow inset-y-0 left-0"
+              ></div>
+              <div class="ml-3 text-gray-700 font-medium">
+                Toggle Colors
+              </div>
+            </label>
+          </div>
         </div>
-        <div class="nodeContainer center"></div>
       </div>
+
+      <div class="nodeContainer center"></div>
     </div>
 
     <script src="main.js" type="module"></script>

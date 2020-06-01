@@ -2,35 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-.title {
-  grid-row: header;
-
-  text-align: center;
-
-  background-color: #312f2f;
+.toggle__dot {
+  /* top: -0.25rem; */
+  left: -0.25rem;
+  transition: all 0.3s ease-in-out;
 }
 
-.container {
-  grid-row: body;
-  display: flex;
-  flex-direction: column;
-}
-.buttons {
-  align-self: center;
-  width: 25%;
-  margin-bottom: 20px;
-
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
+input:checked ~ .toggle__dot {
+  transform: translateX(130%);
+  @apply bg-blue-500;
 }
 
 .nodeContainer {
   /* border: 1px solid crimson; */
 
   display: grid;
-  grid-template-columns: repeat(50, 30px);
-  grid-auto-rows: 30px;
+  grid-template-columns: repeat(40, 30px);
 }
 
 .node {
@@ -39,17 +26,17 @@
   border: 1px solid #cdd3d5;
   border-right: 0px;
   border-bottom: 0px;
-  width: 30px;
+  height: 30px;
 }
 
 .row--end {
   /* border-right: 1px solid #e6e4f0; */
-  border-right: 1px solid #d6eeff;
+  border-right: 1px solid #cdd3d5;
 }
 
 .col--end {
   /* border-bottom: 1px solid #e6e4f0; */
-  border-bottom: 1px solid #d6eeff;
+  border-bottom: 1px solid #cdd3d5;
 }
 
 .start {
@@ -205,4 +192,5 @@
   width: 30px;
   height: 30px;
   transform: scale(0.6);
+  z-index: 2;
 }

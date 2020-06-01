@@ -65,7 +65,7 @@ export default class grid {
       runButton.innerHTML = "run";
     });
 
-    let colorTiles = document.getElementsByClassName("checkbox")[0].checked;
+    let colorTiles = document.getElementsByClassName("toggle")[0].checked;
     let worker = new Worker("dijkstra.js");
 
     worker.postMessage([this.startNode.id, this.heap]);

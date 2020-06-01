@@ -163,7 +163,7 @@ function clearBoard() {
   container.dataset.startMove = false;
   container.dataset.endMove = false;
   container.dataset.mouseDown = false;
-  let aGrid = new grid(25, 50, startLoc, endLoc);
+  let aGrid = new grid(25, 40, startLoc, endLoc);
   console.log(aGrid);
 
   aGrid.createNodes();
@@ -187,7 +187,7 @@ function main() {
   container.dataset.startMove = false;
   container.dataset.endMove = false;
   container.dataset.mouseDown = false;
-  let aGrid = new grid(25, 50, startLoc, endLoc);
+  let aGrid = new grid(25, 40, startLoc, endLoc);
 
   aGrid.createNodes();
 
