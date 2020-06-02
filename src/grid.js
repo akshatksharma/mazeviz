@@ -57,21 +57,10 @@ export default class grid {
     console.log(this.heap.array);
   }
 
-  shortestPath() {
-    let runButton = document.getElementsByClassName("run")[0];
-    let clearButton = document.getElementsByClassName("clear")[0];
-    clearButton.addEventListener("click", () => {
-      worker.terminate();
-      runButton.innerHTML = "run";
-    });
-    let resetButton = document.getElementsByClassName("reset")[0];
-    resetButton.addEventListener("click", () => {
-      worker.terminate();
-      runButton.innerHTML = "run";
-    });
-
+  animateDijkstra() {
     let colorTiles = document.getElementsByClassName("toggle")[0].checked;
     let worker = new Worker("dijkstra.js");
+    this.animateSetup(worker);
 
     worker.postMessage([this.startNode.id, this.heap]);
 
@@ -112,6 +101,66 @@ export default class grid {
         });
       }
     };
+  }
+
+  animateAStar() {
+    let colorTiles = document.getElementsByClassName("toggle")[0].checked;
+    let worker = new Worker("aStar.js");
+    this.animateSetup(worker);
+
+    worker.postMessage([this.startNode.id, this.endNode.id, this.heap]);
+
+    worker.onmessage = (e) => {
+      const [, , status] = e.data;
+      const [, finished] = e.data;
+      if (status == "failed") {
+        let runButton = document.getElementsByClassName("run")[0];
+        runButton.innerHTML = "done";
+        return;
+      }
+      if (finished) {
+        let [exploredNodes] = e.data;
+        let endNode = exploredNodes.pop();
+        let orderedPath = [endNode];
+
+        let currNode = endNode;
+        while (currNode.prevNode != null) {
+          orderedPath.splice(0, 0, currNode.prevNode);
+          currNode = currNode.prevNode;
+        }
+        this.orderedPath = orderedPath;
+        this.animate();
+      } else {
+        let [exploredNodes] = e.data;
+        exploredNodes.forEach((node) => {
+          let domNode = document.getElementById(
+            `node: ${node.row}, ${node.col}`
+          );
+
+          if (colorTiles) {
+            domNode.classList.add("colorOn");
+          } else {
+            domNode.classList.add("colorOff");
+          }
+          // domNode.dataset.visited = true;
+          domNode.classList.add("visited");
+        });
+      }
+    };
+  }
+
+  animateSetup(worker) {
+    let runButton = document.getElementsByClassName("run")[0];
+    let clearButton = document.getElementsByClassName("clear")[0];
+    clearButton.addEventListener("click", () => {
+      worker.terminate();
+      runButton.innerHTML = "run";
+    });
+    let resetButton = document.getElementsByClassName("reset")[0];
+    resetButton.addEventListener("click", () => {
+      worker.terminate();
+      runButton.innerHTML = "run";
+    });
   }
 
   animate() {

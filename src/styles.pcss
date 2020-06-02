@@ -8,6 +8,12 @@ body:not(.user-is-tabbing) select:focus,
 body:not(.user-is-tabbing) textarea:focus {
   outline: none;
 }
+
+.text__center {
+  text-align: center;
+  text-align-last: center;
+}
+
 .btn {
   @apply font-display tracking-widest text-gray-400 font-medium text-xl py-2 px-6;
 }
@@ -76,11 +82,13 @@ input:checked ~ .toggle__dot {
   background-color: #eb8dde;
   background-color: #ceeaf7;
   background-color: #ffc0a0 !important;
+  @apply cursor-pointer;
 }
 
 .end {
   background-color: #f7c648;
   background-color: #ee6e72 !important;
+  @apply cursor-pointer;
 }
 
 .wall {
@@ -191,18 +199,22 @@ input:checked ~ .toggle__dot {
 
 .start.visited {
   background-color: #ffc0a0 !important;
+  @apply cursor-pointer;
 }
 
 .end.visited {
   background-color: #ee6e72 !important;
+  @apply cursor-pointer;
 }
 
 .start.path {
   background-color: #ffc0a0 !important;
+  @apply cursor-pointer;
 }
 
 .end.path {
   background-color: #ee6e72 !important;
+  @apply cursor-pointer;
 }
 
 .possibleStart {
@@ -211,6 +223,7 @@ input:checked ~ .toggle__dot {
   height: 25px;
   transform: scale(0.6);
   z-index: 2;
+  @apply cursor-pointer;
 
   animation-name: possibleStart !important;
   animation-duration: 1s;
@@ -238,6 +251,7 @@ input:checked ~ .toggle__dot {
   height: 25px;
   transform: scale(0.6);
   z-index: 2;
+  @apply cursor-pointer;
 
   animation-name: possibleStart !important;
   animation-duration: 1s;

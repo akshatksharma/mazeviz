@@ -197,11 +197,14 @@ function reset() {
 
 function pause() {}
 
+function whichAlgo(grid) {}
+
 function main() {
   let container = document.getElementsByClassName("nodeContainer")[0];
   container.dataset.startMove = false;
   container.dataset.endMove = false;
   container.dataset.mouseDown = false;
+
   let aGrid = new grid(25, 50, startLoc, endLoc);
 
   aGrid.createNodes();
@@ -212,12 +215,29 @@ function main() {
 
   createDOMGrid(aGrid, container);
 
+  let algoSelect = document.getElementsByClassName("algoSelect")[0];
+  let algoOption = algoSelect.options[algoSelect.selectedIndex].value;
+
   let runButton = document.getElementsByClassName("run")[0];
   runButton.innerHTML = "run";
-  runButton.addEventListener("click", () => {
-    runButton.innerHTML = "running...";
-    aGrid.shortestPath();
-  });
+
+  if (algoOption === "dijkstra") {
+    // reset();
+    runButton.addEventListener("click", () => {
+      runButton.innerHTML = "running...";
+      aGrid.animateDijkstra();
+    });
+  }
+
+  if (algoOption === "a*") {
+    // reset();
+    runButton.addEventListener("click", () => {
+      runButton.innerHTML = "running...";
+      aGrid.animateAStar();
+    });
+  }
+
+  algoSelect.addEventListener("change", reset);
 
   let clearButton = document.getElementsByClassName("clear")[0];
   clearButton.addEventListener("click", () => {

@@ -10,11 +10,11 @@
   <body class="dark">
     <div class="container dark mx-auto flex flex-col items-center mb-4">
       <div class="titles-position w-full flex justify-end">
-        <div class="titles w-1/2 flex flex-col">
+        <div class="titles w-2/3 flex flex-col">
           <h1
             class="font-display text-5xl text-gray-200 font-hairline tracking-widest glow text-right mt-4"
           >
-            Shortest Path Visualizer
+            Maze Visualizer
           </h1>
           <h2
             class="font-display text-xl text-gray-200 font-medium tracking-widest lowercase text-right mb-10"
@@ -27,6 +27,28 @@
       <div
         class="bottom-bar w-full grid sm:grid-cols-4 grid-flow-col bg-gray-800 py-2 px-10 my-6 rounded-full"
       >
+        <div class="col-start-1 relative inline-flex w-1/2">
+          <!-- <svg
+            class="w-2 h-2 relative top-0 mt-5 mr-6 pointer-events-none"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 412 232"
+          >
+            <path
+              d="M206 171.144L42.678 7.822c-9.763-9.763-25.592-9.763-35.355 0-9.763 9.764-9.763 25.592 0 35.355l181 181c4.88 4.882 11.279 7.323 17.677 7.323s12.796-2.441 17.678-7.322l181-181c9.763-9.764 9.763-25.592 0-35.355-9.763-9.763-25.592-9.763-35.355 0L206 171.144z"
+              fill="#CBD5E0"
+              fill-rule="nonzero"
+            />
+          </svg> -->
+          <select
+            class="algoSelect font-display text-xl text-gray-400 font-medium tracking-widest lowercase text__center rounded-full pl-5 pr-5 darkest hover:text-gray-200 cursor-pointer focus:outline-none appearance-none"
+          >
+            <option value="dijkstra">Dijkstra's</option>
+            <option value="a*">A*</option>
+            <option value="greedy">Greedy</option>
+            <option value="bfs">BFS</option>
+            <option value="dfs">DFS</option>
+          </select>
+        </div>
         <div
           class="buttons col-start-2 col-end-4 inline-flex justify-center items-center"
         >
