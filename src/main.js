@@ -147,14 +147,16 @@ function mouseleave() {
 }
 
 function mouseup() {
-  const dragStartOrEnd = dragState("start") || dragState("end");
+  const draggingStart = dragState("start");
+  const draggingEnd = dragState("end");
+  const dragStartOrEnd = draggingStart || draggingEnd;
 
   // if moving start or end, then update their final position to the start and end node arrays
   if (dragStartOrEnd) {
     const row = parseInt(this.dataset.row);
     const col = parseInt(this.dataset.col);
-    if (clickStart == "true") startLoc = [row, col];
-    if (clickEnd == "true") endLoc = [row, col];
+    if (draggingStart) startLoc = [row, col];
+    if (draggingEnd) endLoc = [row, col];
   }
 
   // remove duplicate entries in wallList by converting to set and then back to array
@@ -187,20 +189,11 @@ function reset() {
 const setAlgo = (name, grid) => {
   let runButton = document.getElementsByClassName("run")[0];
   runButton.innerHTML = "run";
-
-  if (name === "dijkstra") {
-    runButton.addEventListener("click", () => {
-      runButton.innerHTML = "running...";
-      grid.animateDijkstra();
-    });
-  }
-
-  if (name === "a*") {
-    runButton.addEventListener("click", () => {
-      runButton.innerHTML = "running...";
-      grid.animateAStar();
-    });
-  }
+  runButton.addEventListener("click", () => {
+    runButton.innerHTML = "running...";
+    if (name === "dijkstra") grid.animateDijkstra();
+    if (name === "a*") grid.animateAStar();
+  });
 };
 
 export function main() {
