@@ -1,18 +1,20 @@
 import grid from "./grid.js";
 
-function handleFirstTab(e) {
+// determining if user is on mobile or computer
+// if on computer assign class to body that will tell css to disable focus styling on buttons etc
+function userDevice(e) {
   if (e.keyCode === 9) {
-    // the "I am a keyboard user" key
-    document.body.classList.add("user-is-tabbing");
-    window.removeEventListener("keydown", handleFirstTab);
+    document.body.classList.add("onComputer");
+    window.removeEventListener("keydown", userDevice);
   }
 }
+window.addEventListener("keydown", userDevice);
 
-window.addEventListener("keydown", handleFirstTab);
-
+// setting intial values for walls, start and end loci, and overall container for DOM representation of nodes
 let wallList = [];
 let startLoc = [14, 15];
 let endLoc = [14, 36];
+const container = document.getElementsByClassName("nodeContainer")[0];
 
 function createDOMGrid(grid, container) {
   const frag = document.createDocumentFragment();
@@ -20,145 +22,38 @@ function createDOMGrid(grid, container) {
   grid.heap.array.forEach((node) => {
     let domNode = document.createElement("div");
 
-    // setting initial parameters
+    // setting initial parameters of DOM node based on internal node
     domNode.className = "node";
     domNode.id = `node: ${node.row}, ${node.col}`;
     domNode.dataset.id = node.id;
     domNode.dataset.row = node.row;
     domNode.dataset.col = node.col;
     domNode.dataset.visited = node.visited;
-    domNode.dataset.wall = false;
+    domNode.dataset.wall = node.wall;
 
-    // styling based on paramaters
-    if (node.wall && (!node.isStart() || !node.isEnd())) {
+    // if flagged as wall, and not start or end, display a wall
+    if (node.wall && !(node.isStart() && node.isEnd())) {
       domNode.dataset.wall = true;
       domNode.classList.add("wall");
     }
 
-    if (!(node.isStart() && node.isEnd())) {
-      domNode.dataset.possibleStart = false;
-      domNode.dataset.possibleEnd = false;
-    }
-
+    // if flagged as start or end, display start / end node
     if (node.isStart(grid.startLoc)) {
       grid.startNode = node;
       domNode.classList.add("start");
-    }
-    if (node.isEnd(grid.endLoc)) {
+    } else if (node.isEnd(grid.endLoc)) {
       grid.endNode = node;
       domNode.classList.add("end");
     }
-    if (node.col % grid.numCols == 0) {
+
+    // if going to be end of column, or end of row, style differently
+    const lastInRow = node.col % grid.numCols == 0;
+    const lastInCol = node.row == grid.numRows;
+    if (lastInRow) {
       domNode.classList.add("row--end");
     }
-    if (node.row == grid.numRows) {
+    if (lastInCol) {
       domNode.classList.add("col--end");
-    }
-
-    const toggleArray = (array, item) =>
-      array.includes(item) ? array.filter((i) => i != item) : [...array, item];
-
-    function mousedown() {
-      container.dataset.mouseDown = true;
-      const onStart = this.classList.contains("start");
-      const onEnd = this.classList.contains("end");
-
-      if (onStart) {
-        container.dataset.startMove = true;
-        return;
-      }
-      if (onEnd) {
-        container.dataset.endMove = true;
-        return;
-      }
-
-      this.dataset.wall = this.dataset.wall === "false" ? "true" : "false";
-      if (this.dataset.wall === "true") this.classList.add("wall");
-      if (this.dataset.wall === "false") domNode.classList.remove("wall");
-      wallList = toggleArray(wallList, this.dataset.id);
-    }
-
-    function mouseenter() {
-      const mouseDown = container.dataset.mouseDown;
-      const clickStart = container.dataset.startMove;
-      const clickEnd = container.dataset.endMove;
-      const onStartOrEnd =
-        this.classList.contains("start") || this.classList.contains("end");
-
-      if (onStartOrEnd) return;
-
-      const draggingWall =
-        mouseDown == "true" && clickStart == "false" && clickEnd == "false";
-      const draggingStart = mouseDown == "true" && clickStart == "true";
-      const draggingEnd = mouseDown == "true" && clickEnd == "true";
-
-      if (draggingWall) {
-        this.dataset.wall = this.dataset.wall === "false" ? "true" : "false";
-        if (this.dataset.wall === "true") this.classList.add("wall");
-        if (this.dataset.wall === "false") domNode.classList.remove("wall");
-        wallList = toggleArray(wallList, this.dataset.id);
-      } else if (draggingStart) {
-        let node = document.createElement("div");
-        node.classList.add("possibleStart");
-        // node.dataset.possibleStart = true;
-        this.appendChild(node);
-      } else if (draggingEnd) {
-        let node = document.createElement("div");
-        node.classList.add("possibleEnd");
-        // node.dataset.possibleEnd = true;
-        this.appendChild(node);
-      } else {
-        return;
-      }
-    }
-
-    function mouseleave() {
-      const mouseDown = container.dataset.mouseDown;
-      const clickStart = container.dataset.startMove;
-      const clickEnd = container.dataset.endMove;
-
-      if (clickStart && mouseDown == "true" && clickEnd != "true") {
-        this.classList.remove("start");
-      }
-      if (clickEnd && mouseDown == "true" && clickStart != "true") {
-        this.classList.remove("end");
-      }
-      const draggingStart = mouseDown == "true" && clickStart == "true";
-      const draggingEnd = mouseDown == "true" && clickEnd == "true";
-      if (draggingStart) {
-        let node = document.getElementsByClassName("possibleStart")[0];
-        console.log(node);
-        this.removeChild(node);
-      }
-      if (draggingEnd) {
-        let node = document.getElementsByClassName("possibleEnd")[0];
-        this.removeChild(node);
-      }
-    }
-
-    function mouseup() {
-      const mouseDown = container.dataset.mouseDown;
-      const clickStart = container.dataset.startMove;
-      const clickEnd = container.dataset.endMove;
-      const dragStartEnd =
-        mouseDown == "true" && (clickStart == "true" || clickEnd == "true");
-
-      if (dragStartEnd) {
-        const row = parseInt(this.dataset.row);
-        const col = parseInt(this.dataset.col);
-        if (clickStart == "true") startLoc = [row, col];
-        if (clickEnd == "true") endLoc = [row, col];
-      }
-
-      wallList = Array.from(new Set(wallList));
-
-      // duplicate run button to remove event listener
-      const runButton = document.getElementsByClassName("run")[0];
-      const newrunButton = runButton.cloneNode(true);
-      runButton.parentNode.replaceChild(newrunButton, runButton);
-      container.innerHTML = "";
-      container.dataset.mouseDown = false;
-      main();
     }
 
     domNode.addEventListener("mousedown", mousedown);
@@ -172,8 +67,103 @@ function createDOMGrid(grid, container) {
   container.appendChild(frag);
 }
 
+// helper methods (and helper helper methods)
+const toggleArray = (array, item) =>
+  array.includes(item) ? array.filter((i) => i != item) : [...array, item];
+
+const toggleWall = (domNode) => {
+  domNode.dataset.wall = domNode.dataset.wall === "false" ? "true" : "false";
+  if (domNode.dataset.wall === "true") domNode.classList.add("wall");
+  if (domNode.dataset.wall === "false") domNode.classList.remove("wall");
+  wallList = toggleArray(wallList, domNode.dataset.id);
+};
+
+const dragState = (state) => {
+  const mouseDown = container.dataset.mouseDown;
+  const clickStart = container.dataset.startMove;
+  const clickEnd = container.dataset.endMove;
+
+  if (state == "wall")
+    return mouseDown == "true" && clickStart == "false" && clickEnd == "false";
+  else if (state == "start") return mouseDown == "true" && clickStart == "true";
+  else if (state == "end") return mouseDown == "true" && clickEnd == "true";
+};
+
+function mousedown() {
+  container.dataset.mouseDown = true;
+  const onStart = this.classList.contains("start");
+  const onEnd = this.classList.contains("end");
+
+  if (onStart) {
+    container.dataset.startMove = true;
+    return;
+  }
+  if (onEnd) {
+    container.dataset.endMove = true;
+    return;
+  }
+  toggleWall(this);
+}
+
+function mouseenter() {
+  const onStartOrEnd =
+    this.classList.contains("start") || this.classList.contains("end");
+
+  if (onStartOrEnd) return;
+
+  const draggingWall = dragState("wall");
+  const draggingStart = dragState("start");
+  const draggingEnd = dragState("end");
+
+  if (draggingWall) {
+    toggleWall(this);
+  } else if (draggingStart) {
+    let node = document.createElement("div");
+    node.classList.add("possibleStart");
+    this.appendChild(node);
+  } else if (draggingEnd) {
+    let node = document.createElement("div");
+    node.classList.add("possibleEnd");
+    this.appendChild(node);
+  } else {
+    return;
+  }
+}
+
+function mouseleave() {
+  const draggingStart = dragState("start");
+  const draggingEnd = dragState("end");
+
+  if (draggingStart) {
+    this.classList.remove("start");
+    let node = document.getElementsByClassName("possibleStart")[0];
+    this.removeChild(node);
+  }
+  if (draggingEnd) {
+    this.classList.remove("end");
+    let node = document.getElementsByClassName("possibleEnd")[0];
+    this.removeChild(node);
+  }
+}
+
+function mouseup() {
+  const dragStartOrEnd = dragState("start") || dragState("end");
+
+  // if moving start or end, then update their final position to the start and end node arrays
+  if (dragStartOrEnd) {
+    const row = parseInt(this.dataset.row);
+    const col = parseInt(this.dataset.col);
+    if (clickStart == "true") startLoc = [row, col];
+    if (clickEnd == "true") endLoc = [row, col];
+  }
+
+  // remove duplicate entries in wallList by converting to set and then back to array
+  wallList = Array.from(new Set(wallList));
+  // reset whole board with new information on wall location and start / end location
+  reset();
+}
+
 function clearBoard() {
-  let container = document.getElementsByClassName("nodeContainer")[0];
   container.innerHTML = "";
   container.dataset.startMove = false;
   container.dataset.endMove = false;
@@ -186,7 +176,6 @@ function clearBoard() {
 }
 
 function reset() {
-  let container = document.getElementsByClassName("nodeContainer")[0];
   const runButton = document.getElementsByClassName("run")[0];
   const newrunButton = runButton.cloneNode(true);
   runButton.parentNode.replaceChild(newrunButton, runButton);
@@ -195,12 +184,26 @@ function reset() {
   main();
 }
 
-function pause() {}
+const setAlgo = (name, grid) => {
+  let runButton = document.getElementsByClassName("run")[0];
+  runButton.innerHTML = "run";
 
-function whichAlgo(grid) {}
+  if (name === "dijkstra") {
+    runButton.addEventListener("click", () => {
+      runButton.innerHTML = "running...";
+      grid.animateDijkstra();
+    });
+  }
 
-function main() {
-  let container = document.getElementsByClassName("nodeContainer")[0];
+  if (name === "a*") {
+    runButton.addEventListener("click", () => {
+      runButton.innerHTML = "running...";
+      grid.animateAStar();
+    });
+  }
+};
+
+export function main() {
   container.dataset.startMove = false;
   container.dataset.endMove = false;
   container.dataset.mouseDown = false;
@@ -216,28 +219,11 @@ function main() {
   createDOMGrid(aGrid, container);
 
   let algoSelect = document.getElementsByClassName("algoSelect")[0];
+  algoSelect.addEventListener("change", reset);
+
   let algoOption = algoSelect.options[algoSelect.selectedIndex].value;
 
-  let runButton = document.getElementsByClassName("run")[0];
-  runButton.innerHTML = "run";
-
-  if (algoOption === "dijkstra") {
-    // reset();
-    runButton.addEventListener("click", () => {
-      runButton.innerHTML = "running...";
-      aGrid.animateDijkstra();
-    });
-  }
-
-  if (algoOption === "a*") {
-    // reset();
-    runButton.addEventListener("click", () => {
-      runButton.innerHTML = "running...";
-      aGrid.animateAStar();
-    });
-  }
-
-  algoSelect.addEventListener("change", reset);
+  setAlgo(algoOption, aGrid);
 
   let clearButton = document.getElementsByClassName("clear")[0];
   clearButton.addEventListener("click", () => {
@@ -251,5 +237,3 @@ function main() {
   let resetButton = document.getElementsByClassName("reset")[0];
   resetButton.addEventListener("click", reset);
 }
-
-main();
