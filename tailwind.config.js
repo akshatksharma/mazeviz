@@ -3,6 +3,7 @@ module.exports = {
   theme: {
     fontFamily: {
       display: ["futura-pt", "sans-serif"],
+      pp: ["neuzeit-grotesk", "sans-serif"],
     },
   },
   variants: {},

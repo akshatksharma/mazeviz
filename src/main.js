@@ -78,6 +78,8 @@ const toggleWall = (domNode) => {
   wallList = toggleArray(wallList, domNode.dataset.id);
 };
 
+// const toggleWeight = () => {}
+
 const dragState = (state) => {
   const mouseDown = container.dataset.mouseDown;
   const clickStart = container.dataset.startMove;
@@ -85,6 +87,7 @@ const dragState = (state) => {
 
   if (state == "wall")
     return mouseDown == "true" && clickStart == "false" && clickEnd == "false";
+    // else if (state == "weight") {do something}
   else if (state == "start") return mouseDown == "true" && clickStart == "true";
   else if (state == "end") return mouseDown == "true" && clickEnd == "true";
 };
@@ -102,7 +105,11 @@ function mousedown() {
     container.dataset.endMove = true;
     return;
   }
+  // if radio for wall in bottom bar is selected, toggle wall
   toggleWall(this);
+
+  // else if radio for weight is selected, toggle weight
+  // toggleWeight(this);
 }
 
 function mouseenter() {
