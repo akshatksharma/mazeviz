@@ -42,19 +42,33 @@ export default class grid {
       id = parseInt(id);
       this.heap.array[id].wall = true;
     });
-    console.log(this.heap.array);
   }
 
   unsetWalls(...args) {
     let ids = args[0];
-    console.log(ids);
     if (ids.length == 0) return;
     ids.forEach((id) => {
       id = parseInt(id);
-      console.log(this.heap.array[id]);
       this.heap.array[id].wall = false;
     });
-    console.log(this.heap.array);
+  }
+
+  setWeights(...args) {
+    let ids = args[0];
+    let weight = args[1];
+    ids.forEach((id) => {
+      id = parseInt(id);
+      this.heap.array[id].weight = weight;
+    });
+  }
+
+  unsetWeights(...args) {
+    let ids = args[0];
+    if (ids.length == 0) return;
+    ids.forEach((id) => {
+      id = parseInt(id);
+      this.heap.array[id].weight = 1;
+    });
   }
 
   animateDijkstra() {

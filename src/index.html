@@ -27,32 +27,56 @@
       </div>
       <div class="nodeContainer center"></div>
       <div
-        class="bottom-bar grid sm:grid-cols-7 grid-flow-col bg-gray-800 py-2 px-10 my-6 rounded-full"
+        class="bottom-bar grid sm:grid-cols-7 grid-flow-col blueGray py-2 px-10 my-6 rounded-full"
       >
         <div
           class="sideButton--position h-full relative col-start-1 col-end-3 grid-cols-3 rounded-full r"
         >
           <div
-            class="sideButton--container darkGray p-2 inline-flex items-center rounded-full divide-x divide-gray-700"
+            class="sideButton--container darkGray p-2 inline-flex items-center rounded-full"
           >
-            <select class="algoSelect sideButton darkGray">
-              <option value="dijkstra">Dijkstra's</option>
-              <option value="a*">A*</option>
-            </select>
-            <div class="wallButton__rect rounded"></div>
-            <div class="wallButton__bkg rounded">
-              <div class="wallButton__rect rounded-full"></div>
+            <div class="inline-block relative w-32">
+              <select
+                class="algoSelect block appearance-none font-display text-xl text-gray-400 font-medium tracking-widest lowercase text__center pl-5 pr-5 cursor-pointer appearance-none overflow-visible darkGray hover:text-gray-200 focus:outline-none"
+              >
+                <option value="dijkstra">Dijkstra's</option>
+                <option value="a*">A*</option>
+              </select>
+              <div
+                class="algoSelect__arrow pointer-events-none absolute inset-y-0 right-0 flex items-center px-1 text-gray-400"
+              >
+                <svg
+                  class="fill-current hover:text-gray-200 h-4 w-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                  />
+                </svg>
+              </div>
             </div>
+            <div class="divider"></div>
+            <form class="controlForm inline-flex items-center">
+              <input type="radio" name="control" value="wall" id="r1" checked />
+              <label class="wallButton__bkg blueGray rounded-full" for="r1">
+                <div class="wallButton__rect rounded"></div>
+              </label>
+              <input type="radio" name="control" value="weight" id="r2" />
+              <label class="wallButton__bkg blueGray rounded-full" for="r2">
+                <div class="wallButton__circ rounded-full"></div>
+              </label>
+            </form>
           </div>
         </div>
 
         <div
           class="runButton--container col-start-3 col-end-6 inline-flex justify-center items-center"
         >
-          <button class="run btn btn--dark rounded-l">run</button>
           <!-- <button class="pause">pause</button> -->
-          <button class="reset btn btn--dark">reset</button>
-          <button class="clear btn btn--dark rounded-r">clear</button>
+          <button class="reset btn blueGray">reset</button>
+          <button class="run btn blueGray rounded-l">run</button>
+          <button class="clear btn blueGray rounded-r">clear</button>
         </div>
         <div
           class="toggle--container col-start-6 col-end-8 flex justify-center"

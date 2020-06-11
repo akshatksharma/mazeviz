@@ -12,6 +12,8 @@ window.addEventListener("keydown", userDevice);
 
 // setting intial values for walls, start and end loci, and overall container for DOM representation of nodes
 let wallList = [];
+let weightList = [];
+let weight = 10;
 let startLoc = [14, 15];
 let endLoc = [14, 36];
 const container = document.getElementsByClassName("nodeContainer")[0];
@@ -30,11 +32,20 @@ function createDOMGrid(grid, container) {
     domNode.dataset.col = node.col;
     domNode.dataset.visited = node.visited;
     domNode.dataset.wall = node.wall;
+    domNode.dataset.weight = node.weight;
+    if (node.weight == 1) domNode.dataset.isWeight = false;
+    else domNode.dataset.isWeight = true;
 
     // if flagged as wall, and not start or end, display a wall
     if (node.wall && !(node.isStart() && node.isEnd())) {
       domNode.dataset.wall = true;
       domNode.classList.add("wall");
+    }
+
+    if (node.weight > 1 && !(node.wall && node.isStart() && node.isEnd())) {
+      let node = document.createElement("div");
+      node.classList.add("weight");
+      domNode.appendChild(node);
     }
 
     // if flagged as start or end, display start / end node
@@ -57,8 +68,8 @@ function createDOMGrid(grid, container) {
     }
 
     domNode.addEventListener("mousedown", mousedown);
-    domNode.addEventListener("mouseenter", mouseenter);
     domNode.addEventListener("mouseup", mouseup);
+    domNode.addEventListener("mouseenter", mouseenter);
     domNode.addEventListener("mouseleave", mouseleave);
 
     frag.appendChild(domNode);
@@ -71,31 +82,84 @@ function createDOMGrid(grid, container) {
 const toggleArray = (array, item) =>
   array.includes(item) ? array.filter((i) => i != item) : [...array, item];
 
+const wallOrWeight = document.getElementsByClassName("controlForm")[0].elements[
+  "control"
+];
+
 const toggleWall = (domNode) => {
-  domNode.dataset.wall = domNode.dataset.wall === "false" ? "true" : "false";
-  if (domNode.dataset.wall === "true") domNode.classList.add("wall");
-  if (domNode.dataset.wall === "false") domNode.classList.remove("wall");
+  domNode.dataset.wall = domNode.dataset.wall == "false" ? "true" : "false";
+  if (domNode.dataset.wall === "true") {
+    if (domNode.dataset.isWeight == "true") {
+      return;
+    }
+    domNode.classList.add("wall");
+  }
+  if (domNode.dataset.wall === "false") {
+    domNode.classList.remove("wall");
+  }
   wallList = toggleArray(wallList, domNode.dataset.id);
 };
 
-// const toggleWeight = () => {}
+const toggleWeight = (domNode) => {
+  domNode.dataset.isWeight =
+    domNode.dataset.isWeight === "false" ? "true" : "false";
+
+  if (domNode.dataset.isWeight == "true") {
+    if (domNode.dataset.wall == "true") {
+      return;
+    }
+    domNode.dataset.weight = weight;
+    domNode.dataset.isWeight = "true";
+    let node = document.createElement("div");
+    node.classList.add("weight");
+
+    domNode.appendChild(node);
+  } else if (domNode.dataset.isWeight == "false") {
+    domNode.dataset.weight = 1;
+    domNode.dataset.isWeight = "false";
+    domNode.innerHTML = "";
+  }
+
+  weightList = toggleArray(weightList, domNode.dataset.id);
+};
 
 const dragState = (state) => {
   const mouseDown = container.dataset.mouseDown;
+  const settingWalls = container.dataset.settingWalls;
+  const settingWeights = container.dataset.settingWeights;
   const clickStart = container.dataset.startMove;
   const clickEnd = container.dataset.endMove;
 
   if (state == "wall")
-    return mouseDown == "true" && clickStart == "false" && clickEnd == "false";
-    // else if (state == "weight") {do something}
+    return (
+      mouseDown == "true" &&
+      settingWalls == "true" &&
+      clickStart == "false" &&
+      clickEnd == "false"
+    );
+  else if (state == "weight")
+    return (
+      mouseDown == "true" &&
+      settingWeights == "true" &&
+      clickStart == "false" &&
+      clickEnd == "false"
+    );
   else if (state == "start") return mouseDown == "true" && clickStart == "true";
   else if (state == "end") return mouseDown == "true" && clickEnd == "true";
 };
 
-function mousedown() {
+function mousedown(event) {
   container.dataset.mouseDown = true;
   const onStart = this.classList.contains("start");
   const onEnd = this.classList.contains("end");
+
+  if (this != event.target) {
+    console.log(event.target);
+    let parent = event.target.parentElement;
+    parent.dataset.weight = 1;
+    parent.dataset.isWeight = "false";
+    parent.innerHTML = "";
+  }
 
   if (onStart) {
     container.dataset.startMove = true;
@@ -106,24 +170,48 @@ function mousedown() {
     return;
   }
   // if radio for wall in bottom bar is selected, toggle wall
-  toggleWall(this);
-
-  // else if radio for weight is selected, toggle weight
-  // toggleWeight(this);
+  if (wallOrWeight.value == "wall") {
+    container.dataset.settingWalls = true;
+    console.log("mouse down");
+    console.log("setting wall");
+    toggleWall(this);
+  } else if (wallOrWeight.value == "weight") {
+    container.dataset.settingWeights = true;
+    console.log("mouse down");
+    console.log("setting weight");
+    toggleWeight(this);
+  }
 }
 
-function mouseenter() {
+function mouseenter(event) {
+  console.log("mmenter");
+
+  if (this != event.target) {
+    console.log(event.target);
+    let parent = event.target.parentElement;
+    parent.dataset.weight = 1;
+    parent.dataset.isWeight = "false";
+    parent.innerHTML = "";
+  }
+
   const onStartOrEnd =
     this.classList.contains("start") || this.classList.contains("end");
 
   if (onStartOrEnd) return;
 
   const draggingWall = dragState("wall");
+  const draggingWeight = dragState("weight");
   const draggingStart = dragState("start");
   const draggingEnd = dragState("end");
 
   if (draggingWall) {
+    console.log("mouse enter");
+    console.log("setting wall");
     toggleWall(this);
+  } else if (draggingWeight) {
+    console.log("mouse enter");
+    console.log("setting weight");
+    toggleWeight(this);
   } else if (draggingStart) {
     let node = document.createElement("div");
     node.classList.add("possibleStart");
@@ -154,6 +242,9 @@ function mouseleave() {
 }
 
 function mouseup() {
+  container.dataset.mouseDown = false;
+
+  console.log("mouse up");
   const draggingStart = dragState("start");
   const draggingEnd = dragState("end");
   const dragStartOrEnd = draggingStart || draggingEnd;
@@ -168,6 +259,7 @@ function mouseup() {
 
   // remove duplicate entries in wallList by converting to set and then back to array
   wallList = Array.from(new Set(wallList));
+  weightList = Array.from(new Set(weightList));
   // reset whole board with new information on wall location and start / end location
   reset();
 }
@@ -207,6 +299,8 @@ export function main() {
   container.dataset.startMove = false;
   container.dataset.endMove = false;
   container.dataset.mouseDown = false;
+  container.dataset.settingWalls = false;
+  container.dataset.settingWeights = false;
 
   let aGrid = new grid(25, 50, startLoc, endLoc);
 
@@ -214,6 +308,10 @@ export function main() {
 
   if (wallList.length > 0) {
     aGrid.setWalls(wallList);
+  }
+
+  if (weightList.length > 0) {
+    aGrid.setWeights(weightList, weight);
   }
 
   createDOMGrid(aGrid, container);
@@ -228,8 +326,10 @@ export function main() {
   let clearButton = document.getElementsByClassName("clear")[0];
   clearButton.addEventListener("click", () => {
     aGrid.unsetWalls(wallList);
+    aGrid.unsetWeights(weightList);
     setTimeout(() => {
       wallList = [];
+      weightList = [];
       clearBoard();
     }, 0);
   });

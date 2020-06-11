@@ -9,69 +9,98 @@ body:not(.onComputer) textarea:focus {
   outline: none;
 }
 
-.darkGray {
-  background-color: #1f223d;
+input[type="radio"] {
+  display: none;
 }
+
+/* utility classes */
 
 .text__center {
   text-align: center;
-  text-align-last: center;
-}
-
-.btn {
-  @apply font-display tracking-widest text-gray-400 font-medium text-xl py-2 px-6;
-}
-.btn--dark {
-  background-color: #3e415a;
-}
-
-.sideButton {
-  @apply font-display text-xl text-gray-400 font-medium tracking-widest lowercase text__center pl-5 pr-5 cursor-pointer appearance-none overflow-visible;
-}
-
-.sideButton:hover {
-  @apply text-gray-200;
-}
-
-.sideButton:focus {
-  @apply outline-none;
-}
-
-.btn--dark:hover {
-  @apply text-gray-200 cursor-pointer;
 }
 
 .page--dark {
   background-color: #1f223d;
 }
 
+.darkGray {
+  background-color: #1f223d;
+}
+
+.blueGray {
+  background-color: #3e415a;
+}
+
+.btn {
+  @apply font-display tracking-widest text-gray-400 font-medium text-xl py-2 px-6;
+}
+
+.btn:hover {
+  @apply text-gray-200 cursor-pointer;
+}
+
+.algoSelect__arrow {
+  padding-top: 2px;
+  right: -5px;
+}
+
 .glow:hover {
   text-shadow: 0 0 10px #d8d7d0;
+}
+
+/* specific styling classes */
+
+.divider {
+  border: 0.5px solid;
+  height: 25px;
+  margin-right: 20px;
+  margin-left: 10px;
+  @apply border-gray-700;
+}
+
+.wallButton__bkg {
+  height: 25px;
+  width: 40px;
+  @apply flex items-center justify-center mr-3;
+}
+
+.wallButton__bkg:active {
+  box-shadow: inset 0 4px 6px 0 rgba(0, 0, 0, 0.25);
+  filter: brightness(90%);
+}
+
+.wallButton__bkg:hover {
+  filter: brightness(120%);
+}
+
+input[type="radio"]:checked + label {
+  box-shadow: inset 0 4px 6px 0 rgba(0, 0, 0, 0.25);
+}
+
+input[type="radio"]:checked + label:hover {
+  filter: brightness(100%);
+}
+
+input[type="radio"]:checked + label div {
+  filter: brightness(90%);
+}
+
+.wallButton__rect {
+  height: 15px;
+  width: 15px;
+  background-color: #545772;
+}
+
+.wallButton__circ {
+  height: 15px;
+  width: 15px;
+  background-color: #96b7d4;
 }
 
 .toggle__dot {
   top: 0.7rem;
   left: -0.25rem;
   transition: all 0.3s ease-in-out;
-}
-
-.wallbutton__bckg {
-  fill: #1f223d;
-}
-
-.wallbutton__bckg:hover {
-  fill: #fdfdfd;
-}
-
-.wallButton__rect {
-  height: 25px;
-  width: 25px;
-  @apply mr-2 bg-gray-200;
-}
-
-.wallButton__rect:active {
-  /* background-color: #ff5e5b; */
-  box-shadow: inset 0 4px 6px 0 rgba(0, 0, 0, 0.2);
 }
 
 input:checked ~ .toggle__dot {
@@ -126,11 +155,39 @@ input:checked ~ .toggle__dot {
   @apply cursor-pointer;
 }
 
+.weight {
+  height: 10px;
+  width: 10px;
+  background: linear-gradient(270deg, #cbe6e8, #96b7d4);
+  background-size: 400% 400%;
+  @apply rounded-full;
+  /* transform: scale(0.6); */
+  z-index: 2;
+
+  will-change: transform;
+  animation: pop 0.25s ease 0s 1 alternate forwards running,
+    gradient 30s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* wall + wall animation */
+
 .wall {
   will-change: transform;
   background-color: #545772;
   border: 1px solid #545772;
-  animation-name: wall;
+  animation-name: pop;
   animation-duration: 0.25s;
   animation-timing-function: ease-in;
   animation-delay: 0s;
@@ -140,7 +197,7 @@ input:checked ~ .toggle__dot {
   animation-play-state: running;
 }
 
-@keyframes wall {
+@keyframes pop {
   0% {
     transform: scale(1);
   }
@@ -152,6 +209,8 @@ input:checked ~ .toggle__dot {
     transform: scale(1);
   }
 }
+
+/* visited path + animation, with and without color */
 
 .colorOff.visited {
   background-color: #fffded;
