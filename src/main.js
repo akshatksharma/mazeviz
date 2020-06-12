@@ -39,12 +39,12 @@ function createDOMGrid(grid, container) {
     // if flagged as wall, and not start or end, display a wall
     if (node.wall && !(node.isStart() && node.isEnd())) {
       domNode.dataset.wall = true;
-      domNode.classList.add("wall");
+      domNode.classList.add("wall--quiet");
     }
 
     if (node.weight > 1 && !(node.wall && node.isStart() && node.isEnd())) {
       let node = document.createElement("div");
-      node.classList.add("weight");
+      node.classList.add("weight--quiet");
       domNode.appendChild(node);
     }
 
@@ -96,6 +96,7 @@ const toggleWall = (domNode) => {
   }
   if (domNode.dataset.wall === "false") {
     domNode.classList.remove("wall");
+    domNode.classList.remove("wall--quiet");
   }
   wallList = toggleArray(wallList, domNode.dataset.id);
 };
@@ -242,15 +243,16 @@ function mouseleave() {
 }
 
 function mouseup() {
-  container.dataset.mouseDown = false;
-
   console.log("mouse up");
   const draggingStart = dragState("start");
   const draggingEnd = dragState("end");
   const dragStartOrEnd = draggingStart || draggingEnd;
 
+  console.log(draggingStart);
+
   // if moving start or end, then update their final position to the start and end node arrays
   if (dragStartOrEnd) {
+    console.log("yeetus feetus");
     const row = parseInt(this.dataset.row);
     const col = parseInt(this.dataset.col);
     if (draggingStart) startLoc = [row, col];
@@ -292,6 +294,8 @@ const setAlgo = (name, grid) => {
     runButton.innerHTML = "running...";
     if (name === "dijkstra") grid.animateDijkstra();
     if (name === "a*") grid.animateAStar();
+    if (name === "bfs") grid.animateAStar();
+    if (name === "dfs") grid.animateAStar();
   });
 };
 

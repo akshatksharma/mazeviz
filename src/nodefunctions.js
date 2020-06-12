@@ -18,22 +18,18 @@ export function getNextNodes(node) {
   let nodeGrid = node.grid.nodeGrid;
 
   if (node.row > 1) {
-    // console.log("top neighbor");
     const upNeighbor = nodeGrid[node.row - 1][node.col];
     neighbors.push(upNeighbor);
   }
   if (node.row < node.grid.numRows) {
-    // console.log("bottom neighbor");
     const downNeighbor = nodeGrid[node.row + 1][node.col];
     neighbors.push(downNeighbor);
   }
   if (node.col > 1) {
-    // console.log("left neighbor");
     const leftNeighbor = nodeGrid[node.row][node.col - 1];
     neighbors.push(leftNeighbor);
   }
   if (node.col < node.grid.numCols) {
-    // console.log("right neighbor");
     const rightNeighbor = nodeGrid[node.row][node.col + 1];
     neighbors.push(rightNeighbor);
   }

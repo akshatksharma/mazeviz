@@ -17,10 +17,7 @@ input[type="radio"] {
 
 .text__center {
   text-align: center;
-}
-
-.page--dark {
-  background-color: #1f223d;
+  text-align-last: center;
 }
 
 .darkGray {
@@ -46,6 +43,40 @@ input[type="radio"] {
 
 .glow:hover {
   text-shadow: 0 0 10px #d8d7d0;
+}
+
+.tooltip .tooltip-text {
+  visibility: hidden;
+  text-align: center;
+  padding: 6px 18px;
+  position: absolute;
+  z-index: 100;
+  border-color: #1f223d;
+  /* border-color: #1a202c; */
+}
+
+.tooltip .tooltip-right {
+  margin-right: -13px;
+}
+
+.tooltip .tooltip-left {
+  margin-right: -1px;
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+}
+
+.tooltip .tooltip-text::after {
+  content: " ";
+  position: absolute;
+  bottom: 100%; /* At the bottom of the tooltip */
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent #1f223d transparent;
+  /* border-color: transparent transparent #1a202c transparent; */
 }
 
 /* specific styling classes */
@@ -156,8 +187,8 @@ input:checked ~ .toggle__dot {
 }
 
 .weight {
-  height: 10px;
-  width: 10px;
+  height: 17px;
+  width: 17px;
   background: linear-gradient(270deg, #cbe6e8, #96b7d4);
   background-size: 400% 400%;
   @apply rounded-full;
@@ -167,6 +198,20 @@ input:checked ~ .toggle__dot {
   will-change: transform;
   animation: pop 0.25s ease 0s 1 alternate forwards running,
     gradient 30s ease infinite;
+}
+
+.weight--quiet {
+  height: 17px;
+  width: 17px;
+  background: linear-gradient(270deg, #cbe6e8, #96b7d4);
+  background-size: 400% 400%;
+  @apply rounded-full;
+  /* transform: scale(0.6); */
+  z-index: 2;
+
+  will-change: transform;
+  animation: 0.25s ease 0s 1 alternate forwards running,
+    gradient 60s ease infinite;
 }
 
 @keyframes gradient {
@@ -187,14 +232,7 @@ input:checked ~ .toggle__dot {
   will-change: transform;
   background-color: #545772;
   border: 1px solid #545772;
-  animation-name: pop;
-  animation-duration: 0.25s;
-  animation-timing-function: ease-in;
-  animation-delay: 0s;
-  animation-iteration-count: 1;
-  animation-direction: alternate;
-  animation-fill-mode: forwards;
-  animation-play-state: running;
+  animation: pop 0.25s ease-in 0s 1 alternate forwards running;
 }
 
 @keyframes pop {
@@ -208,6 +246,12 @@ input:checked ~ .toggle__dot {
   100% {
     transform: scale(1);
   }
+}
+
+.wall--quiet {
+  will-change: transform;
+  background-color: #545772;
+  border: 1px solid #545772;
 }
 
 /* visited path + animation, with and without color */

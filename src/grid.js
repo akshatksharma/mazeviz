@@ -163,6 +163,15 @@ export default class grid {
     };
   }
 
+
+  animatebfs() {
+
+  }
+
+  animatedfs() {
+    
+  }
+
   animateSetup(worker) {
     let runButton = document.getElementsByClassName("run")[0];
     let clearButton = document.getElementsByClassName("clear")[0];
