@@ -287,12 +287,14 @@ const setAlgo = (name, grid) => {
 
   if (name === "dijkstra") {
     weightButtonVisual.classList.remove("cursor-not-allowed");
+    weightButtonVisual.style.filter = "brightness(100%)";
     weightButtonRadio.disabled = false;
     infoAlert.innerHTML =
       "Dijkstra's Algorithm is weighted and guarantees the shortest path";
   }
   if (name === "a*") {
     weightButtonVisual.classList.remove("cursor-not-allowed");
+    weightButtonVisual.style.filter = "brightness(100%)";
     weightButtonRadio.disabled = false;
     infoAlert.innerHTML = "A* is weighted and guarantees the shortest path";
   }
