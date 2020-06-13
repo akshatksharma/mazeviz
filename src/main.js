@@ -294,8 +294,8 @@ const setAlgo = (name, grid) => {
     runButton.innerHTML = "running...";
     if (name === "dijkstra") grid.animateDijkstra();
     if (name === "a*") grid.animateAStar();
-    if (name === "bfs") grid.animateAStar();
-    if (name === "dfs") grid.animateAStar();
+    if (name === "bfs") grid.animatebfs();
+    if (name === "dfs") grid.animatedfs();
   });
 };
 

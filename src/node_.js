@@ -8,6 +8,7 @@ export default class node {
     this.loc = loc;
 
     this.dist = Infinity;
+    this.time;
     this.weight = weight;
     this.wall = false;
     this.visited = false;

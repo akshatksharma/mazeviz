@@ -79,97 +79,41 @@ export default class grid {
     worker.postMessage([this.startNode.id, this.heap]);
 
     worker.onmessage = (e) => {
-      const [, , status] = e.data;
-      const [, finished] = e.data;
-      if (status == "failed") {
-        let runButton = document.getElementsByClassName("run")[0];
-        runButton.innerHTML = "done";
-        return;
-      }
-      if (finished) {
-        let [exploredNodes] = e.data;
-        let endNode = exploredNodes.pop();
-        let orderedPath = [endNode];
-
-        let currNode = endNode;
-        while (currNode.prevNode != null) {
-          orderedPath.splice(0, 0, currNode.prevNode);
-          currNode = currNode.prevNode;
-        }
-        this.orderedPath = orderedPath;
-        this.animate();
-      } else {
-        let [exploredNodes] = e.data;
-        exploredNodes.forEach((node) => {
-          let domNode = document.getElementById(
-            `node: ${node.row}, ${node.col}`
-          );
-
-          if (colorTiles) {
-            domNode.classList.add("colorOn");
-          } else {
-            domNode.classList.add("colorOff");
-          }
-          // domNode.dataset.visited = true;
-          domNode.classList.add("visited");
-        });
-      }
+      this.animate(e);
     };
   }
 
   animateAStar() {
-    let colorTiles = document.getElementsByClassName("toggle")[0].checked;
     let worker = new Worker("aStar.js");
     this.animateSetup(worker);
 
     worker.postMessage([this.startNode.id, this.endNode.id, this.heap]);
 
     worker.onmessage = (e) => {
-      const [, , status] = e.data;
-      const [, finished] = e.data;
-      if (status == "failed") {
-        let runButton = document.getElementsByClassName("run")[0];
-        runButton.innerHTML = "done";
-        return;
-      }
-      if (finished) {
-        let [exploredNodes] = e.data;
-        let endNode = exploredNodes.pop();
-        let orderedPath = [endNode];
-
-        let currNode = endNode;
-        while (currNode.prevNode != null) {
-          orderedPath.splice(0, 0, currNode.prevNode);
-          currNode = currNode.prevNode;
-        }
-        this.orderedPath = orderedPath;
-        this.animate();
-      } else {
-        let [exploredNodes] = e.data;
-        exploredNodes.forEach((node) => {
-          let domNode = document.getElementById(
-            `node: ${node.row}, ${node.col}`
-          );
-
-          if (colorTiles) {
-            domNode.classList.add("colorOn");
-          } else {
-            domNode.classList.add("colorOff");
-          }
-          // domNode.dataset.visited = true;
-          domNode.classList.add("visited");
-        });
-      }
+      this.animate(e);
     };
   }
 
-
   animatebfs() {
+    let worker = new Worker("bfs.js");
+    this.animateSetup(worker);
 
+    worker.postMessage([this.startNode.id, this.heap]);
+
+    worker.onmessage = (e) => {
+      this.animate(e);
+    };
   }
 
   animatedfs() {
-    
+    let worker = new Worker("bfs.js");
+    this.animateSetup(worker);
+
+    worker.postMessage([this.startNode.id, this.heap]);
+
+    worker.onmessage = (e) => {
+      this.animate(e);
+    };
   }
 
   animateSetup(worker) {
@@ -186,7 +130,45 @@ export default class grid {
     });
   }
 
-  animate() {
+  animate(e) {
+    let colorTiles = document.getElementsByClassName("toggle")[0].checked;
+
+    const [, , status] = e.data;
+    const [, finished] = e.data;
+    if (status == "failed") {
+      let runButton = document.getElementsByClassName("run")[0];
+      runButton.innerHTML = "done";
+      return;
+    }
+    if (finished) {
+      let [exploredNodes] = e.data;
+      let endNode = exploredNodes.pop();
+      let orderedPath = [endNode];
+
+      let currNode = endNode;
+      while (currNode.prevNode != null) {
+        orderedPath.splice(0, 0, currNode.prevNode);
+        currNode = currNode.prevNode;
+      }
+      this.orderedPath = orderedPath;
+      this.visualize();
+    } else {
+      let [exploredNodes] = e.data;
+      exploredNodes.forEach((node) => {
+        let domNode = document.getElementById(`node: ${node.row}, ${node.col}`);
+
+        if (colorTiles) {
+          domNode.classList.add("colorOn");
+        } else {
+          domNode.classList.add("colorOff");
+        }
+        // domNode.dataset.visited = true;
+        domNode.classList.add("visited");
+      });
+    }
+  }
+
+  visualize() {
     for (let i = 0; i < this.orderedPath.length; i++) {
       setTimeout(() => {
         let { row, col } = this.orderedPath[i];

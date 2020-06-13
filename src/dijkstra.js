@@ -19,6 +19,7 @@ addEventListener("message", (e) => {
   let startNode = heap.array[startId];
 
   updateValue(heap, startNode, 0);
+  
 
   while (!isEmpty(heap)) {
     let currNode = extractMin(heap);
@@ -28,13 +29,12 @@ addEventListener("message", (e) => {
       return;
     }
     let neighbors = getNextNodes(currNode);
-    for (let i = 0; i < neighbors.length; i++) {
+    neighbors.forEach((neighbor) => {
       if (currNode.dist == Infinity) {
         postMessage([path, false, "failed"]);
         return;
       }
-      const neighbor = neighbors[i];
-      if (neighbor.wall) continue;
+      if (neighbor.wall) return;
       const newDist = currNode.dist + neighbor.weight;
       if (newDist < neighbor.dist) {
         updateValue(heap, neighbor, newDist);
@@ -42,6 +42,6 @@ addEventListener("message", (e) => {
         path.push(neighbor);
         postMessage([path, false]);
       }
-    }
+    });
   }
 });
