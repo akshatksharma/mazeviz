@@ -89,18 +89,18 @@ input[type="radio"] {
   @apply border-gray-700;
 }
 
-.wallButton__bkg {
+.controlButton__bkg {
   height: 25px;
   width: 40px;
   @apply flex items-center justify-center mr-3;
 }
 
-.wallButton__bkg:active {
+.controlButton__bkg:active {
   box-shadow: inset 0 4px 6px 0 rgba(0, 0, 0, 0.25);
   filter: brightness(90%);
 }
 
-.wallButton__bkg:hover {
+.controlButton__bkg:hover {
   filter: brightness(120%);
 }
 
@@ -116,13 +116,13 @@ input[type="radio"]:checked + label div {
   filter: brightness(90%);
 }
 
-.wallButton__rect {
+.controlButton__rect {
   height: 15px;
   width: 15px;
   background-color: #545772;
 }
 
-.wallButton__circ {
+.controlButton__circ {
   height: 15px;
   width: 15px;
   background-color: #96b7d4;
@@ -142,6 +142,10 @@ input:checked ~ .toggle__dot {
 .bottom-bar {
   background-color: #3e415a;
   width: 98%;
+}
+
+.info {
+  border: 2px solid #3e415a;
 }
 
 .nodeContainer {

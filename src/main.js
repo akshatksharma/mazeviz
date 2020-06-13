@@ -173,20 +173,14 @@ function mousedown(event) {
   // if radio for wall in bottom bar is selected, toggle wall
   if (wallOrWeight.value == "wall") {
     container.dataset.settingWalls = true;
-    console.log("mouse down");
-    console.log("setting wall");
     toggleWall(this);
   } else if (wallOrWeight.value == "weight") {
     container.dataset.settingWeights = true;
-    console.log("mouse down");
-    console.log("setting weight");
     toggleWeight(this);
   }
 }
 
 function mouseenter(event) {
-  console.log("mmenter");
-
   if (this != event.target) {
     console.log(event.target);
     let parent = event.target.parentElement;
@@ -206,12 +200,8 @@ function mouseenter(event) {
   const draggingEnd = dragState("end");
 
   if (draggingWall) {
-    console.log("mouse enter");
-    console.log("setting wall");
     toggleWall(this);
   } else if (draggingWeight) {
-    console.log("mouse enter");
-    console.log("setting weight");
     toggleWeight(this);
   } else if (draggingStart) {
     let node = document.createElement("div");
@@ -243,16 +233,12 @@ function mouseleave() {
 }
 
 function mouseup() {
-  console.log("mouse up");
   const draggingStart = dragState("start");
   const draggingEnd = dragState("end");
   const dragStartOrEnd = draggingStart || draggingEnd;
 
-  console.log(draggingStart);
-
   // if moving start or end, then update their final position to the start and end node arrays
   if (dragStartOrEnd) {
-    console.log("yeetus feetus");
     const row = parseInt(this.dataset.row);
     const col = parseInt(this.dataset.col);
     if (draggingStart) startLoc = [row, col];
@@ -276,6 +262,12 @@ function clearBoard() {
 
   aGrid.createNodes();
   createDOMGrid(aGrid, container);
+
+  let algoSelect = document.getElementsByClassName("algoSelect")[0];
+
+  let algoOption = algoSelect.options[algoSelect.selectedIndex].value;
+
+  setAlgo(algoOption, aGrid);
 }
 
 function reset() {
@@ -284,12 +276,44 @@ function reset() {
   runButton.parentNode.replaceChild(newrunButton, runButton);
   container.innerHTML = "";
   container.dataset.mouseDown = false;
+
   main();
 }
 
 const setAlgo = (name, grid) => {
+  let infoAlert = document.getElementsByClassName("info--text")[0];
+  let weightButtonVisual = document.getElementsByClassName("weightButton")[0];
+  let weightButtonRadio = document.getElementById("r2");
+
+  if (name === "dijkstra") {
+    weightButtonVisual.classList.remove("cursor-not-allowed");
+    weightButtonRadio.disabled = false;
+    infoAlert.innerHTML =
+      "Dijkstra's Algorithm is weighted and guarantees the shortest path";
+  }
+  if (name === "a*") {
+    weightButtonVisual.classList.remove("cursor-not-allowed");
+    weightButtonRadio.disabled = false;
+    infoAlert.innerHTML = "A* is weighted and guarantees the shortest path";
+  }
+  if (name === "bfs") {
+    weightButtonVisual.classList.add("cursor-not-allowed");
+    weightButtonVisual.style.filter = "brightness(80%)";
+    weightButtonRadio.disabled = true;
+    infoAlert.innerHTML =
+      "Breath First Search is NOT weighted but guarantees the shortest path";
+  }
+  if (name === "dfs") {
+    weightButtonVisual.classList.add("cursor-not-allowed");
+    weightButtonVisual.style.filter = "brightness(80%)";
+    weightButtonRadio.disabled = true;
+    infoAlert.innerHTML =
+      "Depth First Search is NOT weighted and DOES NOT guarantee the shortest path";
+  }
+
   let runButton = document.getElementsByClassName("run")[0];
   runButton.innerHTML = "run";
+
   runButton.addEventListener("click", () => {
     runButton.innerHTML = "running...";
     if (name === "dijkstra") grid.animateDijkstra();
@@ -321,7 +345,11 @@ export function main() {
   createDOMGrid(aGrid, container);
 
   let algoSelect = document.getElementsByClassName("algoSelect")[0];
-  algoSelect.addEventListener("change", reset);
+  algoSelect.addEventListener("change", function () {
+    clearBoard();
+    wallList = [];
+    weightList = [];
+  });
 
   let algoOption = algoSelect.options[algoSelect.selectedIndex].value;
 

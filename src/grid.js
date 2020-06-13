@@ -106,7 +106,7 @@ export default class grid {
   }
 
   animatedfs() {
-    let worker = new Worker("bfs.js");
+    let worker = new Worker("dfs.js");
     this.animateSetup(worker);
 
     worker.postMessage([this.startNode.id, this.heap]);
