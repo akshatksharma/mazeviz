@@ -13,12 +13,6 @@ addEventListener("message", (e) => {
     let currentNode = stack.pop();
     currentNode.visited = true;
 
-    // if (isEnd(currentNode)) {
-    //   console.log("hello");
-    //   console.log(currentNode);
-    //   postMessage([exploredNodes, true]);
-    //   return;
-    // }
     let neighbors = getNextNodes(currentNode);
 
     for (let i = 0; i < neighbors.length; i++) {
@@ -40,33 +34,5 @@ addEventListener("message", (e) => {
         postMessage([exploredNodes, false]);
       }
     }
-
-    // console.log(stack);
-
-    // if (isEnd(currentNode)) {
-    //   console.log("done");
-    //   console.log(exploredNodes);
-    //   postMessage([exploredNodes, true]);
-    //   return;
-    // }
-
-    // neighbors.forEach((neighbor) => {
-    //   exploredNodes.push(neighbor);
-    //   if (currentNode.dist == Infinity) {
-    //     postMessage([exploredNodes, false, "failed"]);
-    //     return;
-    //   }
-
-    //   if (neighbor.wall) return;
-    //   if (!neighbor.visited) {
-    //     const newDist = currentNode.dist + 1;
-    //     neighbor.dist = newDist;
-    //     neighbor.visited = true;
-    //     neighbor.prevNode = currentNode;
-    //     stack.push(neighbor);
-
-    //     postMessage([exploredNodes, false]);
-    //   }
-    // });
   }
 });
