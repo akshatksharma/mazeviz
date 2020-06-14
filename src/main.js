@@ -260,11 +260,14 @@ function clearBoard() {
   let aGrid = new grid(25, 50, startLoc, endLoc);
   console.log(aGrid);
 
+  const runButton = document.getElementsByClassName("run")[0];
+  const newrunButton = runButton.cloneNode(true);
+  runButton.parentNode.replaceChild(newrunButton, runButton);
+
   aGrid.createNodes();
   createDOMGrid(aGrid, container);
 
   let algoSelect = document.getElementsByClassName("algoSelect")[0];
-
   let algoOption = algoSelect.options[algoSelect.selectedIndex].value;
 
   setAlgo(algoOption, aGrid);

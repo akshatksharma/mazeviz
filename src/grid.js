@@ -156,13 +156,11 @@ export default class grid {
       let [exploredNodes] = e.data;
       exploredNodes.forEach((node) => {
         let domNode = document.getElementById(`node: ${node.row}, ${node.col}`);
-
         if (colorTiles) {
           domNode.classList.add("colorOn");
         } else {
           domNode.classList.add("colorOff");
         }
-        // domNode.dataset.visited = true;
         domNode.classList.add("visited");
       });
     }

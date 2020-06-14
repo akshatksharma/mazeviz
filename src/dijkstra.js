@@ -1,6 +1,3 @@
-// import * as heapFunctions from "./heapfunctions.js";
-// import * as nodeFunctions from "./nodefunctions.js";
-
 import {
   insert,
   decrease,
@@ -11,6 +8,8 @@ import {
 } from "./heapfunctions.js";
 import { isStart, isEnd, getNextNodes, updateValue } from "./nodefunctions.js";
 
+console.log("running");
+
 addEventListener("message", (e) => {
   let startId = e.data[0];
   let heap = e.data[1];
@@ -19,7 +18,6 @@ addEventListener("message", (e) => {
   let startNode = heap.array[startId];
 
   updateValue(heap, startNode, 0);
-  
 
   while (!isEmpty(heap)) {
     let currNode = extractMin(heap);
