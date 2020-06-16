@@ -19,12 +19,33 @@
             Maze Visualizer
           </h1>
           <h2
-            class="title__text font-pp text-xl text-gray-200 font-medium tracking-widest lowercase text-right mb-10"
+            class="title__subtext font-pp text-xl text-gray-200 font-medium tracking-widest lowercase text-right mb-1"
           >
             click and drag to draw a maze
           </h2>
         </div>
       </div>
+      <div class="w-full flex justify-start">
+        <div class="inline-block justify-start relative w-32 ml-10 mb-2">
+          <select class="speedSelect select w-full rounded-full">
+            <option value="1">normal</option>
+            <option value="10">slow</option>
+            <option value=".01">fast</option>
+          </select>
+          <div class="select__arrow select__arrow--speed">
+            <svg
+              class="fill-current hover:text-gray-200 h-4 w-6"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+            >
+              <path
+                d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+
       <div class="nodeContainer center"></div>
       <div
         class="bottomBar block sm:grid sm:grid-cols-7 grid-flow-col blueGray py-2 px-10 mt-6 mb-1 rounded-full"
@@ -34,20 +55,15 @@
         >
           <div
             class="sideButtonlayout darkGray p-2 inline-flex items-center rounded-full"
-          
           >
             <div class="inline-block relative w-32">
-              <select
-                class="algoSelect block appearance-none font-display text-xl text-gray-400 font-medium tracking-widest lowercase text__center pl-5 pr-5 cursor-pointer appearance-none overflow-visible darkGray hover:text-gray-200 focus:outline-none"
-              >
+              <select class="algoSelect select">
                 <option value="dijkstra">Dijkstra's</option>
                 <option value="a*">A*</option>
                 <option value="bfs">bfs</option>
                 <option value="dfs">dfs</option>
               </select>
-              <div
-                class="algoSelect__arrow pointer-events-none absolute inset-y-0 right-0 flex items-center px-1 text-gray-400"
-              >
+              <div class="select__arrow">
                 <svg
                   class="fill-current hover:text-gray-200 h-4 w-6"
                   xmlns="http://www.w3.org/2000/svg"

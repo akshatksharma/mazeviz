@@ -222,13 +222,11 @@ function mouseleave() {
 
   if (draggingStart) {
     this.classList.remove("start");
-    let node = document.getElementsByClassName("possibleStart")[0];
-    this.removeChild(node);
+    this.innerHTML = "";
   }
   if (draggingEnd) {
     this.classList.remove("end");
-    let node = document.getElementsByClassName("possibleEnd")[0];
-    this.removeChild(node);
+    this.innerHTML = "";
   }
 }
 
@@ -252,38 +250,22 @@ function mouseup() {
   reset();
 }
 
-function clearBoard() {
-  container.innerHTML = "";
-  container.dataset.startMove = false;
-  container.dataset.endMove = false;
-  container.dataset.mouseDown = false;
-  let aGrid = new grid(25, 50, startLoc, endLoc);
-  console.log(aGrid);
-
-  const runButton = document.getElementsByClassName("run")[0];
-  const newrunButton = runButton.cloneNode(true);
-  runButton.parentNode.replaceChild(newrunButton, runButton);
-
-  aGrid.createNodes();
-  createDOMGrid(aGrid, container);
-
-  let algoSelect = document.getElementsByClassName("algoSelect")[0];
-  let algoOption = algoSelect.options[algoSelect.selectedIndex].value;
-
-  setAlgo(algoOption, aGrid);
+function resetEventListener(button) {
+  const newButton = button.cloneNode(true);
+  button.parentNode.replaceChild(newButton, button);
 }
 
 function reset() {
-  const runButton = document.getElementsByClassName("run")[0];
-  const newrunButton = runButton.cloneNode(true);
-  runButton.parentNode.replaceChild(newrunButton, runButton);
   container.innerHTML = "";
-  container.dataset.mouseDown = false;
+  container.dataset.resetting = true;
+
+  const runButton = document.getElementsByClassName("run")[0];
+  resetEventListener(runButton);
 
   main();
 }
 
-const setAlgo = (name, grid) => {
+function setAlgo(name, grid) {
   let infoAlert = document.getElementsByClassName("info--text")[0];
   let weightButtonVisual = document.getElementsByClassName("weightButton")[0];
   let weightButtonRadio = document.getElementById("r2");
@@ -319,14 +301,14 @@ const setAlgo = (name, grid) => {
   let runButton = document.getElementsByClassName("run")[0];
   runButton.innerHTML = "run";
 
-  runButton.addEventListener("click", () => {
+  runButton.addEventListener("click", function () {
     runButton.innerHTML = "running...";
     if (name === "dijkstra") grid.animateDijkstra();
     if (name === "a*") grid.animateAStar();
     if (name === "bfs") grid.animatebfs();
     if (name === "dfs") grid.animatedfs();
   });
-};
+}
 
 export function main() {
   container.dataset.startMove = false;
@@ -351,9 +333,13 @@ export function main() {
 
   let algoSelect = document.getElementsByClassName("algoSelect")[0];
   algoSelect.addEventListener("change", function () {
-    clearBoard();
-    wallList = [];
-    weightList = [];
+    aGrid.unsetWalls(wallList);
+    aGrid.unsetWeights(weightList);
+    setTimeout(() => {
+      wallList = [];
+      weightList = [];
+      reset();
+    }, 0);
   });
 
   let algoOption = algoSelect.options[algoSelect.selectedIndex].value;
@@ -361,13 +347,13 @@ export function main() {
   setAlgo(algoOption, aGrid);
 
   let clearButton = document.getElementsByClassName("clear")[0];
-  clearButton.addEventListener("click", () => {
+  clearButton.addEventListener("click", function () {
     aGrid.unsetWalls(wallList);
     aGrid.unsetWeights(weightList);
     setTimeout(() => {
       wallList = [];
       weightList = [];
-      clearBoard();
+      reset();
     }, 0);
   });
 

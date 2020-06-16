@@ -36,9 +36,16 @@ body:not(.onComputer) textarea:focus {
   @apply text-gray-200 cursor-pointer;
 }
 
-.algoSelect__arrow {
-  padding-top: 2px;
-  right: -5px;
+.select {
+  @apply block appearance-none font-display text-xl text-gray-400 font-medium tracking-widest lowercase text__center pl-5 pr-5 cursor-pointer appearance-none overflow-visible darkGray;
+}
+
+.select:hover {
+  @apply text-gray-200;
+}
+
+.select:focus {
+  @apply outline-none;
 }
 
 .glow:hover {
@@ -80,6 +87,22 @@ body:not(.onComputer) textarea:focus {
 }
 
 /* specific styling classes */
+
+.select__arrow {
+  @apply pointer-events-none absolute inset-y-0 right-0 flex items-center px-1 text-gray-400;
+
+  padding-top: 2px;
+  right: -5px;
+}
+
+.speedSelect {
+  border: 2px solid #3e415a;
+  background-color: #3e415a;
+}
+
+.select__arrow--speed {
+  right: 3px;
+}
 
 .divider {
   border: 0.5px solid;

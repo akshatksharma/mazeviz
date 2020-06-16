@@ -6,13 +6,17 @@ addEventListener("message", (e) => {
   let queue = [];
   let exploredNodes = [];
 
-  let [startId, heap] = e.data;
+  let [startId, heap, speed] = e.data;
   let startNode = heap.array[startId];
 
   updateValue(heap, startNode, 0);
   enqueue(queue, startNode);
 
   while (!isEmpty(queue)) {
+    let i = 0;
+    while (i < speed * 1000000) {
+      i++;
+    }
     let currentNode = dequeue(queue);
     exploredNodes.push(currentNode);
     if (isEnd(currentNode)) {

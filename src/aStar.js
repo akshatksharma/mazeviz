@@ -9,7 +9,7 @@ import {
 import { isStart, isEnd, getNextNodes, updateValue } from "./nodefunctions.js";
 
 addEventListener("message", (e) => {
-  let [startId, endId, heap] = e.data;
+  let [startId, endId, heap, speed] = e.data;
   let path = [];
   let startNode = heap.array[startId];
   let endNode = heap.array[endId];
@@ -24,6 +24,10 @@ addEventListener("message", (e) => {
   updateValue(heap, startNode, 0 + distance);
 
   while (!isEmpty(heap)) {
+    let i = 0;
+    while (i < speed * 100000) {
+      i++;
+    }
     let currNode = extractMin(heap);
     path.push(currNode);
     if (isEnd(currNode)) {

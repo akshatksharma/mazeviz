@@ -11,15 +11,20 @@ import { isStart, isEnd, getNextNodes, updateValue } from "./nodefunctions.js";
 console.log("running");
 
 addEventListener("message", (e) => {
-  let startId = e.data[0];
-  let heap = e.data[1];
+  let [startId, heap, speed] = e.data;
   // decrease start to 0
   let path = [];
   let startNode = heap.array[startId];
 
   updateValue(heap, startNode, 0);
 
+  // console.log(speed);
   while (!isEmpty(heap)) {
+    let i = 0;
+    while (i < speed * 10000000) {
+      i++;
+    }
+    console.log(i);
     let currNode = extractMin(heap);
     path.push(currNode);
     if (isEnd(currNode)) {

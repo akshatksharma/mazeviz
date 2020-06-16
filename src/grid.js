@@ -74,9 +74,9 @@ export default class grid {
   animateDijkstra() {
     let colorTiles = document.getElementsByClassName("toggle")[0].checked;
     let worker = new Worker("dijkstra.js");
-    this.animateSetup(worker);
+    const speedOption = this.animateSetup(worker);
 
-    worker.postMessage([this.startNode.id, this.heap]);
+    worker.postMessage([this.startNode.id, this.heap, speedOption]);
 
     worker.onmessage = (e) => {
       this.animate(e);
@@ -85,9 +85,14 @@ export default class grid {
 
   animateAStar() {
     let worker = new Worker("aStar.js");
-    this.animateSetup(worker);
+    const speedOption = this.animateSetup(worker);
 
-    worker.postMessage([this.startNode.id, this.endNode.id, this.heap]);
+    worker.postMessage([
+      this.startNode.id,
+      this.endNode.id,
+      this.heap,
+      speedOption,
+    ]);
 
     worker.onmessage = (e) => {
       this.animate(e);
@@ -96,9 +101,9 @@ export default class grid {
 
   animatebfs() {
     let worker = new Worker("bfs.js");
-    this.animateSetup(worker);
+    const speedOption = this.animateSetup(worker);
 
-    worker.postMessage([this.startNode.id, this.heap]);
+    worker.postMessage([this.startNode.id, this.heap, speedOption]);
 
     worker.onmessage = (e) => {
       this.animate(e);
@@ -107,9 +112,9 @@ export default class grid {
 
   animatedfs() {
     let worker = new Worker("dfs.js");
-    this.animateSetup(worker);
+    const speedOption = this.animateSetup(worker);
 
-    worker.postMessage([this.startNode.id, this.heap]);
+    worker.postMessage([this.startNode.id, this.heap, speedOption]);
 
     worker.onmessage = (e) => {
       this.animate(e);
@@ -119,15 +124,22 @@ export default class grid {
   animateSetup(worker) {
     let runButton = document.getElementsByClassName("run")[0];
     let clearButton = document.getElementsByClassName("clear")[0];
-    clearButton.addEventListener("click", () => {
-      worker.terminate();
-      runButton.innerHTML = "run";
-    });
     let resetButton = document.getElementsByClassName("reset")[0];
-    resetButton.addEventListener("click", () => {
+
+    clearButton.addEventListener("click", function () {
       worker.terminate();
       runButton.innerHTML = "run";
     });
+
+    resetButton.addEventListener("click", function () {
+      worker.terminate();
+      runButton.innerHTML = "run";
+    });
+
+    let speedSelect = document.getElementsByClassName("speedSelect")[0];
+    let speedOption = speedSelect.options[speedSelect.selectedIndex].value;
+
+    return speedOption;
   }
 
   animate(e) {
@@ -168,6 +180,7 @@ export default class grid {
 
   visualize() {
     for (let i = 0; i < this.orderedPath.length; i++) {
+      
       setTimeout(() => {
         let { row, col } = this.orderedPath[i];
         let DOMelem = document.getElementById(`node: ${row}, ${col}`);
