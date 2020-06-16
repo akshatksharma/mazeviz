@@ -4,6 +4,16 @@ addEventListener("message", (e) => {
   let stack = [];
   let exploredNodes = [];
   let [startId, heap, speed] = e.data;
+  let speedVal;
+
+  if (speed == "normal") {
+    speedVal = 1;
+  } else if (speed == "slow") {
+    speedVal = 5;
+  } else if (speed == "fast") {
+    speedVal = 0.5;
+  }
+
   let startNode = heap.array[startId];
   updateValue(heap, startNode, 0);
 
@@ -11,7 +21,7 @@ addEventListener("message", (e) => {
 
   while (stack.length != 0) {
     let i = 0;
-    while (i < speed * 1000000) {
+    while (i < speedVal * 10000000) {
       i++;
     }
     let currentNode = stack.pop();

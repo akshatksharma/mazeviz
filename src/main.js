@@ -260,11 +260,13 @@ function reset() {
   const runButton = document.getElementsByClassName("run")[0];
   resetEventListener(runButton);
 
-  // to clear the path pattern being made by the setTimeouts in  grid.visualize() 
+  // to clear the path pattern being made by the setTimeouts in  grid.visualize()
   let timerId = container.dataset.timerId;
   while (timerId--) {
     window.clearTimeout(timerId); // will do nothing if no timeout with id is present
   }
+
+  
 
   main();
 }

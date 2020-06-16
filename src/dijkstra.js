@@ -12,6 +12,16 @@ console.log("running");
 
 addEventListener("message", (e) => {
   let [startId, heap, speed] = e.data;
+  let speedVal;
+
+  if (speed == "normal") {
+    speedVal = 1;
+  } else if (speed == "slow") {
+    speedVal = 5;
+  } else if (speed == "fast") {
+    speedVal = 0.01;
+  }
+
   // decrease start to 0
   let path = [];
   let startNode = heap.array[startId];
@@ -21,7 +31,7 @@ addEventListener("message", (e) => {
   // console.log(speed);
   while (!isEmpty(heap)) {
     let i = 0;
-    while (i < speed * 10000000) {
+    while (i < speedVal * 10000000) {
       i++;
     }
     console.log(i);

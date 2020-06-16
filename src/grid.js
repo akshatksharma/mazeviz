@@ -143,12 +143,12 @@ export default class grid {
   }
 
   animate(e) {
+    let runButton = document.getElementsByClassName("run")[0];
     let colorTiles = document.getElementsByClassName("toggle")[0].checked;
 
     const [, , status] = e.data;
     const [, finished] = e.data;
     if (status == "failed") {
-      let runButton = document.getElementsByClassName("run")[0];
       runButton.innerHTML = "done";
       return;
     }
@@ -164,6 +164,7 @@ export default class grid {
       }
       this.orderedPath = orderedPath;
       this.visualize();
+      runButton.innerHTML = "done";
     } else {
       let [exploredNodes] = e.data;
       exploredNodes.forEach((node) => {
@@ -187,11 +188,6 @@ export default class grid {
         let { row, col } = this.orderedPath[i];
         let DOMelem = document.getElementById(`node: ${row}, ${col}`);
         DOMelem.classList.add("path");
-
-        if (i == this.orderedPath.length - 1) {
-          let runButton = document.getElementsByClassName("run")[0];
-          runButton.innerHTML = "done";
-        }
       }, 50 * i);
       container.dataset.timerId = timer;
     }
