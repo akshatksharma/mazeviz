@@ -266,8 +266,6 @@ function reset() {
     window.clearTimeout(timerId); // will do nothing if no timeout with id is present
   }
 
-  
-
   main();
 }
 
@@ -279,6 +277,19 @@ function clear(grid) {
     weightList = [];
     reset();
   }, 0);
+}
+
+function clearDOMWeights(grid) {
+  let algoSelect = document.getElementsByClassName("algoSelect")[0];
+  let algoOption = algoSelect.options[algoSelect.selectedIndex].value;
+
+  if (algoOption == "bfs" || algoOption == "dfs") {
+    grid.unsetWeights(weightList);
+    setTimeout(() => {
+      weightList = [];
+      reset();
+    }, 0);
+  } else return;
 }
 
 function setAlgo(name, grid) {
@@ -348,7 +359,7 @@ export function main() {
   createDOMGrid(aGrid, container);
 
   let algoSelect = document.getElementsByClassName("algoSelect")[0];
-  algoSelect.addEventListener("change", clear.bind(null, aGrid));
+  algoSelect.addEventListener("change", clearDOMWeights.bind(null, aGrid));
   let algoOption = algoSelect.options[algoSelect.selectedIndex].value;
   setAlgo(algoOption, aGrid);
 
