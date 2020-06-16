@@ -257,12 +257,26 @@ function resetEventListener(button) {
 
 function reset() {
   container.innerHTML = "";
-  container.dataset.resetting = true;
-
   const runButton = document.getElementsByClassName("run")[0];
   resetEventListener(runButton);
 
+  // to clear the path pattern being made by the setTimeouts in  grid.visualize() 
+  let timerId = container.dataset.timerId;
+  while (timerId--) {
+    window.clearTimeout(timerId); // will do nothing if no timeout with id is present
+  }
+
   main();
+}
+
+function clear(grid) {
+  grid.unsetWalls(wallList);
+  grid.unsetWeights(weightList);
+  setTimeout(() => {
+    wallList = [];
+    weightList = [];
+    reset();
+  }, 0);
 }
 
 function setAlgo(name, grid) {
@@ -332,30 +346,12 @@ export function main() {
   createDOMGrid(aGrid, container);
 
   let algoSelect = document.getElementsByClassName("algoSelect")[0];
-  algoSelect.addEventListener("change", function () {
-    aGrid.unsetWalls(wallList);
-    aGrid.unsetWeights(weightList);
-    setTimeout(() => {
-      wallList = [];
-      weightList = [];
-      reset();
-    }, 0);
-  });
-
+  algoSelect.addEventListener("change", clear.bind(null, aGrid));
   let algoOption = algoSelect.options[algoSelect.selectedIndex].value;
-
   setAlgo(algoOption, aGrid);
 
   let clearButton = document.getElementsByClassName("clear")[0];
-  clearButton.addEventListener("click", function () {
-    aGrid.unsetWalls(wallList);
-    aGrid.unsetWeights(weightList);
-    setTimeout(() => {
-      wallList = [];
-      weightList = [];
-      reset();
-    }, 0);
-  });
+  clearButton.addEventListener("click", clear.bind(null, aGrid));
 
   let resetButton = document.getElementsByClassName("reset")[0];
   resetButton.addEventListener("click", reset);

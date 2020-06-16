@@ -179,9 +179,11 @@ export default class grid {
   }
 
   visualize() {
+    const container = document.getElementsByClassName("nodeContainer")[0];
+
     for (let i = 0; i < this.orderedPath.length; i++) {
-      
-      setTimeout(() => {
+      let timer = setTimeout(() => {
+        // console.log(i);
         let { row, col } = this.orderedPath[i];
         let DOMelem = document.getElementById(`node: ${row}, ${col}`);
         DOMelem.classList.add("path");
@@ -191,6 +193,7 @@ export default class grid {
           runButton.innerHTML = "done";
         }
       }, 50 * i);
+      container.dataset.timerId = timer;
     }
   }
 }
