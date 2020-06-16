@@ -297,6 +297,8 @@ function setAlgo(name, grid) {
   let weightButtonVisual = document.getElementsByClassName("weightButton")[0];
   let weightButtonRadio = document.getElementById("r2");
 
+  console.log(name);
+
   if (name === "dijkstra") {
     weightButtonVisual.classList.remove("cursor-not-allowed");
     weightButtonVisual.style.filter = "brightness(100%)";
@@ -305,6 +307,7 @@ function setAlgo(name, grid) {
       "Dijkstra's Algorithm is weighted and guarantees the shortest path";
   }
   if (name === "a*") {
+    console.log("chungus1");
     weightButtonVisual.classList.remove("cursor-not-allowed");
     weightButtonVisual.style.filter = "brightness(100%)";
     weightButtonRadio.disabled = false;
@@ -359,9 +362,14 @@ export function main() {
   createDOMGrid(aGrid, container);
 
   let algoSelect = document.getElementsByClassName("algoSelect")[0];
-  algoSelect.addEventListener("change", clearDOMWeights.bind(null, aGrid));
   let algoOption = algoSelect.options[algoSelect.selectedIndex].value;
   setAlgo(algoOption, aGrid);
+
+  algoSelect.addEventListener("change", function () {
+    clearDOMWeights(aGrid);
+    let algoOption = algoSelect.options[algoSelect.selectedIndex].value;
+    setAlgo(algoOption, aGrid);
+  });
 
   let clearButton = document.getElementsByClassName("clear")[0];
   clearButton.addEventListener("click", clear.bind(null, aGrid));
