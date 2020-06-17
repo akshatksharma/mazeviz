@@ -34,8 +34,13 @@ addEventListener("message", (e) => {
 
     let neighbors = getNextNodes(currentNode);
 
-    neighbors.forEach((neighbor) => {
-      if (neighbor.wall) return;
+    for (let i = 0; i < neighbors.length; i++) {
+      const neighbor = neighbors[i];
+      if (isEnd(neighbor)) {
+        postMessage([exploredNodes, true]);
+        return;
+      }
+      if (neighbor.wall) continue;
 
       if (!neighbor.visited) {
         exploredNodes.push(neighbor);
@@ -45,7 +50,7 @@ addEventListener("message", (e) => {
         stack.push(neighbor);
         postMessage([exploredNodes, false]);
       }
-    });
+    }
 
     if (stack.length == 0) {
       postMessage([exploredNodes, false, "failed"]);
