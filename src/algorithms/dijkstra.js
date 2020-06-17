@@ -1,12 +1,5 @@
-import {
-  insert,
-  decrease,
-  extractMin,
-  heapify,
-  swapNodes,
-  isEmpty,
-} from "./heapfunctions.js";
-import { isStart, isEnd, getNextNodes, updateValue } from "./nodefunctions.js";
+import { extractMin, isEmpty } from "../heap/heapfunctions.js";
+import { isEnd, getNextNodes, updateValue } from "../heap/nodefunctions.js";
 
 console.log("running");
 

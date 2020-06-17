@@ -1,4 +1,4 @@
-import { isStart, isEnd, getNextNodes, updateValue } from "./nodefunctions.js";
+import { isEnd, getNextNodes, updateValue } from "../heap/nodefunctions.js";
 
 addEventListener("message", (e) => {
   let stack = [];

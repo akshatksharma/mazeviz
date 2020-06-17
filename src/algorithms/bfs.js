@@ -1,6 +1,4 @@
-import { enqueue, dequeue, isEmpty } from "./queue.js";
-
-import { isEnd, getNextNodes, updateValue } from "./nodefunctions.js";
+import { isEnd, getNextNodes, updateValue } from "../heap/nodefunctions.js";
 
 addEventListener("message", (e) => {
   let queue = [];
@@ -19,14 +17,14 @@ addEventListener("message", (e) => {
   let startNode = heap.array[startId];
 
   updateValue(heap, startNode, 0);
-  enqueue(queue, startNode);
+  queue.push(startNode);
 
-  while (!isEmpty(queue)) {
+  while (queue.length != 0) {
     let i = 0;
     while (i < speedVal * 10000000) {
       i++;
     }
-    let currentNode = dequeue(queue);
+    let currentNode = queue.shift();
     exploredNodes.push(currentNode);
     if (isEnd(currentNode)) {
       postMessage([exploredNodes, true]);
@@ -47,7 +45,7 @@ addEventListener("message", (e) => {
         neighbor.dist = newDist;
         neighbor.visited = true;
         neighbor.prevNode = currentNode;
-        enqueue(queue, neighbor);
+        queue.push(neighbor);
         postMessage([exploredNodes, false]);
       }
     });

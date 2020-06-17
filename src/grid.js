@@ -1,5 +1,5 @@
-import minheap from "./minheap.js";
-import node from "./node_.js";
+import minheap from "./heap/minheap.js";
+import node from "./heap/node_.js";
 
 export default class grid {
   constructor(numRows, numCols, startLoc, endLoc) {
@@ -73,7 +73,7 @@ export default class grid {
 
   animateDijkstra() {
     let colorTiles = document.getElementsByClassName("toggle")[0].checked;
-    let worker = new Worker("dijkstra.js");
+    let worker = new Worker("./algorithms/dijkstra.js");
     const speedOption = this.animateSetup(worker);
 
     worker.postMessage([this.startNode.id, this.heap, speedOption]);
@@ -84,7 +84,7 @@ export default class grid {
   }
 
   animateAStar() {
-    let worker = new Worker("aStar.js");
+    let worker = new Worker("./algorithms/aStar.js");
     const speedOption = this.animateSetup(worker);
 
     worker.postMessage([
@@ -100,7 +100,7 @@ export default class grid {
   }
 
   animatebfs() {
-    let worker = new Worker("bfs.js");
+    let worker = new Worker("./algorithms/bfs.js");
     const speedOption = this.animateSetup(worker);
 
     worker.postMessage([this.startNode.id, this.heap, speedOption]);
@@ -111,7 +111,7 @@ export default class grid {
   }
 
   animatedfs() {
-    let worker = new Worker("dfs.js");
+    let worker = new Worker("./algorithms/dfs.js");
     const speedOption = this.animateSetup(worker);
 
     worker.postMessage([this.startNode.id, this.heap, speedOption]);

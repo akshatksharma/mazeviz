@@ -1,4 +1,4 @@
-import { decrease } from "./heapfunctions.js";
+import { decrease } from "../heap/heapfunctions.js";
 
 export function isStart(node) {
   // given the start coordinates in the grid, determine whether the node is the start or end
