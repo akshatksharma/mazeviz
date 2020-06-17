@@ -27,7 +27,6 @@ addEventListener("message", (e) => {
     while (i < speedVal * 10000000) {
       i++;
     }
-    console.log(i);
     let currNode = extractMin(heap);
     path.push(currNode);
     if (isEnd(currNode)) {

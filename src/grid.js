@@ -181,6 +181,7 @@ export default class grid {
 
   visualize() {
     const container = document.getElementsByClassName("nodeContainer")[0];
+    const runButton = document.getElementsByClassName("run")[0];
 
     for (let i = 0; i < this.orderedPath.length; i++) {
       let timer = setTimeout(() => {
@@ -191,5 +192,6 @@ export default class grid {
       }, 50 * i);
       container.dataset.timerId = timer;
     }
+    runButton.innerHTML = "done";
   }
 }

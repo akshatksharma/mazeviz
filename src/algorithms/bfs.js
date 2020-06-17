@@ -34,16 +34,16 @@ addEventListener("message", (e) => {
     let neighbors = getNextNodes(currentNode);
 
     neighbors.forEach((neighbor) => {
-      exploredNodes.push(neighbor);
       if (currentNode.dist == Infinity) {
         postMessage([exploredNodes, false, "failed"]);
         return;
       }
       if (neighbor.wall) return;
+
+      exploredNodes.push(neighbor);
       if (!neighbor.visited) {
         const newDist = currentNode.dist + 1;
-        neighbor.dist = newDist;
-        neighbor.visited = true;
+        updateValue(heap, neighbor, newDist);
         neighbor.prevNode = currentNode;
         queue.push(neighbor);
         postMessage([exploredNodes, false]);

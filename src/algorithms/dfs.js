@@ -27,26 +27,25 @@ addEventListener("message", (e) => {
     let currentNode = stack.pop();
     currentNode.visited = true;
 
+    if (isEnd(currentNode)) {
+      postMessage([exploredNodes, true]);
+      console.log("ended");
+      break;
+    }
+
     let neighbors = getNextNodes(currentNode);
 
-    for (let i = 0; i < neighbors.length; i++) {
-      const neighbor = neighbors[i];
+    neighbors.forEach((neighbor) => {
+      if (neighbor.wall) return;
       if (!neighbor.visited) {
         neighbor.prevNode = currentNode;
         neighbor.visited = true;
         exploredNodes.push(neighbor);
 
-        if (isEnd(neighbor)) {
-          console.log("hello");
-          console.log(currentNode);
-          postMessage([exploredNodes, true]);
-          return;
-        }
-
         console.log(neighbor);
         stack.push(neighbor);
         postMessage([exploredNodes, false]);
       }
-    }
+    });
   }
 });
