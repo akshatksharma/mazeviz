@@ -37,8 +37,8 @@ addEventListener("message", (e) => {
     neighbors.forEach((neighbor) => {
       if (neighbor.wall) return;
 
-      exploredNodes.push(neighbor);
       if (!neighbor.visited) {
+        exploredNodes.push(neighbor);
         const newDist = currentNode.dist + 1;
         updateValue(heap, neighbor, newDist);
         neighbor.prevNode = currentNode;
