@@ -289,7 +289,11 @@ function clearDOMWeights(grid) {
       weightList = [];
       reset();
     }, 0);
-  } else return;
+  } else {
+    setTimeout(() => {
+      reset();
+    }, 0);
+  }
 }
 
 function setAlgo(name, grid) {
