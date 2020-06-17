@@ -16,7 +16,6 @@ addEventListener("message", (e) => {
 
   let startNode = heap.array[startId];
   updateValue(heap, startNode, 0);
-
   stack.push(startNode);
 
   while (stack.length != 0) {
@@ -24,28 +23,33 @@ addEventListener("message", (e) => {
     while (i < speedVal * 10000000) {
       i++;
     }
+
     let currentNode = stack.pop();
-    currentNode.visited = true;
+    exploredNodes.push(currentNode);
 
     if (isEnd(currentNode)) {
       postMessage([exploredNodes, true]);
-      console.log("ended");
-      break;
+      return;
     }
 
     let neighbors = getNextNodes(currentNode);
 
     neighbors.forEach((neighbor) => {
       if (neighbor.wall) return;
-      if (!neighbor.visited) {
-        neighbor.prevNode = currentNode;
-        neighbor.visited = true;
-        exploredNodes.push(neighbor);
 
-        console.log(neighbor);
+      exploredNodes.push(neighbor);
+      if (!neighbor.visited) {
+        const newDist = currentNode.dist + 1;
+        updateValue(heap, neighbor, newDist);
+        neighbor.prevNode = currentNode;
         stack.push(neighbor);
         postMessage([exploredNodes, false]);
       }
     });
+
+    if (stack.length == 0) {
+      postMessage([exploredNodes, false, "failed"]);
+      return;
+    }
   }
 });

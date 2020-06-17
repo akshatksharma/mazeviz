@@ -15,7 +15,6 @@ addEventListener("message", (e) => {
     speedVal = 0.5;
   }
   let startNode = heap.array[startId];
-
   updateValue(heap, startNode, 0);
   queue.push(startNode);
 
@@ -24,8 +23,10 @@ addEventListener("message", (e) => {
     while (i < speedVal * 10000000) {
       i++;
     }
+
     let currentNode = queue.shift();
     exploredNodes.push(currentNode);
+
     if (isEnd(currentNode)) {
       postMessage([exploredNodes, true]);
       return;
@@ -34,10 +35,6 @@ addEventListener("message", (e) => {
     let neighbors = getNextNodes(currentNode);
 
     neighbors.forEach((neighbor) => {
-      if (currentNode.dist == Infinity) {
-        postMessage([exploredNodes, false, "failed"]);
-        return;
-      }
       if (neighbor.wall) return;
 
       exploredNodes.push(neighbor);
@@ -49,5 +46,10 @@ addEventListener("message", (e) => {
         postMessage([exploredNodes, false]);
       }
     });
+
+    if (queue.length == 0) {
+      postMessage([exploredNodes, false, "failed"]);
+      return;
+    }
   }
 });

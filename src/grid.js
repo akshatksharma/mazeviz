@@ -185,7 +185,6 @@ export default class grid {
 
     for (let i = 0; i < this.orderedPath.length; i++) {
       let timer = setTimeout(() => {
-        // console.log(i);
         let { row, col } = this.orderedPath[i];
         let DOMelem = document.getElementById(`node: ${row}, ${col}`);
         DOMelem.classList.add("path");

@@ -301,8 +301,6 @@ function setAlgo(name, grid) {
   let weightButtonVisual = document.getElementsByClassName("weightButton")[0];
   let weightButtonRadio = document.getElementById("r2");
 
-  console.log(name);
-
   if (name === "dijkstra") {
     weightButtonVisual.classList.remove("cursor-not-allowed");
     weightButtonVisual.style.filter = "brightness(100%)";
@@ -311,7 +309,6 @@ function setAlgo(name, grid) {
       "Dijkstra's Algorithm is weighted and guarantees the shortest path";
   }
   if (name === "a*") {
-    console.log("chungus1");
     weightButtonVisual.classList.remove("cursor-not-allowed");
     weightButtonVisual.style.filter = "brightness(100%)";
     weightButtonRadio.disabled = false;

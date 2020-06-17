@@ -21,7 +21,6 @@ addEventListener("message", (e) => {
 
   updateValue(heap, startNode, 0);
 
-  // console.log(speed);
   while (!isEmpty(heap)) {
     let i = 0;
     while (i < speedVal * 10000000) {
