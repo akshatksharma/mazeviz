@@ -1,8 +1,10 @@
 import grid from "./grid.js";
 
-// determining if user is on mobile or computer
-// if on computer assign class to body that will tell css to disable focus styling on buttons etc
+/** Determins if user is on mobile or computer
+ * @param  {event} e -- the default event
+ */
 function userDevice(e) {
+  // if on computer assign class to body that will tell css to disable focus styling on buttons etc
   if (e.keyCode === 9) {
     document.body.classList.add("onComputer");
     window.removeEventListener("keydown", userDevice);
@@ -11,13 +13,17 @@ function userDevice(e) {
 window.addEventListener("keydown", userDevice);
 
 // setting intial values for walls, start and end loci, and overall container for DOM representation of nodes
+const container = document.getElementsByClassName("nodeContainer")[0];
 let wallList = [];
 let weightList = [];
 let weight = 10;
 let startLoc = [14, 15];
 let endLoc = [14, 36];
-const container = document.getElementsByClassName("nodeContainer")[0];
 
+/** Creates divs for each node in the heap and assigns them certain parameters on their datasets and event listeners
+ * @param  {object} grid - the collection of all nodes
+ * @param  {object} container - the location on the DOM that the nodes will be rendered
+ */
 function createDOMGrid(grid, container) {
   const frag = document.createDocumentFragment();
 
@@ -78,7 +84,10 @@ function createDOMGrid(grid, container) {
   container.appendChild(frag);
 }
 
-// helper methods (and helper helper methods)
+/** Toggles the presence of an item in an array.
+ * @param  {array} array -- array that needs to be mutated
+ * @param  {any} item -- item that needs to toggled
+ */
 const toggleArray = (array, item) =>
   array.includes(item) ? array.filter((i) => i != item) : [...array, item];
 
@@ -86,6 +95,9 @@ const wallOrWeight = document.getElementsByClassName("controlForm")[0].elements[
   "control"
 ];
 
+/** Toggles the presence of a wall for a given div on screen and records the change so that this state can be updated internally
+ * @param  {HTMLElement} domNode -- a given div representing a node on the screen
+ */
 const toggleWall = (domNode) => {
   domNode.dataset.wall = domNode.dataset.wall == "false" ? "true" : "false";
   if (domNode.dataset.wall === "true") {
