@@ -18,8 +18,8 @@ const container = document.getElementsByClassName("nodeContainer")[0];
 let weight = 10;
 let wallList = [];
 let weightList = [];
-let startLoc = [14, 15];
-let endLoc = [14, 36];
+let startLoc = [3, 3];
+let endLoc = [23, 23];
 
 /** Creates DOM node / div for each node in the heap and assigns them certain parameters on their datasets and event listeners
  * @param  {object} grid - the collection of all nodes
@@ -76,10 +76,11 @@ function createDOMGrid(grid, container) {
     }
 
     // add event listeners for each node
-    domNode.addEventListener("mousedown", mousedown);
-    domNode.addEventListener("mouseup", mouseup);
-    domNode.addEventListener("mouseenter", mouseenter);
-    domNode.addEventListener("mouseleave", mouseleave);
+    domNode.addEventListener("pointerdown", mousedown);
+    domNode.addEventListener("pointerup", mouseup);
+    domNode.addEventListener("pointerenter", mouseenter);
+    domNode.addEventListener("pointerleave", mouseleave);
+    domNode.addEventListener("touchmove", mouseenter);
 
     frag.appendChild(domNode);
   });
@@ -152,10 +153,11 @@ const toggleWeight = (domNode) => {
   weightList = toggleArray(weightList, domNode.dataset.id);
 };
 
-/** Takes in a state to be checked and then looks at container dataset to see if that state is active or not. Was helpful in reducing repaeated code all across the mouse functions. 
+/** Takes in a state to be checked and then looks at container dataset to see if that state is active or not. Was helpful in reducing repaeated code all across the mouse functions.
  * Returns boolean value of whether the app is in that state (T) or not (F)
  * @param  {String} state -- the state that needs to be checked
- */ 
+ */
+
 const dragState = (state) => {
   const mouseDown = container.dataset.mouseDown;
   const settingWalls = container.dataset.settingWalls;
@@ -181,8 +183,8 @@ const dragState = (state) => {
   else if (state == "end") return mouseDown == "true" && clickEnd == "true";
 };
 
-/** Assigns DOM nodes different properties based on 
- * @param  {Event} event -- the standard JS event object 
+/** Assigns DOM nodes different properties based on
+ * @param  {Event} event -- the standard JS event object
  */
 function mousedown(event) {
   container.dataset.mouseDown = true;
@@ -190,7 +192,6 @@ function mousedown(event) {
   const onEnd = this.classList.contains("end");
 
   if (this != event.target) {
-    console.log(event.target);
     let parent = event.target.parentElement;
     parent.dataset.weight = 1;
     parent.dataset.isWeight = "false";
@@ -200,16 +201,19 @@ function mousedown(event) {
   if (onStart) {
     container.dataset.startMove = true;
     return;
-  }
-  if (onEnd) {
+  } else if (onEnd) {
     container.dataset.endMove = true;
     return;
   }
-  // if radio for wall in bottom bar is selected, toggle wall
+
   if (wallOrWeight.value == "wall") {
     container.dataset.settingWalls = true;
     toggleWall(this);
-  } else if (wallOrWeight.value == "weight") {
+  } else if (
+    wallOrWeight.value == "weight" &&
+    (container.dataset.startMove == "false" ||
+      container.dataset.endMove == "false")
+  ) {
     container.dataset.settingWeights = true;
     toggleWeight(this);
   }
@@ -265,6 +269,7 @@ function mouseleave() {
 }
 
 function mouseup() {
+  console.log(container.dataset.startMove);
   const draggingStart = dragState("start");
   const draggingEnd = dragState("end");
   const dragStartOrEnd = draggingStart || draggingEnd;
@@ -382,7 +387,9 @@ export function main() {
   container.dataset.settingWalls = false;
   container.dataset.settingWeights = false;
 
-  let aGrid = new grid(25, 50, startLoc, endLoc);
+  let aGrid = /Mobi|Android/i.test(navigator.userAgent)
+    ? new grid(25, 25, startLoc, endLoc)
+    : new grid(25, 50, startLoc, endLoc);
 
   aGrid.createNodes();
 

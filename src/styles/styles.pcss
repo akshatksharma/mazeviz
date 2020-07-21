@@ -152,9 +152,15 @@ body:not(.onComputer) textarea:focus {
 }
 
 .toggle__dot {
-  top: 0.7rem;
+  top: 0.3rem;
   left: -0.25rem;
   transition: all 0.3s ease-in-out;
+}
+
+@media (min-width: 768px) {
+  .toggle__dot {
+    top: 0.7rem;
+  }
 }
 
 input:checked ~ .toggle__dot {
@@ -164,7 +170,6 @@ input:checked ~ .toggle__dot {
 
 .bottomBar {
   background-color: #3e415a;
-  width: 98%;
 }
 
 .info {
@@ -174,10 +179,11 @@ input:checked ~ .toggle__dot {
 .nodeContainer {
   background-color: #eaedf3;
   display: grid;
-  grid-template-columns: repeat(50, 25px);
+  grid-template-columns: repeat(25, 15px);
   border: 0px solid;
-  border-radius: 25px;
   overflow: hidden;
+
+  user-select: none;
 }
 
 .node {
@@ -185,11 +191,25 @@ input:checked ~ .toggle__dot {
   border: 1px solid #f6f8fb;
   border-right: 0px;
   border-bottom: 0px;
-  height: 25px;
+  height: 15px;
 
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+@media (min-width: 768px) {
+  .nodeContainer {
+    background-color: #eaedf3;
+    display: grid;
+    grid-template-columns: repeat(50, 25px);
+    border: 0px solid;
+    border-radius: 50px;
+    overflow: hidden;
+  }
+  .node {
+    height: 25px;
+  }
 }
 
 .row--end {
@@ -214,8 +234,8 @@ input:checked ~ .toggle__dot {
 }
 
 .weight {
-  height: 17px;
-  width: 17px;
+  height: 12px;
+  width: 12px;
   background: linear-gradient(270deg, #cbe6e8, #96b7d4);
   background-size: 400% 400%;
   @apply rounded-full;
@@ -228,8 +248,8 @@ input:checked ~ .toggle__dot {
 }
 
 .weight--quiet {
-  height: 17px;
-  width: 17px;
+  height: 12px;
+  width: 12px;
   background: linear-gradient(270deg, #cbe6e8, #96b7d4);
   background-size: 400% 400%;
   @apply rounded-full;
@@ -239,6 +259,14 @@ input:checked ~ .toggle__dot {
   will-change: transform;
   animation: 0.25s ease 0s 1 alternate forwards running,
     gradient 60s ease infinite;
+}
+
+@media (min-width: 768px) {
+  .weight,
+  .weight--quiet {
+    height: 17px;
+    width: 17px;
+  }
 }
 
 @keyframes gradient {

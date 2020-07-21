@@ -9,24 +9,24 @@
   </head>
   <body class="darkGray">
     <div
-      class="page container darkGray mx-auto flex flex-col items-center mb-4"
+      class="page container darkGray mx-auto flex flex-col items-center mb-4 p-4"
     >
-      <div class="title w-full flex justify-end">
-        <div class="title__posisiton w-2/3 flex flex-col">
+      <div class="title w-full flex justify-center md: justify-end mb-10">
+        <div class="title__posisiton w-full md:w-2/3 flex flex-col">
           <h1
-            class="title__text font-pp text-5xl text-gray-200 font-hairline tracking-widest glow text-right mt-4"
+            class="title__text font-pp text-4xl text-gray-200 font-hairline tracking-widest glow text-center md:text-right mt-4"
           >
             Maze Visualizer
           </h1>
           <h2
-            class="title__subtext font-pp text-xl text-gray-200 font-medium tracking-widest lowercase text-right mb-1"
+            class="title__subtext font-pp text-md md:text-xl text-gray-200 font-medium tracking-widest lowercase text-center md:text-right mb-1"
           >
-            click and drag to draw a maze
+            click or drag to draw a maze
           </h2>
         </div>
       </div>
-      <div class="w-full flex justify-start">
-        <div class="inline-block justify-start relative w-32 ml-10 mb-2">
+      <div class="w-full flex justify-center md:justify-start">
+        <div class="inline-block justify-start relative w-32 md:ml-10 mb-2">
           <select class="speedSelect select w-full rounded-full">
             <option value="normal">normal</option>
             <option value="slow">slow</option>
@@ -47,11 +47,31 @@
       </div>
 
       <div class="nodeContainer center"></div>
+      <div class="text-center pt-6 px-4">
+        <div
+          class="info p-2 items-center text-indigo-100 leading-none lg:rounded-full flex lg:inline-flex"
+          role="alert"
+        >
+          <svg
+            class="fill-current w-3 h-3 mr-2"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+          >
+            <path
+              d="M12.432 0c1.34 0 2.01.912 2.01 1.957 0 1.305-1.164 2.512-2.679 2.512-1.269 0-2.009-.75-1.974-1.99C9.789 1.436 10.67 0 12.432 0zM8.309 20c-1.058 0-1.833-.652-1.093-3.524l1.214-5.092c.211-.814.246-1.141 0-1.141-.317 0-1.689.562-2.502 1.117l-.528-.88c2.572-2.186 5.531-3.467 6.801-3.467 1.057 0 1.233 1.273.705 3.23l-1.391 5.352c-.246.945-.141 1.271.106 1.271.317 0 1.357-.392 2.379-1.207l.6.814C12.098 19.02 9.365 20 8.309 20z"
+            />
+          </svg>
+          <span
+            class="info--text mr-2 text-sm text-gray-400 text-left flex-auto"
+            >sample</span
+          >
+        </div>
+      </div>
       <div
-        class="bottomBar block sm:grid sm:grid-cols-7 grid-flow-col blueGray py-2 px-10 mt-6 mb-1 rounded-full"
+        class="bottomBar block sm:block md:grid md:grid-cols-7 grid-flow-col blueGray py-4 md:py-2 px-10 mt-6 mb-1 md:rounded-full w-screen md:w-auto"
       >
         <div
-          class="sideButton h-full relative col-start-1 col-end-3 grid-cols-3 rounded-full r"
+          class="sideButton h-full relative col-start-1 col-end-3 grid-cols-3 rounded-full mb-4 md: mb-0"
         >
           <div
             class="sideButtonlayout darkGray p-2 inline-flex items-center rounded-full"
@@ -121,7 +141,7 @@
         </div>
 
         <div
-          class="runButton--container col-start-3 col-end-6 inline-flex justify-center items-center"
+          class="runButton--container col-start-3 col-end-6 inline-flex justify-center items-center mb-4 md: mb-0"
         >
           <button class="clear btn blueGray rounded-r">clear</button>
           <button class="run btn blueGray rounded-l">run</button>
@@ -144,10 +164,9 @@
           </label>
         </div>
       </div>
-
       <div class="text-center pt-6 px-4">
         <div
-          class="info p-2 items-center text-indigo-100 leading-none lg:rounded-full flex lg:inline-flex"
+          class="p-2 opacity-0 sm: opacity-100 text-indigo-100 leading-none lg:rounded-full flex items-center lg:inline-flex border border-solid border-red-400"
           role="alert"
         >
           <svg
@@ -160,12 +179,13 @@
             />
           </svg>
           <span
-            class="info--text mr-2 text-sm text-gray-400 text-left flex-auto"
-            >sample</span
-          >
+            class="info--text--warning mr-2 text-sm text-gray-400 text-center flex-auto"
+            >Dragging with touch is currently not supported. Sorry for the
+            trouble : (
+          </span>
         </div>
       </div>
     </div>
-    <script src="index.js" type="module"></script>
+    <script src="index.js"></script>
   </body>
 </html>
