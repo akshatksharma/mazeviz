@@ -13,16 +13,17 @@ function userDevice(e) {
 window.addEventListener("keydown", userDevice);
 
 // setting intial values for walls, start and end loci, and overall container for DOM representation of nodes
+// when grid is rerendered on mouseup, the arrays store the values that need to be passed into the grid to update walls, weights, and start/end locations
 const container = document.getElementsByClassName("nodeContainer")[0];
+let weight = 10;
 let wallList = [];
 let weightList = [];
-let weight = 10;
 let startLoc = [14, 15];
 let endLoc = [14, 36];
 
-/** Creates divs for each node in the heap and assigns them certain parameters on their datasets and event listeners
+/** Creates DOM node / div for each node in the heap and assigns them certain parameters on their datasets and event listeners
  * @param  {object} grid - the collection of all nodes
- * @param  {object} container - the location on the DOM that the nodes will be rendered
+ * @param  {object} container - the location on the DOM that the nodes will be rendered as divs
  */
 function createDOMGrid(grid, container) {
   const frag = document.createDocumentFragment();
@@ -48,6 +49,7 @@ function createDOMGrid(grid, container) {
       domNode.classList.add("wall--quiet");
     }
 
+    // if flagged as weight, and not start, end, or weight, display a wall
     if (node.weight > 1 && !(node.wall && node.isStart() && node.isEnd())) {
       let node = document.createElement("div");
       node.classList.add("weight--quiet");
@@ -63,7 +65,7 @@ function createDOMGrid(grid, container) {
       domNode.classList.add("end");
     }
 
-    // if going to be end of column, or end of row, style differently
+    // if going to be end of column, or end of row, style differently (bc of borders)
     const lastInRow = node.col % grid.numCols == 0;
     const lastInCol = node.row == grid.numRows;
     if (lastInRow) {
@@ -73,6 +75,7 @@ function createDOMGrid(grid, container) {
       domNode.classList.add("col--end");
     }
 
+    // add event listeners for each node
     domNode.addEventListener("mousedown", mousedown);
     domNode.addEventListener("mouseup", mouseup);
     domNode.addEventListener("mouseenter", mouseenter);
@@ -95,28 +98,39 @@ const wallOrWeight = document.getElementsByClassName("controlForm")[0].elements[
   "control"
 ];
 
-/** Toggles the presence of a wall for a given div on screen and records the change so that this state can be updated internally
+/** Toggles the presence of a wall for a given DOM node / div on screen and records the change so that this state can be updated internally
  * @param  {HTMLElement} domNode -- a given div representing a node on the screen
  */
 const toggleWall = (domNode) => {
+  // toggle state of domNode's wall dataset value
   domNode.dataset.wall = domNode.dataset.wall == "false" ? "true" : "false";
+
+  // if is a wall now, add the wall class styling, ONLY if is not already a weight
   if (domNode.dataset.wall === "true") {
     if (domNode.dataset.isWeight == "true") {
       return;
     }
     domNode.classList.add("wall");
   }
+
+  // else remove the wall styling
   if (domNode.dataset.wall === "false") {
     domNode.classList.remove("wall");
     domNode.classList.remove("wall--quiet");
   }
+
+  // add / remove id of wall added/removed to the list of walls
   wallList = toggleArray(wallList, domNode.dataset.id);
 };
-
+/**Toggles the presence of a wall for a given DOM node / div on screen and records the change so that this state can be updated internally
+ * @param  {HTMLElement} domNode -- a given div representing a node on the screen
+ */
 const toggleWeight = (domNode) => {
+  // toggle state
   domNode.dataset.isWeight =
     domNode.dataset.isWeight === "false" ? "true" : "false";
 
+  // if weight, add nested div and add other values, ONLY if not already wall
   if (domNode.dataset.isWeight == "true") {
     if (domNode.dataset.wall == "true") {
       return;
@@ -125,17 +139,23 @@ const toggleWeight = (domNode) => {
     domNode.dataset.isWeight = "true";
     let node = document.createElement("div");
     node.classList.add("weight");
-
     domNode.appendChild(node);
+
+    // else remove inner div and reset weight to min value
   } else if (domNode.dataset.isWeight == "false") {
     domNode.dataset.weight = 1;
     domNode.dataset.isWeight = "false";
     domNode.innerHTML = "";
   }
 
+  // add / remove id of weight added/removed to the list of walls
   weightList = toggleArray(weightList, domNode.dataset.id);
 };
 
+/** Takes in a state to be checked and then looks at container dataset to see if that state is active or not. Was helpful in reducing repaeated code all across the mouse functions. 
+ * Returns boolean value of whether the app is in that state (T) or not (F)
+ * @param  {String} state -- the state that needs to be checked
+ */ 
 const dragState = (state) => {
   const mouseDown = container.dataset.mouseDown;
   const settingWalls = container.dataset.settingWalls;
@@ -161,6 +181,9 @@ const dragState = (state) => {
   else if (state == "end") return mouseDown == "true" && clickEnd == "true";
 };
 
+/** Assigns DOM nodes different properties based on 
+ * @param  {Event} event -- the standard JS event object 
+ */
 function mousedown(event) {
   container.dataset.mouseDown = true;
   const onStart = this.classList.contains("start");
@@ -194,7 +217,6 @@ function mousedown(event) {
 
 function mouseenter(event) {
   if (this != event.target) {
-    console.log(event.target);
     let parent = event.target.parentElement;
     parent.dataset.weight = 1;
     parent.dataset.isWeight = "false";
