@@ -11,6 +11,29 @@
     <div
       class="page container darkGray mx-auto flex flex-col items-center mb-4 p-4"
     >
+      <div class="text-center pt-6 px-4">
+        <div
+          class="p-2 opacity-0 sm: opacity-100 text-indigo-100 leading-none lg:rounded-full flex items-center lg:inline-flex border border-solid border-red-400"
+          role="alert"
+        >
+          <svg
+            class="fill-current"
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6 16.094l-4.157-4.104 4.1-4.141-1.849-1.849-4.105 4.159-4.156-4.102-1.833 1.834 4.161 4.12-4.104 4.157 1.834 1.832 4.118-4.159 4.143 4.102 1.848-1.849z"
+            />
+          </svg>
+          <span
+            class="info--text--warning mr-2 text-sm text-gray-400 text-left ml-2 flex-auto"
+            >Dragging with touch is currently not supported. Sorry for the
+            trouble : (
+          </span>
+        </div>
+      </div>
       <div class="title w-full flex justify-center md: justify-end mb-10">
         <div class="title__posisiton w-full md:w-2/3 flex flex-col">
           <h1
@@ -71,7 +94,7 @@
         class="bottomBar block sm:block md:grid md:grid-cols-7 grid-flow-col blueGray py-4 md:py-2 px-10 mt-6 mb-1 md:rounded-full w-screen md:w-auto"
       >
         <div
-          class="sideButton h-full relative col-start-1 col-end-3 grid-cols-3 rounded-full mb-4 md: mb-0"
+          class="sideButton h-full relative col-start-1 col-end-3 grid-cols-3 rounded-full mb-0"
         >
           <div
             class="sideButtonlayout darkGray p-2 inline-flex items-center rounded-full"
@@ -141,7 +164,7 @@
         </div>
 
         <div
-          class="runButton--container col-start-3 col-end-6 inline-flex justify-center items-center mb-4 md: mb-0"
+          class="runButton--container col-start-3 col-end-6 inline-flex justify-center items-center mb-0"
         >
           <button class="clear btn blueGray rounded-r">clear</button>
           <button class="run btn blueGray rounded-l">run</button>
@@ -162,27 +185,6 @@
               colors
             </div>
           </label>
-        </div>
-      </div>
-      <div class="text-center pt-6 px-4">
-        <div
-          class="p-2 opacity-0 sm: opacity-100 text-indigo-100 leading-none lg:rounded-full flex items-center lg:inline-flex border border-solid border-red-400"
-          role="alert"
-        >
-          <svg
-            class="fill-current w-3 h-3 mr-2"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-          >
-            <path
-              d="M12.432 0c1.34 0 2.01.912 2.01 1.957 0 1.305-1.164 2.512-2.679 2.512-1.269 0-2.009-.75-1.974-1.99C9.789 1.436 10.67 0 12.432 0zM8.309 20c-1.058 0-1.833-.652-1.093-3.524l1.214-5.092c.211-.814.246-1.141 0-1.141-.317 0-1.689.562-2.502 1.117l-.528-.88c2.572-2.186 5.531-3.467 6.801-3.467 1.057 0 1.233 1.273.705 3.23l-1.391 5.352c-.246.945-.141 1.271.106 1.271.317 0 1.357-.392 2.379-1.207l.6.814C12.098 19.02 9.365 20 8.309 20z"
-            />
-          </svg>
-          <span
-            class="info--text--warning mr-2 text-sm text-gray-400 text-center flex-auto"
-            >Dragging with touch is currently not supported. Sorry for the
-            trouble : (
-          </span>
         </div>
       </div>
     </div>
