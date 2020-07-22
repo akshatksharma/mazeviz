@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://use.typekit.net/jyw0vop.css" />
   </head>
   <body class="darkGray">
-    <div
+    <main
       class="page container darkGray mx-auto flex flex-col items-center mb-4 p-4"
     >
       <div class="text-center pt-6 px-4">
@@ -28,6 +28,7 @@
             />
           </svg>
           <span
+            role="note"
             class="info--text--warning mr-2 text-sm text-gray-400 text-left ml-2 flex-auto"
             >Dragging with touch is currently not supported. Sorry for the
             trouble : (
@@ -49,8 +50,15 @@
         </div>
       </div>
       <div class="w-full flex justify-center md:justify-start">
-        <div class="inline-block justify-start relative w-32 md:ml-10 mb-2">
-          <select class="speedSelect select w-full rounded-full">
+        <div
+          role="toolbar"
+          aria-label="Speed select"
+          class="inline-block justify-start relative w-32 md:ml-10 mb-2"
+        >
+          <select
+            tabindex="0"
+            class="speedSelect select w-full rounded-full focus:border focus:border-gray-300 focus:border-solid"
+          >
             <option value="normal">normal</option>
             <option value="slow">slow</option>
             <option value="fast">fast</option>
@@ -69,11 +77,15 @@
         </div>
       </div>
 
-      <div class="nodeContainer center"></div>
+      <div
+        role="region"
+        aria-label="Node grid"
+        aria-live="polite"
+        class="nodeContainer center"
+      ></div>
       <div class="text-center pt-6 px-4">
         <div
           class="info p-2 items-center text-indigo-100 leading-none lg:rounded-full flex lg:inline-flex"
-          role="alert"
         >
           <svg
             class="fill-current w-3 h-3 mr-2"
@@ -85,9 +97,11 @@
             />
           </svg>
           <span
+            aria-live="polite"
+            role="note"
+            aria-label="Algorithm description"
             class="info--text mr-2 text-sm text-gray-400 text-left flex-auto"
-            >sample</span
-          >
+          ></span>
         </div>
       </div>
       <div
@@ -97,10 +111,18 @@
           class="sideButton h-full relative col-start-1 col-end-3 grid-cols-3 rounded-full mb-0"
         >
           <div
-            class="sideButtonlayout darkGray p-2 inline-flex items-center rounded-full"
+            tabindex="0"
+            class="sideButtonlayout darkGray p-2 inline-flex items-center rounded-full focus:outline-none focus:border focus:border-solid focus:border-gray-300"
           >
-            <div class="inline-block relative w-32">
-              <select class="algoSelect select">
+            <div
+              role="toolbar"
+              aria-label="Algorithm select"
+              class="inline-block relative w-32"
+            >
+              <select
+                tabindex="0"
+                class="algoSelect select focus:border focus:border-gray-300 focus:border-solid focus:outline-none focus:underline"
+              >
                 <option value="dijkstra">Dijkstra's</option>
                 <option value="a*">A*</option>
                 <option value="bfs">bfs</option>
@@ -127,15 +149,18 @@
                   name="control"
                   value="wall"
                   id="r1"
+                  tabindex="0"
                   checked
                 />
                 <label
+                  tabindex="0"
                   class="wallButton controlButton__bkg blueGray rounded-full cursor-pointer"
                   for="r1"
                 >
                   <div class="controlButton__rect rounded"></div>
                 </label>
                 <span
+                  role="tooltip"
                   class="tooltip-text tooltip-left blueGray rounded-full text-gray-400 text-sm tracking-widest lowercase border-2 border-solid bottom-0 right-0 -mb-12"
                   >wall</span
                 >
@@ -149,12 +174,14 @@
                   id="r2"
                 />
                 <label
+                  tabindex="0"
                   class="weightButton controlButton__bkg blueGray rounded-full cursor-pointer"
                   for="r2"
                 >
                   <div class="controlButton__circ rounded-full"></div>
                 </label>
                 <span
+                  role="tooltip"
                   class="tooltip-text tooltip-right blueGray rounded-full text-gray-400 text-sm tracking-widest lowercase border-2 border-solid bottom-0 right-0 -mb-12"
                   >weight</span
                 >
@@ -164,16 +191,34 @@
         </div>
 
         <div
+          role="toolbar"
+          aria-label="Application control"
           class="runButton--container col-start-3 col-end-6 inline-flex justify-center items-center mb-0"
         >
-          <button class="clear btn blueGray rounded-r">clear</button>
-          <button class="run btn blueGray rounded-l">run</button>
-          <button class="reset btn blueGray">reset</button>
+          <button
+            class="clear btn blueGray rounded-r focus:outline-none focus:underline"
+          >
+            clear
+          </button>
+          <button
+            class="run btn blueGray rounded-l focus:outline-none focus:underline"
+          >
+            run
+          </button>
+          <button class="reset btn blueGray focus:outline-none focus:underline">
+            reset
+          </button>
         </div>
         <div
+          role="toolbar"
+          aria-label="Speed control"
           class="toggle--container col-start-6 col-end-8 flex justify-center"
         >
-          <label for="toggle" class="flex relative items-center cursor-pointer">
+          <label
+            tabindex="0"
+            for="toggle"
+            class="colorToggle flex relative items-center cursor-pointer"
+          >
             <input type="checkbox" id="toggle" checked class="toggle hidden" />
             <div class="w-12 h-4 darkGray rounded-full shadow-inner"></div>
             <div
@@ -187,7 +232,7 @@
           </label>
         </div>
       </div>
-    </div>
+    </main>
     <script src="index.js"></script>
   </body>
 </html>
