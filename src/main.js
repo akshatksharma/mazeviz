@@ -1,17 +1,5 @@
 import grid from "./grid.js";
 
-/** Determins if user is on mobile or computer
- * @param  {event} e -- the default event
- */
-function userDevice(e) {
-  // if on computer assign class to body that will tell css to disable focus styling on buttons etc
-  if (e.keyCode === 9) {
-    document.body.classList.add("onComputer");
-    window.removeEventListener("keydown", userDevice);
-  }
-}
-window.addEventListener("keydown", userDevice);
-
 // setting intial values for walls, start and end loci, and overall container for DOM representation of nodes
 // when grid is rerendered on mouseup, the arrays store the values that need to be passed into the grid to update walls, weights, and start/end locations
 const container = document.getElementsByClassName("nodeContainer")[0];
@@ -20,6 +8,38 @@ let wallList = [];
 let weightList = [];
 let startLoc = [3, 3];
 let endLoc = [23, 23];
+
+const wallButton = document.getElementsByClassName("wallButton")[0];
+const weightButton = document.getElementsByClassName("weightButton")[0];
+const colorButton = document.getElementsByClassName("colorToggle")[0];
+
+wallButton.addEventListener("keyup", function (event) {
+  // Number 13 is the "Enter" key on the keyboard
+  if (event.keyCode === 13) {
+    // Cancel the default action, if needed
+    event.preventDefault();
+    // Trigger the button element with a click
+    document.getElementById("r1").click();
+  }
+});
+weightButton.addEventListener("keyup", function (event) {
+  // Number 13 is the "Enter" key on the keyboard
+  if (event.keyCode === 13) {
+    // Cancel the default action, if needed
+    event.preventDefault();
+    // Trigger the button element with a click
+    document.getElementById("r2").click();
+  }
+});
+colorButton.addEventListener("keyup", function (event) {
+  // Number 13 is the "Enter" key on the keyboard
+  if (event.keyCode === 13) {
+    // Cancel the default action, if needed
+    event.preventDefault();
+    // Trigger the button element with a click
+    document.getElementById("toggle").click();
+  }
+});
 
 /** Creates DOM node / div for each node in the heap and assigns them certain parameters on their datasets and event listeners
  * @param  {object} grid - the collection of all nodes
