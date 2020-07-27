@@ -4,7 +4,7 @@ const warning = document.getElementsByClassName("info--text--warning")[0]
   .parentElement;
 
 warning.onclick = () => {
-  warning.style.opacity = 0;
+  warning.remove();
 };
 
 main();

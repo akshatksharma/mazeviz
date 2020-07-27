@@ -11,27 +11,30 @@ export function isEnd(node) {
   return endRow == node.row && endCol == node.col;
 }
 
-// given the current node's row and column, add its neighbors to the path for dijkstra to explore
+// given the current node's row and column, add its neighbors to the path for algo to explore
 export function getNextNodes(node) {
   let neighbors = [];
 
   let nodeGrid = node.grid.nodeGrid;
 
-  if (node.row > 1) {
-    const upNeighbor = nodeGrid[node.row - 1][node.col];
-    neighbors.push(upNeighbor);
+  if (node.col < node.grid.numCols) {
+    const rightNeighbor = nodeGrid[node.row][node.col + 1];
+    neighbors.push(rightNeighbor);
   }
-  if (node.row < node.grid.numRows) {
-    const downNeighbor = nodeGrid[node.row + 1][node.col];
-    neighbors.push(downNeighbor);
-  }
+
   if (node.col > 1) {
     const leftNeighbor = nodeGrid[node.row][node.col - 1];
     neighbors.push(leftNeighbor);
   }
-  if (node.col < node.grid.numCols) {
-    const rightNeighbor = nodeGrid[node.row][node.col + 1];
-    neighbors.push(rightNeighbor);
+
+  if (node.row > 1) {
+    const upNeighbor = nodeGrid[node.row - 1][node.col];
+    neighbors.push(upNeighbor);
+  }
+
+  if (node.row < node.grid.numRows) {
+    const downNeighbor = nodeGrid[node.row + 1][node.col];
+    neighbors.push(downNeighbor);
   }
 
   neighbors = neighbors.filter((neighbor) => !neighbor.visited);
