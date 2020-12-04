@@ -88,6 +88,73 @@ body:not(.onComputer) textarea:focus {
 
 /* specific styling classes */
 
+.page {
+  @apply mx-auto flex flex-col items-center mb-4 darkGray;
+}
+
+.footer__content {
+  @apply flex flex-col items-center justify-start pt-20 px-8 mx-auto my-0 h-full text-gray-400;
+}
+
+
+
+.socialLinks {
+  @apply flex;
+}
+
+.socialLinks > a {
+  @apply mt-6 mr-4
+}
+
+.socialIcon {
+  @apply fill-current text-gray-200 w-6 h-10;
+}
+
+.alert {
+  @apply p-2 opacity-100 text-indigo-100 leading-none  flex items-center  border border-solid border-red-400;
+}
+@screen lg {
+  .alert {
+    display: inline-flex;
+    border-radius: 9999px;
+  }
+}
+
+.title {
+  @apply w-full mb-4 flex justify-center;
+}
+
+@screen md {
+  .title {
+    @apply mb-0;
+    justify-content: flex-end;
+  }
+}
+
+.title__position {
+  @apply w-full flex flex-col;
+}
+
+@screen md {
+  .title__position {
+    width: 66.666667%;
+  }
+}
+
+.title__text {
+  @apply font-pp text-4xl text-gray-200 font-hairline tracking-widest text-center mt-4;
+  @screen md {
+    @apply text-5xl text-right;
+  }
+}
+
+.title__subtext {
+  @apply font-pp text-gray-200 font-medium tracking-widest lowercase text-center  mb-1;
+  @screen md {
+    font-size: 1.25rem text-right;
+  }
+}
+
 .select__arrow {
   @apply pointer-events-none absolute inset-y-0 right-0 flex items-center px-1 text-gray-400;
 
@@ -159,7 +226,7 @@ body:not(.onComputer) textarea:focus {
 
 @media (min-width: 768px) {
   .toggle__dot {
-    top: 0.7rem;
+    /* top: 0.7rem; */
   }
 }
 
@@ -174,6 +241,10 @@ input:checked ~ .toggle__dot {
 
 .info {
   border: 2px solid #3e415a;
+}
+
+.info--text--warning {
+  @apply mr-2 text-sm text-gray-400 text-left ml-2 flex-auto;
 }
 
 .nodeContainer {

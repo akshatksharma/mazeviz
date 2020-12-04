@@ -26,13 +26,17 @@ addEventListener("message", (e) => {
     while (i < speedVal * 10000000) {
       i++;
     }
+
     let currNode = extractMin(heap);
     path.push(currNode);
+    
     if (isEnd(currNode)) {
       postMessage([path, true]);
       return;
     }
+
     let neighbors = getNextNodes(currNode);
+
     neighbors.forEach((neighbor) => {
       if (currNode.dist == Infinity) {
         postMessage([path, false, "failed"]);
@@ -48,4 +52,5 @@ addEventListener("message", (e) => {
       }
     });
   }
+  
 });
