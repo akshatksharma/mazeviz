@@ -5,7 +5,7 @@ function isTouchDevice() {
 }
 
 const warning = document.getElementsByClassName("info--text--warning")[0]
-  .parentElement.parentElement;
+  .parentElement;
 
 if (isTouchDevice()) {
   warning.classList.remove("hidden");

@@ -17,7 +17,7 @@ body:not(.onComputer) textarea:focus {
 
 .hidden {
   position: absolute;
-  display: none;
+  display: none !important;
 }
 
 .text__center {
@@ -114,7 +114,7 @@ body:not(.onComputer) textarea:focus {
 }
 
 .alert {
-  @apply p-2 opacity-100 text-indigo-100 leading-none  flex items-center  border border-solid border-red-400;
+  @apply flex items-center p-2 mt-6 opacity-100 text-indigo-100 leading-none text-center border border-solid border-red-400;
 }
 @screen lg {
   .alert {
@@ -145,7 +145,7 @@ body:not(.onComputer) textarea:focus {
 }
 
 .title__text {
-  @apply font-pp text-4xl text-gray-200 font-hairline tracking-widest text-center mt-4;
+  @apply font-pp text-4xl text-gray-200 font-thin tracking-widest text-center mt-4;
   @screen md {
     @apply text-5xl text-right;
   }
@@ -155,6 +155,16 @@ body:not(.onComputer) textarea:focus {
   @apply font-pp text-gray-200 font-medium tracking-widest lowercase text-center  mb-1;
   @screen md {
     font-size: 1.25rem text-right;
+  }
+}
+
+.topToolBar {
+  @apply w-4/5 flex justify-center;
+}
+
+@screen md {
+  .topToolBar {
+    @apply justify-start;
   }
 }
 
