@@ -115,10 +115,6 @@ function createDOMGrid(grid, container) {
 const toggleArray = (array, item) =>
   array.includes(item) ? array.filter((i) => i != item) : [...array, item];
 
-const wallOrWeight = document.getElementsByClassName("controlForm")[0].elements[
-  "control"
-];
-
 /** Toggles the presence of a wall for a given DOM node / div on screen and records the change so that this state can be updated internally
  * @param  {HTMLElement} domNode -- a given div representing a node on the screen
  */
@@ -226,11 +222,14 @@ function mousedown(event) {
     return;
   }
 
-  if (wallOrWeight.value == "wall") {
+  const choseWall = document.getElementById("wallOption").checked;
+  const choseWeight = document.getElementById("weightOption").checked;
+
+  if (choseWall) {
     container.dataset.settingWalls = true;
     toggleWall(this);
   } else if (
-    wallOrWeight.value == "weight" &&
+    choseWeight &&
     (container.dataset.startMove == "false" ||
       container.dataset.endMove == "false")
   ) {
@@ -358,7 +357,7 @@ function clearDOMWeights(grid) {
 function setAlgo(name, grid) {
   let infoAlert = document.getElementsByClassName("info--text")[0];
   let weightButtonVisual = document.getElementsByClassName("weightButton")[0];
-  let weightButtonRadio = document.getElementById("r2");
+  let weightButtonRadio = document.getElementById("weightOption");
 
   if (name === "dijkstra") {
     weightButtonVisual.classList.remove("cursor-not-allowed");
