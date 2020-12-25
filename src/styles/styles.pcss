@@ -17,7 +17,7 @@ body:not(.onComputer) textarea:focus {
 
 .hidden {
   position: absolute;
-  display: none;
+  display: none !important;
 }
 
 .text__center {
@@ -114,7 +114,7 @@ body:not(.onComputer) textarea:focus {
 }
 
 .alert {
-  @apply p-2 opacity-100 text-indigo-100 leading-none  flex items-center  border border-solid border-red-400;
+  @apply flex items-center p-2 mt-6 opacity-100 text-indigo-100 leading-none text-center border border-solid border-red-400;
 }
 @screen lg {
   .alert {
@@ -145,7 +145,7 @@ body:not(.onComputer) textarea:focus {
 }
 
 .title__text {
-  @apply font-pp text-4xl text-gray-200 font-hairline tracking-widest text-center mt-4;
+  @apply font-pp text-4xl text-gray-200 font-thin tracking-widest text-center mt-4;
   @screen md {
     @apply text-5xl text-right;
   }
@@ -156,6 +156,20 @@ body:not(.onComputer) textarea:focus {
   @screen md {
     font-size: 1.25rem text-right;
   }
+}
+
+.topToolBar {
+  @apply w-4/5 flex justify-center;
+}
+
+@screen md {
+  .topToolBar {
+    @apply justify-start;
+  }
+}
+
+.algoDetail {
+  @apply info p-2 items-center text-indigo-100 leading-none text-center mt-6  lg:rounded-full flex lg:inline-flex;
 }
 
 .select__arrow {
@@ -172,6 +186,18 @@ body:not(.onComputer) textarea:focus {
 
 .select__arrow--speed {
   right: 3px;
+}
+
+.sideControlBar {
+  @apply relative col-start-1 col-end-3 h-full p-2 darkGray inline-flex items-center rounded-full;
+}
+
+.algoSelect {
+  @apply select;
+
+  &:focus {
+    @apply border-gray-300 outline-none underline border  border-solid;
+  }
 }
 
 .divider {
@@ -209,6 +235,17 @@ body:not(.onComputer) textarea:focus {
   filter: brightness(90%);
 }
 
+.appControlBar {
+  @apply col-start-3 col-end-6 inline-flex justify-center items-center mb-0;
+}
+
+.btn--control {
+  @apply btn blueGray;
+  &:focus {
+    @apply outline-none underline;
+  }
+}
+
 .controlButton__rect {
   height: 15px;
   width: 15px;
@@ -221,29 +258,45 @@ body:not(.onComputer) textarea:focus {
   background-color: #96b7d4;
 }
 
-.toggle__dot {
-  top: 0.3rem;
+.colorControlBar {
+  @apply col-start-6 col-end-8 flex justify-center;
+}
+
+.colorToggle {
+  @apply flex relative items-center cursor-pointer;
+}
+
+.colorToggle__bkg {
+  @apply w-12 h-4 darkGray rounded-full shadow-inner;
+}
+
+.colorToggle__dot {
+  @apply absolute w-6 h-6 bg-white rounded-full shadow;
+  top: 0.2rem;
   left: -0.25rem;
   transition: all 0.3s ease-in-out;
 }
 
-@media (min-width: 768px) {
-  .toggle__dot {
-    /* top: 0.7rem; */
-  }
+.colorToggle__text {
+  @apply font-display text-xl text-gray-400 hover:text-gray-200 tracking-widest font-medium ml-4 mb-1;
 }
 
-input:checked ~ .toggle__dot {
+input:checked ~ .colorToggle__dot {
   transform: translateX(130%);
   background-color: #ff5e5b;
 }
 
 .bottomBar {
   background-color: #3e415a;
+  @apply flex flex-col items-center md:grid md:grid-cols-7 grid-flow-col blueGray py-4 md:py-2 px-10 mt-6 mb-1 md:rounded-full w-screen md:w-auto;
 }
 
 .info {
   border: 2px solid #3e415a;
+}
+
+.info--text {
+  @apply mr-2 text-sm text-gray-400 text-left flex-auto;
 }
 
 .info--text--warning {
