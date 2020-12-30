@@ -195,7 +195,11 @@ body:not(.onComputer) textarea:focus {
 .speedSelect {
   border: 2px solid #3e415a;
   background-color: #3e415a;
-  @apply select w-full rounded-full focus:border focus:border-gray-300 focus:border-solid;
+  @apply select w-full rounded-full;
+
+  &:focus {
+    @apply border-gray-300 outline-none border border-solid;
+  }
 }
 
 .select__arrow--speed {
@@ -210,7 +214,7 @@ body:not(.onComputer) textarea:focus {
   @apply select;
 
   &:focus {
-    @apply border-gray-300 outline-none underline border  border-solid;
+    @apply border-gray-300 outline-none underline border border-solid;
   }
 }
 
