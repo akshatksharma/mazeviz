@@ -6,7 +6,6 @@ body:not(.onComputer) button:focus,
 body:not(.onComputer) input:focus,
 body:not(.onComputer) select:focus,
 body:not(.onComputer) textarea:focus {
-  outline: none;
 }
 
 .radio {
@@ -260,7 +259,7 @@ body:not(.onComputer) textarea:focus {
 .btn--control {
   @apply btn blueGray;
   &:focus {
-    @apply outline-none underline;
+    @apply underline outline-white;
   }
 }
 
@@ -290,7 +289,6 @@ body:not(.onComputer) textarea:focus {
 
 .colorToggle__dot {
   @apply absolute w-6 h-6 bg-white rounded-full shadow;
-  top: 0.2rem;
   left: -0.25rem;
   transition: all 0.3s ease-in-out;
 }
