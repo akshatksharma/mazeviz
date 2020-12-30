@@ -56,7 +56,7 @@
           <select
             aria-label="Speed select"
             tabindex="0"
-            class="speedSelect select w-full rounded-full focus:border focus:border-gray-300 focus:border-solid"
+            class="speedSelect "
           >
             <option value="normal">normal</option>
             <option value="slow">slow</option>
@@ -145,18 +145,18 @@
                   name="control"
                   value="wall"
                   tabindex="0"
+                  aria-label="Draw walls"
                   checked
                 />
                 <label
                   tabindex="0"
                   class="wallButton controlButton__bkg blueGray rounded-full cursor-pointer"
-                  for="r1"
                 >
                   <div class="controlButton__rect rounded"></div>
                 </label>
                 <span
                   role="tooltip"
-                  class="tooltip-text tooltip-left blueGray rounded-full text-gray-400 text-sm tracking-widest lowercase border-2 border-solid bottom-0 right-0 -mb-12"
+                  class="tooltip-text tooltip-left "
                   >wall</span
                 >
               </div>
@@ -167,18 +167,18 @@
                   class="radio"
                   name="control"
                   value="weight"
-
+                  tabindex="0"
+                  aria-label="Draw weights"
                 />
                 <label
                   tabindex="0"
                   class="weightButton controlButton__bkg blueGray rounded-full cursor-pointer"
-                  for="r2"
                 >
                   <div class="controlButton__circ rounded-full"></div>
                 </label>
                 <span
                   role="tooltip"
-                  class="tooltip-text tooltip-right blueGray rounded-full text-gray-400 text-sm tracking-widest lowercase border-2 border-solid bottom-0 right-0 -mb-12"
+                  class="tooltip-text tooltip-right"
                   >weight</span
                 >
               </div>

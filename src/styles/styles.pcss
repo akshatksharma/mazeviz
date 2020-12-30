@@ -64,7 +64,7 @@ body:not(.onComputer) textarea:focus {
   position: absolute;
   z-index: 100;
   border-color: #1f223d;
-  /* border-color: #1a202c; */
+  @apply blueGray rounded-full text-gray-400 text-sm tracking-widest lowercase border-2 border-solid bottom-0 right-0 -mb-12;
 }
 
 .tooltip .tooltip-right {
@@ -195,6 +195,7 @@ body:not(.onComputer) textarea:focus {
 .speedSelect {
   border: 2px solid #3e415a;
   background-color: #3e415a;
+  @apply select w-full rounded-full focus:border focus:border-gray-300 focus:border-solid;
 }
 
 .select__arrow--speed {
