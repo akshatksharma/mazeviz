@@ -18,6 +18,7 @@ import grid from "./grid.js";
 //
 //
 
+// container that will hold the grid
 const container = document.getElementsByClassName("nodeContainer")[0];
 
 // initial parameters for the grid
