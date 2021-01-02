@@ -8,47 +8,67 @@ import grid from "./grid.js";
 // these states help communicate between functions and allow them to behave in different ways in different scenarios
 
 // the main flow of the site is to build up temporary lists of wall locations, weight locations, start and end node locations, and to then use those to update the internal grid that the algorithms actually use
-// the temporaray lists are built up during mouse events and the actual updating is done on the "main" function,
+// the temporaray lists are built up during mouse events and the actual updating is done on the "main" function
+
+// the trick of "updaing" the scteen is simply removing all of the nodes and then redrawing it based on updated parameters
 
 //
-// 
+//
 //
 
 const container = document.getElementsByClassName("nodeContainer")[0];
+
+// initial parameters for the grid
+// these will be updated throughout the functions below as the user makes changes to the screen
+
+// value of the weights
 let weight = 10;
+// list of coordinates for the walls and weights on the screen
 let wallList = [];
 let weightList = [];
+// coordinates for the start and end positions
 let startLoc = [3, 3];
 let endLoc = [23, 23];
 
 export function main() {
+  // reseting all states back to default
   container.dataset.startMove = false;
   container.dataset.endMove = false;
   container.dataset.mouseDown = false;
   container.dataset.settingWalls = false;
   container.dataset.settingWeights = false;
 
+  // based on mobile / desktop, making an internal grid of appropriate size
   // I know user agent detection is bad, but this is a stopgap until I get time to implement a better system to make the site somewhat responsive
 
   let aGrid = /Mobi|Android/i.test(navigator.userAgent)
     ? new grid(25, 25, startLoc, endLoc)
     : new grid(25, 50, startLoc, endLoc);
 
+  // inserting the appropriate amount of nodes into the grid's heap
+  // the heap is represented as an array and is used for all algorithms, but is only used as a heap for Dijkstra's and A*. For Bfs is used as a queue, and Dfs, is used as a stack
   aGrid.createNodes();
 
+  // setting the appropriate nodes in the heap as a wall
   if (wallList.length > 0) {
     aGrid.setWalls(wallList);
   }
 
+  // setting the appropriate nodes in the heap as a weight
   if (weightList.length > 0) {
     aGrid.setWeights(weightList, weight);
   }
 
+  // creating the divs on screen based upon the internal representation of the grid
+  // the visualization will now match the internal state
   createDOMGrid(aGrid, container);
 
+  // getting the algorithm selected by the user and calling setAlgo to put the approriate event listeners to trigger that algo
   let algoSelect = document.getElementsByClassName("algoSelect")[0];
   let algoOption = algoSelect.options[algoSelect.selectedIndex].value;
   setAlgo(algoOption, aGrid);
+
+  // putting an event listener to setAlgo when user changes an algorithm
 
   algoSelect.addEventListener("change", function () {
     clearDOMWeights(aGrid);
@@ -176,7 +196,7 @@ function createDOMGrid(grid, container) {
 const toggleArray = (array, item) =>
   array.includes(item) ? array.filter((i) => i != item) : [...array, item];
 
-/** 
+/**
  * toggleWall()
  * Toggles the presence of a wall for a given DOM node / div on screen and records the change so that this state can be updated internally
  * @param  {HTMLElement} domNode -- a given div representing a node on the screen
@@ -405,10 +425,9 @@ function resetEventListener(button) {
   button.parentNode.replaceChild(newButton, button);
 }
 
-
 /**
  * reset()
- * Resets the entire board, but preserves the wall/weight/start node/end node parameters 
+ * Resets the entire board, but preserves the wall/weight/start node/end node parameters
  */
 function reset() {
   // removes all of the divs in the grid
@@ -424,10 +443,9 @@ function reset() {
   while (timerId--) {
     // each timeout function is given an id, and can be removed with window.clearTimeout()
     // will do nothing if no timeout with id is present
-    window.clearTimeout(timerId); 
+    window.clearTimeout(timerId);
   }
 
-  
   // after board content is removed, call main() function with updated wallList, weightList, startLoc and endLoc
   // main will update the internal data structures in the Workers
   // because parameters were not reset, the board will redraw with the correct parameters
@@ -442,8 +460,7 @@ function reset() {
  */
 
 function clear(grid) {
-
-  // removing all the walls and weights from the internal grid representation 
+  // removing all the walls and weights from the internal grid representation
   grid.unsetWalls(wallList);
   grid.unsetWeights(weightList);
 
@@ -455,11 +472,18 @@ function clear(grid) {
   }, 0);
 }
 
+/**
+ * clearDOMWeights()
+ * removing the weights from the grid if user selects unweighted alogorithm (Bfs/Dfs)
+ * @param {Grid} grid -- the collection of all nodes and their states
+ */
 function clearDOMWeights(grid) {
+  // checking value of algorithm select
   let algoSelect = document.getElementsByClassName("algoSelect")[0];
   let algoOption = algoSelect.options[algoSelect.selectedIndex].value;
 
   if (algoOption == "bfs" || algoOption == "dfs") {
+    // removing weights if going to bfs or dfs and reseting, or just reseting alone
     grid.unsetWeights(weightList);
     setTimeout(() => {
       weightList = [];
@@ -472,32 +496,47 @@ function clearDOMWeights(grid) {
   }
 }
 
+/**
+ * setAlgo()
+ * Swtiches the current algorithm
+ * Swaps the functions called by each method, the flavor text at the bottom, and does some minor visual tweaks to buttons
+ * @param {String} name -- name of the algorithm to switch to
+ * @param {Grid} grid -- the collection of all nodes and their states
+ */
 function setAlgo(name, grid) {
   let infoAlert = document.getElementsByClassName("info--text")[0];
   let weightButtonVisual = document.getElementsByClassName("weightButton")[0];
   let weightButtonRadio = document.getElementById("weightOption");
 
-  weightButtonVisual.classList.remove("cursor-not-allowed");
-  weightButtonRadio.disabled = false;
-
   if (name === "dijkstra") {
     weightButtonVisual.style.filter = "brightness(100%)";
     infoAlert.innerHTML =
       "Dijkstra's Algorithm is weighted and guarantees the shortest path";
+    weightButtonVisual.classList.remove("cursor-not-allowed");
+    weightButtonRadio.disabled = false;
   }
   if (name === "a*") {
     weightButtonVisual.style.filter = "brightness(100%)";
     infoAlert.innerHTML = "A* is weighted and guarantees the shortest path";
+    weightButtonVisual.classList.remove("cursor-not-allowed");
+    weightButtonRadio.disabled = false;
   }
   if (name === "bfs") {
+    // dimming the weight button (bc cannot press it)
     weightButtonVisual.style.filter = "brightness(80%)";
     infoAlert.innerHTML =
       "Breath First Search is NOT weighted but guarantees the shortest path";
+
+    // adding visual indicators that weights cannot be used
+    weightButtonVisual.classList.add("cursor-not-allowed");
+    weightButtonRadio.disabled = true;
   }
   if (name === "dfs") {
     weightButtonVisual.style.filter = "brightness(80%)";
     infoAlert.innerHTML =
       "Depth First Search is NOT weighted and DOES NOT guarantee the shortest path";
+    weightButtonVisual.classList.add("cursor-not-allowed");
+    weightButtonRadio.disabled = true;
   }
 
   let runButton = document.getElementsByClassName("run")[0];

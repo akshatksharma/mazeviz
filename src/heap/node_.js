@@ -28,7 +28,3 @@ export default class node {
 
   // other functions are in nodefucntions.js
 }
-
-// NEED TO :
-// acc for random cases where start and end may be the same
-// provide no neighbors when all surrounding nodes are infinity
