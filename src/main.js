@@ -4,13 +4,15 @@ import grid from "./grid.js";
  * @MAZEVIZ
  */
 
-// many of the functions here set and read flags onto the container for the whole grid. I refer to these flags as a "state"
-// these states help communicate between functions and allow them to behave in different ways in different scenarios
+// this is a site to visualize common pathfinding algorithms
+// the main logic for the site is in this file, but the specifics for each algorithm and the grid that they use is found in other files in the repo
 
 // the main flow of the site is to build up temporary lists of wall locations, weight locations, start and end node locations, and to then use those to update the internal grid that the algorithms actually use
-// the temporaray lists are built up during mouse events and the actual updating is done on the "main" function
+// the temp lists are built up during mouse events and the actual updating is done on the "main" function
+// the trick of "updating" the scteen is simply removing all of the nodes and then redrawing it based on updated parameters
 
-// the trick of "updaing" the scteen is simply removing all of the nodes and then redrawing it based on updated parameters
+// many of the functions here set and read flags onto the container for the whole grid. I refer to these flags as a "state"
+// these states help communicate between functions and allow them to behave in different ways in different scenarios
 
 //
 //
