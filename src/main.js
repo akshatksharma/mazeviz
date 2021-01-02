@@ -1,13 +1,70 @@
 import grid from "./grid.js";
 
-// setting intial values for walls, start and end loci, and overall container for DOM representation of nodes
-// when grid is rerendered on mouseup, the arrays store the values that need to be passed into the grid to update walls, weights, and start/end locations
+/**
+ * @MAZEVIZ
+ */
+
+// many of the functions here set and read flags onto the container for the whole grid. I refer to these flags as a "state"
+// these states help communicate between functions and allow them to behave in different ways in different scenarios
+
+// the main flow of the site is to build up temporary lists of wall locations, weight locations, start and end node locations, and to then use those to update the internal grid that the algorithms actually use
+// the temporaray lists are built up during mouse events and the actual updating is done on the "main" function,
+
+//
+// 
+//
+
 const container = document.getElementsByClassName("nodeContainer")[0];
 let weight = 10;
 let wallList = [];
 let weightList = [];
 let startLoc = [3, 3];
 let endLoc = [23, 23];
+
+export function main() {
+  container.dataset.startMove = false;
+  container.dataset.endMove = false;
+  container.dataset.mouseDown = false;
+  container.dataset.settingWalls = false;
+  container.dataset.settingWeights = false;
+
+  // I know user agent detection is bad, but this is a stopgap until I get time to implement a better system to make the site somewhat responsive
+
+  let aGrid = /Mobi|Android/i.test(navigator.userAgent)
+    ? new grid(25, 25, startLoc, endLoc)
+    : new grid(25, 50, startLoc, endLoc);
+
+  aGrid.createNodes();
+
+  if (wallList.length > 0) {
+    aGrid.setWalls(wallList);
+  }
+
+  if (weightList.length > 0) {
+    aGrid.setWeights(weightList, weight);
+  }
+
+  createDOMGrid(aGrid, container);
+
+  let algoSelect = document.getElementsByClassName("algoSelect")[0];
+  let algoOption = algoSelect.options[algoSelect.selectedIndex].value;
+  setAlgo(algoOption, aGrid);
+
+  algoSelect.addEventListener("change", function () {
+    clearDOMWeights(aGrid);
+    let algoOption = algoSelect.options[algoSelect.selectedIndex].value;
+    setAlgo(algoOption, aGrid);
+  });
+
+  let clearButton = document.getElementsByClassName("clear")[0];
+  clearButton.addEventListener("click", clear.bind(null, aGrid));
+
+  let resetButton = document.getElementsByClassName("reset")[0];
+  resetButton.addEventListener("click", reset);
+}
+
+// setting intial values for walls, start and end loci, and overall container for DOM representation of nodes
+// when grid is rerendered on mouseup, the arrays store the values that need to be passed into the grid to update walls, weights, and start/end locations
 
 const wallButton = document.getElementsByClassName("wallButton")[0];
 const weightButton = document.getElementsByClassName("weightButton")[0];
@@ -19,7 +76,7 @@ wallButton.addEventListener("keyup", function (event) {
     // Cancel the default action, if needed
     event.preventDefault();
     // Trigger the button element with a click
-    document.getElementById("r1").click();
+    document.getElementById("wallOption").click();
   }
 });
 weightButton.addEventListener("keyup", function (event) {
@@ -28,7 +85,8 @@ weightButton.addEventListener("keyup", function (event) {
     // Cancel the default action, if needed
     event.preventDefault();
     // Trigger the button element with a click
-    document.getElementById("r2").click();
+
+    document.getElementById("weightOption").click();
   }
 });
 colorButton.addEventListener("keyup", function (event) {
@@ -41,9 +99,10 @@ colorButton.addEventListener("keyup", function (event) {
   }
 });
 
-/** Creates DOM node / div for each node in the heap and assigns them certain parameters on their datasets and event listeners
- * @param  {object} grid - the collection of all nodes
- * @param  {object} container - the location on the DOM that the nodes will be rendered as divs
+/**
+ * Creates DOM node / div for each node in the heap and assigns them certain parameters on their datasets and event listeners
+ * @param  {Grid} grid - the collection of all nodes and their states
+ * @param  {HTMLElement} container - the location on the DOM that the nodes will be rendered as divs
  */
 function createDOMGrid(grid, container) {
   const frag = document.createDocumentFragment();
@@ -108,14 +167,18 @@ function createDOMGrid(grid, container) {
   container.appendChild(frag);
 }
 
-/** Toggles the presence of an item in an array.
+/**
+ * toggleArray()
+ * Utility function that toggles the presence of an item in an array.
  * @param  {array} array -- array that needs to be mutated
  * @param  {any} item -- item that needs to toggled
  */
 const toggleArray = (array, item) =>
   array.includes(item) ? array.filter((i) => i != item) : [...array, item];
 
-/** Toggles the presence of a wall for a given DOM node / div on screen and records the change so that this state can be updated internally
+/** 
+ * toggleWall()
+ * Toggles the presence of a wall for a given DOM node / div on screen and records the change so that this state can be updated internally
  * @param  {HTMLElement} domNode -- a given div representing a node on the screen
  */
 const toggleWall = (domNode) => {
@@ -139,7 +202,10 @@ const toggleWall = (domNode) => {
   // add / remove id of wall added/removed to the list of walls
   wallList = toggleArray(wallList, domNode.dataset.id);
 };
-/**Toggles the presence of a wall for a given DOM node / div on screen and records the change so that this state can be updated internally
+
+/**
+ * toggleWeight()
+ * Toggles the presence of a wall for a given DOM node / div on screen and records the change so that this state can be updated internally
  * @param  {HTMLElement} domNode -- a given div representing a node on the screen
  */
 const toggleWeight = (domNode) => {
@@ -169,12 +235,14 @@ const toggleWeight = (domNode) => {
   weightList = toggleArray(weightList, domNode.dataset.id);
 };
 
-/** Takes in a state to be checked and then looks at container dataset to see if that state is active or not. Was helpful in reducing repaeated code all across the mouse functions.
+/**
+ * dragState()
+ * Takes in a state to be checked and then looks at container dataset to see if that state is active or not. Was helpful in reducing repaeated code all across the mouse functions.
  * Returns boolean value of whether the app is in that state (T) or not (F)
  * @param  {String} state -- the state that needs to be checked
  */
-
 const dragState = (state) => {
+  // getting all the relavent parameters to check the current state from the dataset properties on the container
   const mouseDown = container.dataset.mouseDown;
   const settingWalls = container.dataset.settingWalls;
   const settingWeights = container.dataset.settingWeights;
@@ -199,20 +267,22 @@ const dragState = (state) => {
   else if (state == "end") return mouseDown == "true" && clickEnd == "true";
 };
 
-/** Assigns DOM nodes different properties based on
- * @param  {Event} event -- the standard JS event object
+/**
+ * mousedown()
+ * Sets a flag / state and then assigns the div properties based on that state.
+ * The state put upon it changes based on if the div corresponds to a start/end node or wall/weight node. This state is used by other event listeners as needed
+ *
  */
-function mousedown(event) {
+function mousedown() {
+  // set global state to mouseDown
   container.dataset.mouseDown = true;
+
+  // check if the element that the click event is attached to (i.e this) is a start or end node
   const onStart = this.classList.contains("start");
   const onEnd = this.classList.contains("end");
 
-  if (this != event.target) {
-    let parent = event.target.parentElement;
-    parent.dataset.weight = 1;
-    parent.dataset.isWeight = "false";
-    parent.innerHTML = "";
-  }
+  // if on start or end, set the global state to "moving start or end" and return.
+  // return here because if moving start or end nodes, then do not want to set walls/weights etc
 
   if (onStart) {
     container.dataset.startMove = true;
@@ -222,45 +292,48 @@ function mousedown(event) {
     return;
   }
 
+  // else, if not moving start or end, see if need to set wall or weight
+  // set the settingWalls or settingWeights state and then actually carry out the wall / weight addition  via the function calls
+
   const choseWall = document.getElementById("wallOption").checked;
   const choseWeight = document.getElementById("weightOption").checked;
 
   if (choseWall) {
     container.dataset.settingWalls = true;
     toggleWall(this);
-  } else if (
-    choseWeight &&
-    (container.dataset.startMove == "false" ||
-      container.dataset.endMove == "false")
-  ) {
+  } else if (choseWeight) {
     container.dataset.settingWeights = true;
     toggleWeight(this);
   }
 }
 
-function mouseenter(event) {
-  if (this != event.target) {
-    let parent = event.target.parentElement;
-    parent.dataset.weight = 1;
-    parent.dataset.isWeight = "false";
-    parent.innerHTML = "";
-  }
-
+/**
+ *  mouseenter()
+ *  Uses the states set on mousedown event to figure out what to do when hoving over a div. This simulates a drag gesture.
+ *  (i.e if moused down to make wall, then continue to make walls on other nearby divs)
+ */
+function mouseenter() {
   const onStartOrEnd =
     this.classList.contains("start") || this.classList.contains("end");
 
+  // dont do anything if the div you are hovering over is the start or end
   if (onStartOrEnd) return;
+
+  // figure out what is the state of the application
 
   const draggingWall = dragState("wall");
   const draggingWeight = dragState("weight");
   const draggingStart = dragState("start");
   const draggingEnd = dragState("end");
 
+  // carry out the action accordingly
+
   if (draggingWall) {
     toggleWall(this);
   } else if (draggingWeight) {
     toggleWeight(this);
   } else if (draggingStart) {
+    // indicator div to show possible start location
     let node = document.createElement("div");
     node.classList.add("possibleStart");
     this.appendChild(node);
@@ -273,6 +346,10 @@ function mouseenter(event) {
   }
 }
 
+/**
+ * mouseleave()
+ * If dragging the start / end, this removes the possible start / end nodes from a div once the mouse leaves
+ */
 function mouseleave() {
   const draggingStart = dragState("start");
   const draggingEnd = dragState("end");
@@ -287,6 +364,12 @@ function mouseleave() {
   }
 }
 
+/**
+ * mouseup()
+ * Once the user finishes dragging / editing the grid and lets their mouse up, this function is called
+ * After their editing event, the calls made to toggleWall() and toggleWeight() will ensure the wallList and weightList will contain all of the walls / weights that need to be set
+ * The start and end coordinates will need to updated if they were being dragged
+ */
 function mouseup() {
   console.log(container.dataset.startMove);
   const draggingStart = dragState("start");
@@ -304,32 +387,67 @@ function mouseup() {
   // remove duplicate entries in wallList by converting to set and then back to array
   wallList = Array.from(new Set(wallList));
   weightList = Array.from(new Set(weightList));
-  // reset whole board with new information on wall location and start / end location
+
+  // at this point, the grid is up to date on the wall / weight placement and start / end placement
+
+  // reset whole board and draw with this new information
   reset();
 }
 
+/**
+ * resetEventListener()
+ * Force removes event listener by cloning button and reattaching it
+ * This is a hacky fix and needs to be updated to use the proper removeEventListener function
+ * @param {HTMLElement} button
+ */
 function resetEventListener(button) {
   const newButton = button.cloneNode(true);
   button.parentNode.replaceChild(newButton, button);
 }
 
+
+/**
+ * reset()
+ * Resets the entire board, but preserves the wall/weight/start node/end node parameters 
+ */
 function reset() {
+  // removes all of the divs in the grid
   container.innerHTML = "";
+
   const runButton = document.getElementsByClassName("run")[0];
   resetEventListener(runButton);
 
-  // to clear the path pattern being made by the setTimeouts in  grid.visualize()
+  // to make the path appear in grid.visualize, many setTimeout functions are called
+  // if there are timeouts that still need to appear, they must be taken off the event loop queue before they are called
+
   let timerId = container.dataset.timerId;
   while (timerId--) {
-    window.clearTimeout(timerId); // will do nothing if no timeout with id is present
+    // each timeout function is given an id, and can be removed with window.clearTimeout()
+    // will do nothing if no timeout with id is present
+    window.clearTimeout(timerId); 
   }
+
+  
+  // after board content is removed, call main() function with updated wallList, weightList, startLoc and endLoc
+  // main will update the internal data structures in the Workers
+  // because parameters were not reset, the board will redraw with the correct parameters
 
   main();
 }
 
+/**
+ * clear()
+ * Just like a call to reset(), but also reseting all of the wall and weight lists
+ * @param {Grid} grid -- the collection of all nodes and their states
+ */
+
 function clear(grid) {
+
+  // removing all the walls and weights from the internal grid representation 
   grid.unsetWalls(wallList);
   grid.unsetWeights(weightList);
+
+  // removing all the walls and weights from the temporary lists built up by user events
   setTimeout(() => {
     wallList = [];
     weightList = [];
@@ -359,30 +477,25 @@ function setAlgo(name, grid) {
   let weightButtonVisual = document.getElementsByClassName("weightButton")[0];
   let weightButtonRadio = document.getElementById("weightOption");
 
+  weightButtonVisual.classList.remove("cursor-not-allowed");
+  weightButtonRadio.disabled = false;
+
   if (name === "dijkstra") {
-    weightButtonVisual.classList.remove("cursor-not-allowed");
     weightButtonVisual.style.filter = "brightness(100%)";
-    weightButtonRadio.disabled = false;
     infoAlert.innerHTML =
       "Dijkstra's Algorithm is weighted and guarantees the shortest path";
   }
   if (name === "a*") {
-    weightButtonVisual.classList.remove("cursor-not-allowed");
     weightButtonVisual.style.filter = "brightness(100%)";
-    weightButtonRadio.disabled = false;
     infoAlert.innerHTML = "A* is weighted and guarantees the shortest path";
   }
   if (name === "bfs") {
-    weightButtonVisual.classList.add("cursor-not-allowed");
     weightButtonVisual.style.filter = "brightness(80%)";
-    weightButtonRadio.disabled = true;
     infoAlert.innerHTML =
       "Breath First Search is NOT weighted but guarantees the shortest path";
   }
   if (name === "dfs") {
-    weightButtonVisual.classList.add("cursor-not-allowed");
     weightButtonVisual.style.filter = "brightness(80%)";
-    weightButtonRadio.disabled = true;
     infoAlert.innerHTML =
       "Depth First Search is NOT weighted and DOES NOT guarantee the shortest path";
   }
@@ -397,44 +510,4 @@ function setAlgo(name, grid) {
     if (name === "bfs") grid.animatebfs();
     if (name === "dfs") grid.animatedfs();
   });
-}
-
-export function main() {
-  container.dataset.startMove = false;
-  container.dataset.endMove = false;
-  container.dataset.mouseDown = false;
-  container.dataset.settingWalls = false;
-  container.dataset.settingWeights = false;
-
-  let aGrid = /Mobi|Android/i.test(navigator.userAgent)
-    ? new grid(25, 25, startLoc, endLoc)
-    : new grid(25, 50, startLoc, endLoc);
-
-  aGrid.createNodes();
-
-  if (wallList.length > 0) {
-    aGrid.setWalls(wallList);
-  }
-
-  if (weightList.length > 0) {
-    aGrid.setWeights(weightList, weight);
-  }
-
-  createDOMGrid(aGrid, container);
-
-  let algoSelect = document.getElementsByClassName("algoSelect")[0];
-  let algoOption = algoSelect.options[algoSelect.selectedIndex].value;
-  setAlgo(algoOption, aGrid);
-
-  algoSelect.addEventListener("change", function () {
-    clearDOMWeights(aGrid);
-    let algoOption = algoSelect.options[algoSelect.selectedIndex].value;
-    setAlgo(algoOption, aGrid);
-  });
-
-  let clearButton = document.getElementsByClassName("clear")[0];
-  clearButton.addEventListener("click", clear.bind(null, aGrid));
-
-  let resetButton = document.getElementsByClassName("reset")[0];
-  resetButton.addEventListener("click", reset);
 }

@@ -4,6 +4,7 @@ function isTouchDevice() {
   return matchMedia("(hover: none)").matches;
 }
 
+
 const warning = document.getElementsByClassName("info--text--warning")[0]
   .parentElement;
 
